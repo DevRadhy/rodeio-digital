@@ -10,6 +10,8 @@ import {
 import type { Route } from "./+types/root";
 import "./styles/globals.css";
 import { Toaster } from "sonner";
+import { SidebarProvider, SidebarTrigger } from "./components/ui/sidebar";
+import { AppSidebar } from "./components/app-sidebar";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -34,7 +36,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <SidebarProvider>
+          <AppSidebar />
+          <SidebarTrigger />
+          <main className="m-8 w-full">{children}</main>
+        </SidebarProvider>
         <ScrollRestoration />
         <Scripts />
         <Toaster />
