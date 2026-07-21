@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { zodResolver as ZodResolver } from "@hookform/resolvers/zod";
-import { Plus } from "lucide-react";
 import {
   Controller,
   useForm,
@@ -33,9 +32,10 @@ import {
 
 interface CategoryCardProps {
   handleSubmit: (data: CategoryType) => void;
+  render: React.ReactElement;
 }
 
-export function CategoryCard({ handleSubmit }: CategoryCardProps) {
+export function CategoryCard({ handleSubmit, render }: CategoryCardProps) {
   const form = useForm<CategoryType>({
     resolver: ZodResolver(CategorySchema),
     defaultValues: {
@@ -71,13 +71,7 @@ export function CategoryCard({ handleSubmit }: CategoryCardProps) {
   return (
     <Dialog>
       <form id="form" onSubmit={form.handleSubmit(onSubmit, onError)}>
-        <DialogTrigger
-          render={
-            <Button variant="outline" onClick={() => form.reset()}>
-              <Plus /> Criar Modalidade
-            </Button>
-          }
-        />
+        <DialogTrigger render={render} />
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Modalidade</DialogTitle>
