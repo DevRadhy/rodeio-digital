@@ -10,32 +10,39 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Plus } from "lucide-react";
+import { BookPlus, ClipboardList, Plus, SquareStack, Users } from "lucide-react";
+import Boots from '../../../public/rodeo.png'
+import { NavLink } from "react-router";
 
 const data = [
   {
-    title: "Modalidade",
-    icon: Plus,
+    title: "Modalidades",
+    icon: SquareStack,
     href: "/categories",
+  },
+  {
+    title: "Inscrições",
+    icon: Users,
+    href: "/subscribes",
   },
 ];
 
 export function AppSidebar() {
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" variant="floating">
       <SidebarHeader>
-        <p className="overflow-hidden">Rodeio Digital</p>
+        <img src={Boots} alt="Rodeo boots" className="max-w-12 resize" />
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Titulo</SidebarGroupLabel>
+          <SidebarGroupLabel>Cadastro</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {data.map((item) => (
                 <SidebarMenuItem>
                   <SidebarMenuButton>
                     {<item.icon />}
-                    <a href={item.href}>{item.title}</a>
+                    <NavLink to={item.href}>{item.title}</NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
