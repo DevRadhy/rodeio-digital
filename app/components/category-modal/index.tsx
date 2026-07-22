@@ -86,8 +86,8 @@ export function CategoryModal({ open, onOpenChange }: CategoryModalProps) {
       }),
       {
         loading: "Salvando dados.",
-        success: "Modalidade criada com sucesso!",
-        error: "Não foi possível criar modalidade, tente novamente.",
+        success: "Modalidade salva com sucesso!",
+        error: "Não foi possível salvar a modalidade, tente novamente.",
       },
     );
   };
@@ -166,7 +166,7 @@ export function CategoryModal({ open, onOpenChange }: CategoryModalProps) {
                       onChange={(e) => field.onChange(e.target.valueAsNumber)}
                     />
                     <FieldDescription>
-                      Número de voltas como classificatórias.
+                      Número de voltas de classificatórias.
                     </FieldDescription>
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
