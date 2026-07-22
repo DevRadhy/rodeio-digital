@@ -10,8 +10,14 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { BookPlus, ClipboardList, Plus, SquareStack, Users } from "lucide-react";
-import Boots from '../../../public/rodeo.png'
+import {
+  BookPlus,
+  ClipboardList,
+  Plus,
+  SquareStack,
+  Users,
+} from "lucide-react";
+import Boots from "../../../public/rodeo.png";
 import { NavLink } from "react-router";
 
 const data = [
@@ -40,10 +46,12 @@ export function AppSidebar() {
             <SidebarMenu>
               {data.map((item) => (
                 <SidebarMenuItem>
-                  <SidebarMenuButton>
-                    {<item.icon />}
-                    <NavLink to={item.href}>{item.title}</NavLink>
-                  </SidebarMenuButton>
+                  <NavLink to={item.href}>
+                    <SidebarMenuButton>
+                      {<item.icon />}
+                      {item.title}
+                    </SidebarMenuButton>
+                  </NavLink>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
