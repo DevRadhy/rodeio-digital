@@ -15,7 +15,7 @@ import {
   SquareStack,
   Users
 } from "lucide-react";
-import { NavLink } from "react-router";
+import { NavLink, useLocation } from "react-router";
 
 const data = [
   {
@@ -31,8 +31,10 @@ const data = [
 ];
 
 export function AppSidebar() {
+  const location = useLocation();
+
   return (
-    <Sidebar collapsible="icon" variant="floating">
+    <Sidebar collapsible="icon" variant="sidebar">
       <SidebarHeader>
         <div className="flex gap-2 items-center">
           <ChartNoAxesCombined className="text-slate-500" />
@@ -47,7 +49,7 @@ export function AppSidebar() {
               {data.map((item, index) => (
                 <SidebarMenuItem key={`${item.title}-${index}`}>
                   <NavLink to={item.href}>
-                    <SidebarMenuButton>
+                    <SidebarMenuButton isActive={location.pathname.startsWith(item.href)}>
                       {<item.icon />}
                       {item.title}
                     </SidebarMenuButton>
