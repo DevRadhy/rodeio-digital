@@ -30,12 +30,12 @@ import {
   type CategoryType,
 } from "../../pages/categories/schema";
 
-interface CategoryCardProps {
+interface CategoryModalProps {
   handleSubmit: (data: CategoryType) => void;
   render: React.ReactElement;
 }
 
-export function CategoryCard({ handleSubmit, render }: CategoryCardProps) {
+export function CategoryModal({ handleSubmit, render }: CategoryModalProps) {
   const form = useForm<CategoryType>({
     resolver: ZodResolver(CategorySchema),
     defaultValues: {
@@ -51,8 +51,8 @@ export function CategoryCard({ handleSubmit, render }: CategoryCardProps) {
         setTimeout(() => {
           handleSubmit(data);
 
-          resolve(200);
-        }, 1000);
+          resolve(true);
+        }, 200);
       }),
       {
         loading: "Salvando dados.",
