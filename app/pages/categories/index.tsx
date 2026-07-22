@@ -51,11 +51,13 @@ export default function Categories() {
     <>
       {categories.length ? (
         <>
-          <Button onClick={() => setOpen(true)}>
-            <Plus /> Adicionar Modalidade
-          </Button>
+          <div className="flex justify-end">
+            <Button onClick={() => setOpen(true)}>
+              <Plus /> Adicionar Modalidade
+            </Button>
+          </div>
 
-          <ItemGroup className="my-2 flex flex-col gap-4">
+          <ItemGroup className="mt-4 flex flex-col gap-4">
             {categories?.map((category, index) => (
               <Item variant={"outline"} key={index}>
                 <ItemMedia variant={"icon"}>
