@@ -11,13 +11,10 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import {
-  BookPlus,
-  ClipboardList,
-  Plus,
+  ChartNoAxesCombined,
   SquareStack,
-  Users,
+  Users
 } from "lucide-react";
-import Boots from "../../../public/rodeo.png";
 import { NavLink } from "react-router";
 
 const data = [
@@ -37,15 +34,18 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon" variant="floating">
       <SidebarHeader>
-        <img src={Boots} alt="Rodeo boots" className="max-w-12 resize" />
+        <div className="flex gap-2 items-center">
+          <ChartNoAxesCombined className="text-slate-500" />
+          <span className="overflow-hidden">Rodeo Digital</span>
+        </div>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Cadastro</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {data.map((item) => (
-                <SidebarMenuItem>
+              {data.map((item, index) => (
+                <SidebarMenuItem key={`${item.title}-${index}`}>
                   <NavLink to={item.href}>
                     <SidebarMenuButton>
                       {<item.icon />}
