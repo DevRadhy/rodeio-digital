@@ -7,7 +7,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Field,
@@ -17,7 +16,9 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { useCompetition } from "@/context/competition";
 import { zodResolver as ZodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import {
   Controller,
   useForm,
@@ -28,14 +29,18 @@ import { toast } from "sonner";
 import {
   CategorySchema,
   type CategoryType,
-} from "../../pages/categories/schema";
+} from "../../schemas/category-schema";
+import { v4 } from "uuid";
 
 interface CategoryModalProps {
-  handleSubmit: (data: CategoryType) => void;
-  render: React.ReactElement;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }
 
-export function CategoryModal({ handleSubmit, render }: CategoryModalProps) {
+export function CategoryModal({ open, onOpenChange }: CategoryModalProps) {
+  const { editingCategory, updateCategory, addCategory, setEditingCategory } =
+    useCompetition();
+
   const form = useForm<CategoryType>({
     resolver: ZodResolver(CategorySchema),
     defaultValues: {
@@ -45,13 +50,38 @@ export function CategoryModal({ handleSubmit, render }: CategoryModalProps) {
     },
   });
 
+  useEffect(() => {
+    if (editingCategory) {
+      form.reset(editingCategory);
+    } else {
+      form.reset({
+        name: "",
+        competitors: 1,
+        rounds: 1,
+      });
+    }
+  }, [editingCategory]);
+
   const onSubmit: SubmitHandler<CategoryType> = (data) => {
     toast.promise(
       new Promise((resolve) => {
         setTimeout(() => {
-          handleSubmit(data);
+          if (editingCategory) {
+            updateCategory({
+              ...editingCategory,
+              ...data,
+            });
+          } else {
+            addCategory({
+              id: v4(),
+              ...data,
+            });
+          }
 
           resolve(true);
+          setEditingCategory(undefined);
+          onOpenChange(false);
+          form.reset();
         }, 200);
       }),
       {
@@ -69,9 +99,8 @@ export function CategoryModal({ handleSubmit, render }: CategoryModalProps) {
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <form id="form" onSubmit={form.handleSubmit(onSubmit, onError)}>
-        <DialogTrigger render={render} />
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Modalidade</DialogTitle>
