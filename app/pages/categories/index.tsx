@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/item";
 import { useCompetition } from "@/context/competition";
 import type { Category } from "@/types/category";
-import { Edit, Plus, Trash2, Users } from "lucide-react";
+import { Edit, Plus, Swords, Trash2, Users } from "lucide-react";
 import { useState } from "react";
 import { CategoryModal } from "../../components/category-modal";
 import type { Route } from "../../pages/categories/+types";
@@ -49,7 +49,6 @@ export default function Categories() {
 
   return (
     <>
-      {console.log(categories)}
       {categories.length ? (
         <>
           <Button onClick={() => setOpen(true)}>
@@ -60,7 +59,7 @@ export default function Categories() {
             {categories?.map((category, index) => (
               <Item variant={"outline"} key={index}>
                 <ItemMedia variant={"icon"}>
-                  <Users />
+                  {category.forces.length ? <Swords /> : <Users />}
                 </ItemMedia>
                 <ItemContent>
                   <ItemTitle>{category.name}</ItemTitle>
@@ -69,9 +68,18 @@ export default function Categories() {
                       {category.competitors}{" "}
                       {category.competitors <= 1 ? "competidor" : "comptidores"}
                     </Badge>
-                    <Badge variant={"secondary"}>
-                      {category.rounds} voltas
+                    <Badge
+                      variant={
+                        category.rounds <= 1 ? "destructive" : "secondary"
+                      }
+                    >
+                      {category.rounds <= 1
+                        ? "eliminatória"
+                        : `${category.rounds} voltas`}
                     </Badge>
+                    {!!category.forces.length && (
+                      <Badge variant={"default"}>Duelo</Badge>
+                    )}
                   </ItemDescription>
                 </ItemContent>
                 <ItemActions>
