@@ -9,7 +9,7 @@ import {
   ItemMedia,
   ItemTitle,
 } from "@/components/ui/item";
-import { useCompetition } from "@/context/competition";
+import { useCategories } from "@/context/categories";
 import type { Category } from "@/types/category";
 import { Edit, Plus, Swords, Trash2, Users } from "lucide-react";
 import { useState } from "react";
@@ -39,7 +39,7 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Categories() {
-  const { categories, setEditingCategory, deleteCategory } = useCompetition();
+  const { categories, setEditingCategory, deleteCategory } = useCategories();
   const [open, setOpen] = useState<boolean>(false);
 
   const onEdit = (category: Category) => {

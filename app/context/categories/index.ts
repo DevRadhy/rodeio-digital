@@ -1,7 +1,7 @@
 import type { Category } from "@/types/category";
 import { create } from "zustand";
 
-interface CompetitionState {
+interface CategoriesState {
   categories: Category[];
   editingCategory?: Category;
   addCategory: (newCategory: Category) => void;
@@ -10,7 +10,7 @@ interface CompetitionState {
   setEditingCategory: (category?: Category) => void;
 }
 
-export const useCompetition = create<CompetitionState>()((set) => ({
+export const useCategories = create<CategoriesState>()((set) => ({
   categories: [],
   editingCategory: undefined,
   addCategory: (newCategory) =>
