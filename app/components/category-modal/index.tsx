@@ -8,20 +8,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
+import { FieldGroup } from "@/components/ui/field";
 import { useCategories } from "@/context/categories";
 import { zodResolver as ZodResolver } from "@hookform/resolvers/zod";
 import { Plus, Trash2 } from "lucide-react";
 import { useEffect } from "react";
 import {
-  Controller,
+  FormProvider,
   useFieldArray,
   useForm,
   type FieldErrors,
@@ -33,9 +26,10 @@ import {
   CategorySchema,
   type CategoryType,
 } from "../../schemas/category-schema";
-import { Switch } from "../ui/switch";
 import FormInput from "../form/form-input";
 import FormSwitch from "../form/form-switch";
+import { ForceRounds } from "../force-rounds";
+import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 
 const A_IN_CHARCODE = 65;
 
@@ -79,18 +73,6 @@ export function CategoryModal({ open, onOpenChange }: CategoryModalProps) {
       });
     }
   }, [open, editingCategory]);
-
-  useEffect(() => {
-    if (isDuel) {
-      replace([
-        { name: "A", rounds: 0 },
-        { name: "B", rounds: 0 },
-        { name: "C", rounds: 0 },
-      ]);
-    } else {
-      replace([]);
-    }
-  }, [isDuel]);
 
   const onSubmit: SubmitHandler<CategoryType> = (data) => {
     toast.promise(
@@ -136,6 +118,18 @@ export function CategoryModal({ open, onOpenChange }: CategoryModalProps) {
     form.reset();
   };
 
+  const onDuelChange = (checked: boolean) => {
+    if (checked) {
+      replace([
+        { name: "A", rounds: [] },
+        { name: "B", rounds: [] },
+        { name: "C", rounds: [] },
+      ]);
+    } else {
+      replace([]);
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <form id="form" onSubmit={form.handleSubmit(onSubmit, onError)}>
@@ -145,89 +139,94 @@ export function CategoryModal({ open, onOpenChange }: CategoryModalProps) {
             <DialogDescription>Registre uma modalidade.</DialogDescription>
           </DialogHeader>
           <div className="-mx-4 no-scrollbar max-h-[50vh] overflow-y-auto px-4 max-w-lg">
-            <FieldGroup>
-              <FormInput
-                control={form.control}
-                name="name"
-                label="Nome"
-                description="Nome da modalidade."
-                type="number"
-                placeholder="ex: Duelo, Duplas, Equipes..."
-              />
-
-              <div className="grid grid-cols-2 gap-4">
+            <FormProvider {...form}>
+              <FieldGroup>
                 <FormInput
                   control={form.control}
-                  name="competitors"
-                  label="Competidores"
-                  description="Número de competidores por inscrição."
-                  type="number"
+                  name="name"
+                  label="Nome"
+                  description="Nome da modalidade."
+                  type="text"
+                  placeholder="ex: Duelo, Duplas, Equipes..."
                 />
 
-                <FormInput
-                  control={form.control}
-                  name="rounds"
-                  label="Voltas"
-                  description="Número de voltas de classificatórias."
-                  type="number"
-                />
-              </div>
-
-              <FormInput
-                control={form.control}
-                name="value"
-                label="Valor (R$)"
-                description="Valor da inscrição"
-                type="number"
-                placeholder="R$ 0,00"
-              />
-
-              <FormSwitch control={form.control} name="isDuel" label="Duelo" />
-
-              {fields.map((field, index) => (
-                <div
-                  className="grid grid-cols-[1fr_1fr_auto] gap-4"
-                  key={field.id}
-                >
+                <div className="grid grid-cols-2 gap-4">
                   <FormInput
                     control={form.control}
-                    name={`forces.${index}.name`}
-                    label="Nome da Força"
-                    description="Nome da Força de classificação."
-                    type="text"
-                    placeholder={`padrão Força ${getForceName(index)}`}
-                  />
-
-                  <FormInput
-                    control={form.control}
-                    name={`forces.${index}.rounds`}
-                    label="Voltas"
-                    description="Número de voltas de classificação da Força."
+                    name="competitors"
+                    label="Competidores"
+                    description="Número de competidores por inscrição."
                     type="number"
                   />
+
+                  <FormInput
+                    control={form.control}
+                    name="rounds"
+                    label="Voltas"
+                    description="Número de voltas de classificatórias."
+                    type="number"
+                  />
+                </div>
+
+                <FormInput
+                  control={form.control}
+                  name="value"
+                  label="Valor (R$)"
+                  description="Valor da inscrição"
+                  type="number"
+                  placeholder="R$ 0,00"
+                />
+
+                <FormSwitch
+                  control={form.control}
+                  name="isDuel"
+                  label="Duelo"
+                  onCheckedChange={onDuelChange}
+                />
+
+                {fields.map((field, index) => (
+                  <Card key={field.id}>
+                    <CardContent>
+                      <FormInput
+                        control={form.control}
+                        name={`forces.${index}.name`}
+                        label="Nome da Força"
+                        description="Nome da Força de classificação."
+                        type="text"
+                        placeholder={`padrão Força ${getForceName(index)}`}
+                      />
+
+                      <ForceRounds
+                        control={form.control}
+                        name={`forces.${index}.rounds`}
+                      />
+                    </CardContent>
+                    <CardFooter>
+                      <Button
+                        type="button"
+                        variant={"destructive"}
+                        onClick={() => remove(index)}
+                        className={"w-full"}
+                      >
+                        <Trash2 />
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                ))}
+
+                {isDuel && (
                   <Button
                     type="button"
-                    variant={"destructive"}
-                    onClick={() => remove(index)}
-                    className={"mt-8"}
+                    variant={"ghost"}
+                    onClick={() =>
+                      append({ name: getForceName(fields.length), rounds: [] })
+                    }
                   >
-                    <Trash2 />
+                    <Plus /> Adicionar Força
                   </Button>
-                </div>
-              ))}
-
-              {isDuel && (
-                <Button
-                  type="button"
-                  variant={"ghost"}
-                  onClick={() =>
-                    append({ name: getForceName(fields.length), rounds: 0 })
-                  }
-                >
-                  <Plus /> Adicionar Força
-                </Button>
-              )}
-            </FieldGroup>
+                )}
+              </FieldGroup>
+            </FormProvider>
           </div>
           <DialogFooter>
             <DialogClose
