@@ -26,10 +26,10 @@ import {
   CategorySchema,
   type CategoryType,
 } from "../../schemas/category-schema";
+import { ForceRounds } from "../force-rounds";
 import FormInput from "../form/form-input";
 import FormSwitch from "../form/form-switch";
-import { ForceRounds } from "../force-rounds";
-import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
+import { Card, CardContent, CardFooter } from "../ui/card";
 
 const A_IN_CHARCODE = 65;
 
