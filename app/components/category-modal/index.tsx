@@ -34,6 +34,8 @@ import {
   type CategoryType,
 } from "../../schemas/category-schema";
 import { Switch } from "../ui/switch";
+import FormInput from "../form/form-input";
+import FormSwitch from "../form/form-switch";
 
 const A_IN_CHARCODE = 65;
 
@@ -144,174 +146,64 @@ export function CategoryModal({ open, onOpenChange }: CategoryModalProps) {
           </DialogHeader>
           <div className="-mx-4 no-scrollbar max-h-[50vh] overflow-y-auto px-4 max-w-lg">
             <FieldGroup>
-              <Controller
-                name="name"
+              <FormInput
                 control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor={field.name}>Nome</FieldLabel>
-                    <Input
-                      {...field}
-                      id={field.name}
-                      aria-invalid={fieldState.invalid}
-                      placeholder="ex: Duelo, Duplas, Equipes..."
-                      autoComplete="off"
-                    />
-                    <FieldDescription>Nome da modalidade.</FieldDescription>
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
+                name="name"
+                label="Nome"
+                description="Nome da modalidade."
+                type="number"
+                placeholder="ex: Duelo, Duplas, Equipes..."
               />
+
               <div className="grid grid-cols-2 gap-4">
-                <Controller
+                <FormInput
+                  control={form.control}
                   name="competitors"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name}>Competidores</FieldLabel>
-                      <Input
-                        type="number"
-                        {...field}
-                        id={field.name}
-                        aria-invalid={fieldState.invalid}
-                        autoComplete="off"
-                        onChange={(e) => field.onChange(e.target.valueAsNumber)}
-                      />
-                      <FieldDescription>
-                        Número de competidores por inscrição.
-                      </FieldDescription>
-                      {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
-                      )}
-                    </Field>
-                  )}
+                  label="Competidores"
+                  description="Número de competidores por inscrição."
+                  type="number"
                 />
-                <Controller
-                  name="rounds"
+
+                <FormInput
                   control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name}>Voltas</FieldLabel>
-                      <Input
-                        {...field}
-                        type="number"
-                        id={field.name}
-                        aria-invalid={fieldState.invalid}
-                        autoComplete="off"
-                        onChange={(e) => field.onChange(e.target.valueAsNumber)}
-                      />
-                      <FieldDescription>
-                        Número de voltas de classificatórias.
-                      </FieldDescription>
-                      {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
-                      )}
-                    </Field>
-                  )}
+                  name="rounds"
+                  label="Voltas"
+                  description="Número de voltas de classificatórias."
+                  type="number"
                 />
               </div>
-              <Controller
+
+              <FormInput
+                control={form.control}
                 name="value"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor={field.name}>Valor (R$)</FieldLabel>
-                    <Input
-                      {...field}
-                      type="number"
-                      id={field.name}
-                      aria-invalid={fieldState.invalid}
-                      placeholder="R$ 0,00"
-                      autoComplete="off"
-                      onChange={(e) => field.onChange(e.target.valueAsNumber)}
-                    />
-                    <FieldDescription>Valor da inscrição.</FieldDescription>
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
+                label="Valor (R$)"
+                description="Valor da inscrição"
+                type="number"
+                placeholder="R$ 0,00"
               />
 
-              <Controller
-                name="isDuel"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <div className="flex items-center space-x-2">
-                      <Switch
-                        id={field.name}
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                      <FieldLabel htmlFor={field.name}>Duelo</FieldLabel>
-                    </div>
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
+              <FormSwitch control={form.control} name="isDuel" label="Duelo" />
 
-              {/* Forças do Duelo */}
               {fields.map((field, index) => (
                 <div
                   className="grid grid-cols-[1fr_1fr_auto] gap-4"
                   key={field.id}
                 >
-                  <Controller
+                  <FormInput
+                    control={form.control}
                     name={`forces.${index}.name`}
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor={field.name}>
-                          Nome da Força
-                        </FieldLabel>
-                        <Input
-                          type="text"
-                          {...field}
-                          id={field.name}
-                          aria-invalid={fieldState.invalid}
-                          autoComplete="off"
-                          onChange={(e) =>
-                            field.onChange(e.target.valueAsNumber)
-                          }
-                        />
-                        <FieldDescription>
-                          Nome da Força de classificação.
-                        </FieldDescription>
-                        {fieldState.invalid && (
-                          <FieldError errors={[fieldState.error]} />
-                        )}
-                      </Field>
-                    )}
+                    label="Nome da Força"
+                    description="Nome da Força de classificação."
+                    type="text"
+                    placeholder={`padrão Força ${getForceName(index)}`}
                   />
-                  <Controller
-                    name={`forces.${index}.rounds`}
+
+                  <FormInput
                     control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor={field.name}>Voltas</FieldLabel>
-                        <Input
-                          {...field}
-                          type="number"
-                          id={field.name}
-                          aria-invalid={fieldState.invalid}
-                          autoComplete="off"
-                          onChange={(e) =>
-                            field.onChange(e.target.valueAsNumber)
-                          }
-                        />
-                        <FieldDescription>
-                          Número de voltas de classificação da Força.
-                        </FieldDescription>
-                        {fieldState.invalid && (
-                          <FieldError errors={[fieldState.error]} />
-                        )}
-                      </Field>
-                    )}
+                    name={`forces.${index}.rounds`}
+                    label="Voltas"
+                    description="Número de voltas de classificação da Força."
+                    type="number"
                   />
                   <Button
                     type="button"
