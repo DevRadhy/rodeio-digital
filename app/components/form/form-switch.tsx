@@ -13,12 +13,14 @@ type FormSwitchProps<T extends FieldValues> = {
   name: FieldPath<T>;
   label: string;
   disabled?: boolean;
+  onCheckedChange?: (checked: boolean) => void;
 };
 
 export default function FormSwitch<T extends FieldValues>({
   control,
   name,
   label,
+  onCheckedChange,
 }: FormSwitchProps<T>) {
   return (
     <Controller
@@ -29,7 +31,13 @@ export default function FormSwitch<T extends FieldValues>({
           <Switch
             id={field.name}
             checked={field.value}
-            onCheckedChange={field.onChange}
+            onCheckedChange={(e) => {
+              field.onChange(e);
+
+              if (typeof onCheckedChange === "function") {
+                onCheckedChange(e);
+              }
+            }}
             aria-invalid={fieldState.invalid}
           />
           <FieldLabel htmlFor={field.name}>{label}</FieldLabel>
