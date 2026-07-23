@@ -28,20 +28,20 @@ export const CategorySchema = z
       .max(99999, "Valor de inscrição inválido."),
     isDuel: z.boolean(),
     forces: z.array(
-      z
-        .object({
-          name: z
-            .string("Você precisa informar o nome da força.")
-            .max(24, "O tamanho máximo para o nome é de 24 caracteres."),
-          rounds: z
+      z.object({
+        name: z
+          .string("Você precisa informar o nome da força.")
+          .max(24, "O tamanho máximo para o nome é de 24 caracteres."),
+        rounds: z.array(
+          z
             .number(
               "Você precisa informar o número de voltas de classificatória da força.",
             )
             .positive("O número precisar ser maior que 0.")
             .min(1, "O número mínimo de voltas não pode ser menor que 1.")
             .max(100, "O número máximo de voltas não pode ser maior 100."),
-        })
-        .optional(),
+        ),
+      }),
     ),
   })
   .required();
