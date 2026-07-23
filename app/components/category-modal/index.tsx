@@ -16,9 +16,10 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { useCompetition } from "@/context/competition";
+import { useCategories } from "@/context/categories";
 import { zodResolver as ZodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { Plus, Trash2 } from "lucide-react";
+import { useEffect } from "react";
 import {
   Controller,
   useFieldArray,
@@ -27,14 +28,12 @@ import {
   type SubmitHandler,
 } from "react-hook-form";
 import { toast } from "sonner";
+import { v4 } from "uuid";
 import {
   CategorySchema,
   type CategoryType,
 } from "../../schemas/category-schema";
-import { v4 } from "uuid";
-import { Plus, Trash2 } from "lucide-react";
 import { Switch } from "../ui/switch";
-import { Label } from "../ui/label";
 
 interface CategoryModalProps {
   open: boolean;
@@ -43,7 +42,7 @@ interface CategoryModalProps {
 
 export function CategoryModal({ open, onOpenChange }: CategoryModalProps) {
   const { editingCategory, updateCategory, addCategory, setEditingCategory } =
-    useCompetition();
+    useCategories();
 
   const form = useForm<CategoryType>({
     resolver: ZodResolver(CategorySchema),
@@ -51,16 +50,17 @@ export function CategoryModal({ open, onOpenChange }: CategoryModalProps) {
       name: "",
       competitors: 1,
       rounds: 1,
+      isDuel: false,
       forces: [],
     },
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, replace } = useFieldArray({
     control: form.control,
     name: "forces",
   });
 
-  const [isDuel, setIsDuel] = useState<boolean>(false);
+  const isDuel = form.watch("isDuel");
 
   useEffect(() => {
     if (editingCategory) {
@@ -70,10 +70,23 @@ export function CategoryModal({ open, onOpenChange }: CategoryModalProps) {
         name: "",
         competitors: 1,
         rounds: 1,
+        isDuel: false,
         forces: [],
       });
     }
   }, [open, editingCategory]);
+
+  useEffect(() => {
+    if (isDuel) {
+      replace([
+        { name: "A", rounds: 0 },
+        { name: "B", rounds: 0 },
+        { name: "C", rounds: 0 },
+      ]);
+    } else {
+      replace([]);
+    }
+  }, [isDuel]);
 
   const onSubmit: SubmitHandler<CategoryType> = (data) => {
     toast.promise(
@@ -219,14 +232,25 @@ export function CategoryModal({ open, onOpenChange }: CategoryModalProps) {
                 )}
               />
 
-              <div className="flex items-center space-x-2">
-                <Switch
-                  id="duel-mode"
-                  checked={isDuel}
-                  onCheckedChange={() => setIsDuel((state) => !state)}
-                />
-                <Label htmlFor="duel-mode">Duelo</Label>
-              </div>
+              <Controller
+                name="isDuel"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <div className="flex items-center space-x-2">
+                      <Switch
+                        id={field.name}
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                      <FieldLabel htmlFor={field.name}>Duelo</FieldLabel>
+                    </div>
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
 
               {/* Forças do Duelo */}
               {fields.map((field, index) => (
@@ -296,15 +320,18 @@ export function CategoryModal({ open, onOpenChange }: CategoryModalProps) {
                   </Button>
                 </div>
               ))}
-              <Button
-                type="button"
-                variant={"ghost"}
-                onClick={() =>
-                  append({ name: getForceName(fields.length), rounds: 0 })
-                }
-              >
-                <Plus /> Adicionar Força
-              </Button>
+
+              {isDuel && (
+                <Button
+                  type="button"
+                  variant={"ghost"}
+                  onClick={() =>
+                    append({ name: getForceName(fields.length), rounds: 0 })
+                  }
+                >
+                  <Plus /> Adicionar Força
+                </Button>
+              )}
             </FieldGroup>
           </div>
           <DialogFooter>
