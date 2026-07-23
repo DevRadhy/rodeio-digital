@@ -26,6 +26,7 @@ export const CategorySchema = z
       .float32("Você precisa informar o valor da inscriçao.")
       .min(0, "O valor minimo de incrição não pode ser menor que R$0,00.")
       .max(99999, "Valor de inscrição inválido."),
+    isDuel: z.boolean(),
     forces: z.array(
       z
         .object({
