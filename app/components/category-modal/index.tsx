@@ -35,6 +35,8 @@ import {
 } from "../../schemas/category-schema";
 import { Switch } from "../ui/switch";
 
+const A_IN_CHARCODE = 65;
+
 interface CategoryModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -123,7 +125,8 @@ export function CategoryModal({ open, onOpenChange }: CategoryModalProps) {
     return toast.error(errors[0].message);
   };
 
-  const getForceName = (index: number) => String.fromCharCode(65 + index);
+  const getForceName = (index: number) =>
+    String.fromCharCode(A_IN_CHARCODE + index);
 
   const onClose = () => {
     setEditingCategory(undefined);
