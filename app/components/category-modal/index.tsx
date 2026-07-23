@@ -26,7 +26,7 @@ import {
   CategorySchema,
   type CategoryType,
 } from "../../schemas/category-schema";
-import { ForceRounds } from "../force-rounds";
+import { FormRounds } from "../form-category/form-rounds";
 import FormInput from "../form/form-input";
 import FormSwitch from "../form/form-switch";
 import { Card, CardContent, CardFooter } from "../ui/card";
@@ -196,7 +196,7 @@ export function CategoryModal({ open, onOpenChange }: CategoryModalProps) {
                         placeholder={`padrão Força ${getForceName(index)}`}
                       />
 
-                      <ForceRounds
+                      <FormRounds
                         control={form.control}
                         name={`forces.${index}.rounds`}
                       />

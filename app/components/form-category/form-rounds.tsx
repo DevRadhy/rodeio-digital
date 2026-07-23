@@ -7,20 +7,20 @@ import {
   type FieldPath,
   type FieldValues,
 } from "react-hook-form";
-import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Field, FieldDescription, FieldError, FieldLabel } from "./ui/field";
+import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Field, FieldDescription, FieldError, FieldLabel } from "../ui/field";
 
-type ForceRoundsProps<T extends FieldValues> = {
+type FormRoundsProps<T extends FieldValues> = {
   control: Control<T>;
   name: FieldPath<T>;
 };
 
-export function ForceRounds<T extends FieldValues>({
+export function FormRounds<T extends FieldValues>({
   control,
   name,
-}: ForceRoundsProps<T>) {
+}: FormRoundsProps<T>) {
   const { setValue } = useFormContext();
 
   const rounds = useWatch({
