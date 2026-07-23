@@ -7,10 +7,9 @@ import {
   type FieldPath,
   type FieldValues,
 } from "react-hook-form";
-import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
+import { Field, FieldDescription, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
-import { Field, FieldDescription, FieldError, FieldLabel } from "../ui/field";
 
 type FormRoundsProps<T extends FieldValues> = {
   control: Control<T>;
@@ -28,7 +27,7 @@ export function FormRounds<T extends FieldValues>({
     name,
   });
 
-  console.log(rounds)
+  console.log(rounds);
 
   const [round, setRound] = useState("");
 
