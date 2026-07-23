@@ -34,9 +34,7 @@ export default function FormSwitch<T extends FieldValues>({
             onCheckedChange={(e) => {
               field.onChange(e);
 
-              if (typeof onCheckedChange === "function") {
-                onCheckedChange(e);
-              }
+              onCheckedChange?.(e);
             }}
             aria-invalid={fieldState.invalid}
           />
