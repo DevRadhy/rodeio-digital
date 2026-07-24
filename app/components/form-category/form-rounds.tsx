@@ -21,7 +21,7 @@ export function FormRounds<T extends FieldValues>({
   control,
   name,
 }: FormRoundsProps<T>) {
-  const { setValue, watch } = useFormContext();
+  const { setValue, watch, setError } = useFormContext();
 
   const forceRounds = useWatch({
     control,
@@ -32,7 +32,7 @@ export function FormRounds<T extends FieldValues>({
   const forces = watch("forces");
 
   const [round, setRound] = useState("");
-  const [error, setError] = useState("");
+  // const [error, setError] = useState("");
 
   const addValue = () => {
     const value = Number(round);
@@ -40,7 +40,9 @@ export function FormRounds<T extends FieldValues>({
     if (!Number.isFinite(value)) return;
 
     if (value < 1 || value > rounds) {
-      setError(`O número de armadas deve estar entre 1 e ${rounds}.`);
+      setError(name, {
+        message: `O número de armadas deve estar entre 1 e ${rounds}.`,
+      });
       return;
     }
 
@@ -50,9 +52,9 @@ export function FormRounds<T extends FieldValues>({
     );
 
     if (valueAlreadyExists) {
-      setError(
-        `Esse valor já está sendo usando na força ${valueAlreadyExists.name}.`,
-      );
+      setError(name, {
+        message: `Esse valor já está sendo usando na força ${valueAlreadyExists.name}.`,
+      });
       return;
     }
 
@@ -91,10 +93,10 @@ export function FormRounds<T extends FieldValues>({
                   {...field}
                   type="number"
                   id={field.name}
+                  aria-invalid={fieldState.invalid}
                   autoComplete="off"
                   onChange={(e) => {
                     setRound(e.target.value);
-                    setError("");
                   }}
                   value={round}
                 />
@@ -107,10 +109,7 @@ export function FormRounds<T extends FieldValues>({
                 </Button>
               </div>
               <FieldDescription>Voltas de classificatória.</FieldDescription>
-              {fieldState.invalid ||
-                (error && (
-                  <FieldError errors={[fieldState.error, { message: error }]} />
-                ))}
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
         />
