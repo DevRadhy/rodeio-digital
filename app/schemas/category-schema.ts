@@ -44,6 +44,40 @@ export const CategorySchema = z
       }),
     ),
   })
-  .required();
+  .superRefine((data, ctx) => {
+    if (!data.isDuel) return;
+
+    const usedRounds = new Map<number, number>();
+
+    data.forces.forEach((force, forceIndex) => {
+      if (force.rounds.length === 0) {
+        ctx.addIssue({
+          code: "custom",
+          message: "A força deve possuir pelo menos uma volta.",
+          path: ["forces", forceIndex, "rounds"],
+        });
+      }
+
+      force.rounds.forEach((round, roundIndex) => {
+        if (round < 1 || round > data.rounds) {
+          ctx.addIssue({
+            code: "custom",
+            message: `A volta deve estar entre 1 e ${data.rounds}.`,
+            path: ["forces", forceIndex, "rounds", roundIndex],
+          });
+        }
+
+        if (usedRounds.has(round)) {
+          ctx.addIssue({
+            code: "custom",
+            message: `A volta ${round} já pertence a outra força.`,
+            path: ["forces", forceIndex, "rounds", roundIndex],
+          });
+        } else {
+          usedRounds.set(round, forceIndex);
+        }
+      });
+    });
+  });
 
 export type CategoryType = z.infer<typeof CategorySchema>;
