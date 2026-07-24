@@ -16,7 +16,9 @@ import {
   ItemActions,
   ItemContent,
   ItemDescription,
+  ItemFooter,
   ItemGroup,
+  ItemHeader,
   ItemMedia,
   ItemTitle,
 } from "@/components/ui/item";
@@ -59,7 +61,7 @@ export default function Categories() {
 
           <ItemGroup className="mt-4 flex flex-col gap-4">
             {categories?.map((category, index) => (
-              <Item variant={"outline"} key={index}>
+              <Item variant={"outline"} key={category.id}>
                 <ItemMedia variant={"icon"}>
                   {category.forces.length ? <Swords /> : <Users />}
                 </ItemMedia>
@@ -79,7 +81,18 @@ export default function Categories() {
                         ? "eliminatória"
                         : `${category.rounds} voltas`}
                     </Badge>
-                    {!!category.forces.length && (
+                    {category.value ? (
+                      <Badge variant={"secondary"}>
+                        {Intl.NumberFormat("pt-BR", {
+                          style: "currency",
+                          currency: "BRL",
+                        }).format(category.value)}
+                      </Badge>
+                    ) : (
+                      <Badge>Gratuito</Badge>
+                    )}
+
+                    {category.isDuel && (
                       <Badge variant={"default"}>Duelo</Badge>
                     )}
                   </ItemDescription>
@@ -120,6 +133,20 @@ export default function Categories() {
                     </AlertDialogContent>
                   </AlertDialog>
                 </ItemActions>
+                <ItemFooter>
+                  <div className="flex gap-4">
+                    {category.isDuel &&
+                      category.forces.map((force) => (
+                        <Badge variant={"secondary"}>
+                          <strong>
+                            {force.name}
+                            {": "}
+                          </strong>
+                          {force.rounds.join(", ")} Armadas
+                        </Badge>
+                      ))}
+                  </div>
+                </ItemFooter>
               </Item>
             ))}
           </ItemGroup>
