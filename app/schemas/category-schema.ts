@@ -53,8 +53,7 @@ export const CategorySchema = z
       if (force.rounds.length === 0) {
         ctx.addIssue({
           code: "custom",
-          message: "A força deve possuir pelo menos uma volta.",
-          path: ["forces", forceIndex, "rounds"],
+          message: `A força ${force.name} deve possuir pelo menos uma volta de classificatória.`,
         });
       }
 
@@ -62,8 +61,7 @@ export const CategorySchema = z
         if (round < 1 || round > data.rounds) {
           ctx.addIssue({
             code: "custom",
-            message: `A volta deve estar entre 1 e ${data.rounds}.`,
-            path: ["forces", forceIndex, "rounds", roundIndex],
+            message: `As voltas de classificatória da força ${force.name} devem estar entre 1 e ${data.rounds}.`,
           });
         }
 
@@ -71,7 +69,6 @@ export const CategorySchema = z
           ctx.addIssue({
             code: "custom",
             message: `A volta ${round} já pertence a outra força.`,
-            path: ["forces", forceIndex, "rounds", roundIndex],
           });
         } else {
           usedRounds.set(round, forceIndex);
