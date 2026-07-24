@@ -77,7 +77,6 @@ export function CategoryModal({ open, onOpenChange }: CategoryModalProps) {
   const onSubmit: SubmitHandler<CategoryType> = (data) => {
     toast.promise(
       new Promise((resolve) => {
-        console.log(data);
         setTimeout(() => {
           if (editingCategory) {
             updateCategory({
