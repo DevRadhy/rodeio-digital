@@ -33,12 +33,12 @@ import { Card, CardContent, CardFooter } from "../ui/card";
 
 const A_IN_CHARCODE = 65;
 
-interface CategoryModalProps {
+interface CategoryDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-export function CategoryModal({ open, onOpenChange }: CategoryModalProps) {
+export function CategoryDialog({ open, onOpenChange }: CategoryDialogProps) {
   const { editingCategory, updateCategory, addCategory, setEditingCategory } =
     useCategories();
 

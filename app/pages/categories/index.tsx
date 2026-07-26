@@ -26,7 +26,7 @@ import { useCategories } from "@/context/categories";
 import type { Category } from "@/types/category";
 import { Edit, Plus, Swords, Trash2, Users } from "lucide-react";
 import { useState } from "react";
-import { CategoryModal } from "../../components/category-modal";
+import { CategoryDialog } from "../../components/category-dialog";
 import type { Route } from "../../pages/categories/+types";
 import { EmptyCategories } from "./empty";
 
@@ -157,7 +157,7 @@ export default function Categories() {
         </EmptyCategories>
       )}
 
-      <CategoryModal open={open} onOpenChange={setOpen} />
+      <CategoryDialog open={open} onOpenChange={setOpen} />
     </>
   );
 }
