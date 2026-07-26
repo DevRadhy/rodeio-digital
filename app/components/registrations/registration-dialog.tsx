@@ -9,7 +9,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { FieldGroup } from "@/components/ui/field";
+import type { Category } from "@/types/category";
 import { zodResolver as ZodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import {
   useFieldArray,
   useForm,
@@ -22,8 +24,6 @@ import {
   type RegistrationSchemaType,
 } from "../../schemas/registration-schema";
 import FormInput from "../form/form-input";
-import type { Category } from "@/types/category";
-import { useEffect } from "react";
 
 interface RegistrationDialogProps {
   category: Category | null;
@@ -44,7 +44,7 @@ export function RegistrationDialog({
     },
   });
 
-  const { fields, append, remove, replace } = useFieldArray({
+  const { fields } = useFieldArray({
     control: form.control,
     name: "competitors",
   });
