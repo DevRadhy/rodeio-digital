@@ -43,11 +43,7 @@ export function CategoryCard({ category, onRegister }: CategoryCardProps) {
         {category.isDuel && <Badge variant={"default"}>Duelo</Badge>}
       </CardContent>
       <CardFooter>
-        <Button
-          variant={"ghost"}
-          onClick={onRegister}
-          className={"w-full"}
-        >
+        <Button variant={"ghost"} onClick={onRegister} className={"w-full"}>
           <Plus /> Adicionar Inscrição
         </Button>
       </CardFooter>

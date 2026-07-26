@@ -4,12 +4,7 @@ import {
   type FieldPath,
   type FieldValues,
 } from "react-hook-form";
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldLabel,
-} from "../ui/field";
+import { Field, FieldDescription, FieldError, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
 
 type FormInputProps<T extends FieldValues> = {
