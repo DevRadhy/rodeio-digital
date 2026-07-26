@@ -4,11 +4,13 @@ import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import {
   Card,
+  CardAction,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import { useRegistrations } from "@/context/registrations";
 
 interface CategoryCardProps {
   category: Category;
@@ -16,10 +18,25 @@ interface CategoryCardProps {
 }
 
 export function CategoryCard({ category, onRegister }: CategoryCardProps) {
+  const { registrations } = useRegistrations();
+
+  const registrationsCount = () => {
+    const categoryRegistrations = registrations.filter(
+      (registration) => registration.categoryId === category.id,
+    );
+
+    return categoryRegistrations.length;
+  };
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>{category.name}</CardTitle>
+        <CardAction>
+          <Badge>
+            {registrationsCount()} Inscrições
+          </Badge>
+        </CardAction>
       </CardHeader>
       <CardContent className="flex gap-2">
         <Badge variant={"secondary"}>
