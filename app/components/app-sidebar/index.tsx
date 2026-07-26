@@ -26,7 +26,7 @@ const data = [
   {
     title: "Inscrições",
     icon: Users,
-    href: "/subscribes",
+    href: "/registration",
   },
 ];
 

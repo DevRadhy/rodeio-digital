@@ -70,7 +70,7 @@ export default function Categories() {
                   <ItemDescription className="flex flex-wrap gap-2">
                     <Badge variant={"secondary"}>
                       {category.competitors}{" "}
-                      {category.competitors <= 1 ? "competidor" : "comptidores"}
+                      {category.competitors <= 1 ? "competidor" : "competidores"}
                     </Badge>
                     <Badge
                       variant={
