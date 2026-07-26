@@ -25,17 +25,17 @@ import FormInput from "../form/form-input";
 import type { Category } from "@/types/category";
 import { useEffect } from "react";
 
-interface RegistrationModalProps {
+interface RegistrationDialogProps {
   category: Category | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-export function RegistrationModal({
+export function RegistrationDialog({
   category,
   open,
   onOpenChange,
-}: RegistrationModalProps) {
+}: RegistrationDialogProps) {
   const form = useForm<RegistrationType>({
     resolver: ZodResolver(RegistrationSchema),
     defaultValues: {

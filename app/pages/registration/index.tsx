@@ -1,4 +1,4 @@
-import { RegistrationModal } from "@/components/registration-modal";
+import { RegistrationDialog } from "@/components/registration-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -66,7 +66,7 @@ export default function Registration() {
         ))}
       </section>
 
-      <RegistrationModal
+      <RegistrationDialog
         category={selectedCategory}
         open={!!selectedCategory}
         onOpenChange={(open) => {
