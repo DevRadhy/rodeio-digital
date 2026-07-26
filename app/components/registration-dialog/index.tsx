@@ -19,7 +19,7 @@ import {
 import { toast } from "sonner";
 import {
   RegistrationSchema,
-  type RegistrationType,
+  type RegistrationSchemaType,
 } from "../../schemas/registration-schema";
 import FormInput from "../form/form-input";
 import type { Category } from "@/types/category";
@@ -36,7 +36,7 @@ export function RegistrationDialog({
   open,
   onOpenChange,
 }: RegistrationDialogProps) {
-  const form = useForm<RegistrationType>({
+  const form = useForm<RegistrationSchemaType>({
     resolver: ZodResolver(RegistrationSchema),
     defaultValues: {
       categoryId: "",
@@ -60,7 +60,7 @@ export function RegistrationDialog({
     });
   }, [category]);
 
-  const onSubmit: SubmitHandler<RegistrationType> = (data) => {
+  const onSubmit: SubmitHandler<RegistrationSchemaType> = (data) => {
     toast.promise(
       new Promise((resolve) => {
         setTimeout(() => {
@@ -78,7 +78,7 @@ export function RegistrationDialog({
     );
   };
 
-  const onError = (validationError: FieldErrors<RegistrationType>) => {
+  const onError = (validationError: FieldErrors<RegistrationSchemaType>) => {
     const { categoryId, competitors } = validationError;
 
     if (categoryId) {

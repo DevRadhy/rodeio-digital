@@ -24,7 +24,7 @@ import { toast } from "sonner";
 import { v4 } from "uuid";
 import {
   CategorySchema,
-  type CategoryType,
+  type CategorySchemaType,
 } from "../../schemas/category-schema";
 import { FormRounds } from "../form-category/form-rounds";
 import FormInput from "../form/form-input";
@@ -42,7 +42,7 @@ export function CategoryDialog({ open, onOpenChange }: CategoryDialogProps) {
   const { editingCategory, updateCategory, addCategory, setEditingCategory } =
     useCategories();
 
-  const form = useForm<CategoryType>({
+  const form = useForm<CategorySchemaType>({
     resolver: ZodResolver(CategorySchema),
     defaultValues: {
       name: "",
@@ -74,7 +74,7 @@ export function CategoryDialog({ open, onOpenChange }: CategoryDialogProps) {
     }
   }, [open, editingCategory]);
 
-  const onSubmit: SubmitHandler<CategoryType> = (data) => {
+  const onSubmit: SubmitHandler<CategorySchemaType> = (data) => {
     toast.promise(
       new Promise((resolve) => {
         setTimeout(() => {
@@ -102,7 +102,7 @@ export function CategoryDialog({ open, onOpenChange }: CategoryDialogProps) {
     );
   };
 
-  const onError = (validationError: FieldErrors<CategoryType>) => {
+  const onError = (validationError: FieldErrors<CategorySchemaType>) => {
     const errors = Object.values(validationError);
 
     return toast.error(errors[0].message);

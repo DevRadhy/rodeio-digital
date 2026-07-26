@@ -77,4 +77,4 @@ export const CategorySchema = z
     });
   });
 
-export type CategoryType = z.infer<typeof CategorySchema>;
+export type CategorySchemaType = z.infer<typeof CategorySchema>;

@@ -1,5 +1,5 @@
-import type { RegistrationType } from "@/schemas/registration-schema";
+import type { RegistrationSchemaType } from "@/schemas/registration-schema";
 
-export interface Registration extends RegistrationType {
+export interface Registration extends RegistrationSchemaType {
   id: string;
 }

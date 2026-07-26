@@ -1,5 +1,5 @@
-import type { CategoryType } from "@/schemas/category-schema";
+import type { CategorySchemaType } from "@/schemas/category-schema";
 
-export interface Category extends CategoryType {
+export interface Category extends CategorySchemaType {
   id: string;
 }
