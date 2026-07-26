@@ -9,6 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { FieldGroup } from "@/components/ui/field";
+import { useRegistrations } from "@/context/registrations";
 import type { Category } from "@/types/category";
 import { zodResolver as ZodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
@@ -19,6 +20,7 @@ import {
   type SubmitHandler,
 } from "react-hook-form";
 import { toast } from "sonner";
+import { v4 } from "uuid";
 import {
   RegistrationSchema,
   type RegistrationSchemaType,
@@ -36,6 +38,8 @@ export function RegistrationDialog({
   open,
   onOpenChange,
 }: RegistrationDialogProps) {
+  const { addRegistration } = useRegistrations();
+
   const form = useForm<RegistrationSchemaType>({
     resolver: ZodResolver(RegistrationSchema),
     defaultValues: {
@@ -64,7 +68,10 @@ export function RegistrationDialog({
     toast.promise(
       new Promise((resolve) => {
         setTimeout(() => {
-          console.log(data);
+          addRegistration({
+            id: v4(),
+            ...data,
+          });
 
           resolve(true);
           onOpenChange(false);
