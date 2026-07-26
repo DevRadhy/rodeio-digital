@@ -25,7 +25,7 @@ export function CategoryItem({ category, onEdit }: CategoryItemProps) {
   const onCurrencyFormat = (value: number) => {
     if (!value) return "Gratuito";
 
-    Intl.NumberFormat("pt-BR", {
+    return Intl.NumberFormat("pt-BR", {
       style: "currency",
       currency: "BRL",
     }).format(value);
