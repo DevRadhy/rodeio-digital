@@ -26,7 +26,7 @@ import {
   CategorySchema,
   type CategorySchemaType,
 } from "../../schemas/category-schema";
-import { FormRounds } from "../form-category/form-rounds";
+import { FormRounds } from "./form-category/form-rounds";
 import FormInput from "../form/form-input";
 import FormSwitch from "../form/form-switch";
 import { Card, CardContent, CardFooter } from "../ui/card";

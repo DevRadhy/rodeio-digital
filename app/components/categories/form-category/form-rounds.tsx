@@ -8,9 +8,9 @@ import {
   type FieldPath,
   type FieldValues,
 } from "react-hook-form";
-import { Button } from "../ui/button";
-import { Field, FieldDescription, FieldError, FieldLabel } from "../ui/field";
-import { Input } from "../ui/input";
+import { Button } from "../../ui/button";
+import { Field, FieldDescription, FieldError, FieldLabel } from "../../ui/field";
+import { Input } from "../../ui/input";
 
 type FormRoundsProps<T extends FieldValues> = {
   control: Control<T>;
