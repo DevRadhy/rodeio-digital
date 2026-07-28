@@ -22,7 +22,7 @@ export const CategorySchema = z
       .positive("O número precisar ser maior que 0.")
       .min(1, "O número mínimo de voltas não pode ser menor que 1.")
       .max(100, "O número máximo de voltas não pode ser maior 100."),
-    value: z
+    price: z
       .float32("Você precisa informar o valor da inscriçao.")
       .min(0, "O valor minimo de incrição não pode ser menor que R$0,00.")
       .max(99999, "Valor de inscrição inválido."),

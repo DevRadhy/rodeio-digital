@@ -19,7 +19,7 @@ export function SectionCards() {
       (registration) => registration.categoryId === cur.id,
     ).length;
 
-    return (acc += cur.value * registratinosCount);
+    return (acc += cur.price * registratinosCount);
   }, 0);
 
   const formatCurrency = (value: number) =>

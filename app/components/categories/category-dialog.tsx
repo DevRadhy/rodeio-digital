@@ -169,7 +169,7 @@ export function CategoryDialog({ open, onOpenChange }: CategoryDialogProps) {
 
                 <FormInput
                   control={form.control}
-                  name="value"
+                  name="price"
                   label="Valor (R$)"
                   description="Valor da inscrição"
                   type="number"

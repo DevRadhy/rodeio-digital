@@ -49,7 +49,7 @@ export function CategoryItem({ category, onEdit }: CategoryItemProps) {
               : `${category.rounds} voltas`}
           </Badge>
           <Badge variant={"secondary"}>
-            {onCurrencyFormat(category.value)}
+            {onCurrencyFormat(category.price)}
           </Badge>
 
           {category.isDuel && <Badge variant={"default"}>Duelo</Badge>}

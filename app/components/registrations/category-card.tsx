@@ -46,12 +46,12 @@ export function CategoryCard({ category, onRegister }: CategoryCardProps) {
         <Badge variant={category.rounds <= 1 ? "destructive" : "secondary"}>
           {category.rounds <= 1 ? "eliminatória" : `${category.rounds} voltas`}
         </Badge>
-        {category.value ? (
+        {category.price ? (
           <Badge variant={"secondary"}>
             {Intl.NumberFormat("pt-BR", {
               style: "currency",
               currency: "BRL",
-            }).format(category.value)}
+            }).format(category.price)}
           </Badge>
         ) : (
           <Badge>Gratuito</Badge>
