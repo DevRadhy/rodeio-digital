@@ -120,9 +120,9 @@ export function CategoryDialog({ open, onOpenChange }: CategoryDialogProps) {
   const onDuelChange = (checked: boolean) => {
     if (checked) {
       replace([
-        { name: "A", rounds: [] },
-        { name: "B", rounds: [] },
-        { name: "C", rounds: [] },
+        { name: "A", qualifyingScores: [] },
+        { name: "B", qualifyingScores: [] },
+        { name: "C", qualifyingScores: [] },
       ]);
     } else {
       replace([]);
@@ -197,7 +197,7 @@ export function CategoryDialog({ open, onOpenChange }: CategoryDialogProps) {
 
                       <FormRounds
                         control={form.control}
-                        name={`forces.${index}.rounds`}
+                        name={`forces.${index}.qualifyingScores`}
                       />
                     </CardContent>
                     <CardFooter>
@@ -218,7 +218,7 @@ export function CategoryDialog({ open, onOpenChange }: CategoryDialogProps) {
                     type="button"
                     variant={"ghost"}
                     onClick={() =>
-                      append({ name: getForceName(fields.length), rounds: [] })
+                      append({ name: getForceName(fields.length), qualifyingScores: [] })
                     }
                   >
                     <Plus /> Adicionar Força

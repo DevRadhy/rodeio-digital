@@ -70,7 +70,7 @@ export function CategoryItem({ category, onEdit }: CategoryItemProps) {
                   {force.name}
                   {": "}
                 </strong>
-                {force.rounds.join(", ")} Armadas
+                {force.qualifyingScores.join(", ")} Armadas
               </Badge>
             ))}
         </div>

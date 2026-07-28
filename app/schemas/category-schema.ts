@@ -32,7 +32,7 @@ export const CategorySchema = z
         name: z
           .string("Você precisa informar o nome da força.")
           .max(24, "O tamanho máximo para o nome é de 24 caracteres."),
-        rounds: z.array(
+        qualifyingScores: z.array(
           z
             .number(
               "Você precisa informar o número de voltas de classificatória da força.",
@@ -50,14 +50,14 @@ export const CategorySchema = z
     const usedRounds = new Map<number, number>();
 
     data.forces.forEach((force, forceIndex) => {
-      if (force.rounds.length === 0) {
+      if (force.qualifyingScores.length === 0) {
         ctx.addIssue({
           code: "custom",
           message: `A força ${force.name} deve possuir pelo menos uma volta de classificatória.`,
         });
       }
 
-      force.rounds.forEach((round, roundIndex) => {
+      force.qualifyingScores.forEach((round, roundIndex) => {
         if (round < 1 || round > data.rounds) {
           ctx.addIssue({
             code: "custom",

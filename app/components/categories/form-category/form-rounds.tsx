@@ -11,6 +11,7 @@ import {
 import { Button } from "../../ui/button";
 import { Field, FieldDescription, FieldError, FieldLabel } from "../../ui/field";
 import { Input } from "../../ui/input";
+import type { Force } from "@/types/category";
 
 type FormRoundsProps<T extends FieldValues> = {
   control: Control<T>;
@@ -32,7 +33,6 @@ export function FormRounds<T extends FieldValues>({
   const forces = watch("forces");
 
   const [round, setRound] = useState("");
-  // const [error, setError] = useState("");
 
   const addValue = () => {
     const value = Number(round);
@@ -47,8 +47,8 @@ export function FormRounds<T extends FieldValues>({
     }
 
     const valueAlreadyExists = forces.find(
-      (force: { name: string; rounds: number[] }) =>
-        force.rounds.some((round: number) => round === value),
+      (force: Force) =>
+        force.qualifyingScores.some((round: number) => round === value),
     );
 
     if (valueAlreadyExists) {

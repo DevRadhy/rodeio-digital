@@ -44,7 +44,7 @@ export default function Categories() {
                 </div>
 
                 <ItemGroup className="flex flex-col gap-4 p-4">
-                  {categories?.map((category, index) => (
+                  {categories?.map((category) => (
                     <CategoryItem
                       key={category.id}
                       category={category}
