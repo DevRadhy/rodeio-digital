@@ -3,7 +3,7 @@ import { CategoryItem } from "@/components/categories/category-item";
 import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
 import { ItemGroup } from "@/components/ui/item";
-import { useCategories } from "@/context/categories";
+import { useCategories } from "@/stores/categories";
 import type { Category } from "@/types/category";
 import { Plus } from "lucide-react";
 import { useState } from "react";

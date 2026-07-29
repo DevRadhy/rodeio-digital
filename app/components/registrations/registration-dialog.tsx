@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { FieldGroup } from "@/components/ui/field";
-import { useRegistrations } from "@/context/registrations";
+import { useRegistrations } from "@/stores/registration";
 import type { Category } from "@/types/category";
 import { zodResolver as ZodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";

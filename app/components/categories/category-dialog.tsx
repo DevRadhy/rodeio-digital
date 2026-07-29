@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { FieldGroup } from "@/components/ui/field";
-import { useCategories } from "@/context/categories";
+import { useCategories } from "@/stores/categories";
 import { zodResolver as ZodResolver } from "@hookform/resolvers/zod";
 import { Plus, Trash2 } from "lucide-react";
 import { useEffect } from "react";

@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { useRegistrations } from "@/context/registrations";
+import { useRegistrations } from "@/stores/registration";
 
 interface CategoryCardProps {
   category: Category;

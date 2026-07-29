@@ -7,8 +7,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useCategories } from "@/context/categories";
-import { useRegistrations } from "@/context/registrations";
+import { useCategories } from "@/stores/categories";
+import { useRegistrations } from "@/stores/registration";
 import { TrendingDown, TrendingUp } from "lucide-react";
 export function SectionCards() {
   const { categories } = useCategories();

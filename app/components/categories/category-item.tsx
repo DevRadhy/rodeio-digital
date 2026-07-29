@@ -1,4 +1,4 @@
-import { useCategories } from "@/context/categories";
+import { useCategories } from "@/stores/categories";
 import type { Category } from "@/types/category";
 import { Edit, Swords, Users } from "lucide-react";
 import { Badge } from "../ui/badge";

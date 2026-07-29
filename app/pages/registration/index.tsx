@@ -1,7 +1,7 @@
 import { CategoryCard } from "@/components/registrations/category-card";
 import { RegistrationDialog } from "@/components/registrations/registration-dialog";
 import { SiteHeader } from "@/components/site-header";
-import { useCategories } from "@/context/categories";
+import { useCategories } from "@/stores/categories";
 import type { Category } from "@/types/category";
 import { useState } from "react";
 
