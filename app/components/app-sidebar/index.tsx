@@ -38,7 +38,7 @@ const data = {
     {
       title: "Juiz",
       icon: Gavel,
-      href: "/registrations",
+      href: "/competition",
     },
   ],
 };
