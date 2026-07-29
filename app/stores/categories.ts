@@ -8,9 +8,10 @@ interface CategoriesState {
   updateCategory: (category: Category) => void;
   deleteCategory: (id: string) => void;
   setEditingCategory: (category?: Category) => void;
+  getCategory: (id: string) => Category | undefined;
 }
 
-export const useCategories = create<CategoriesState>()((set) => ({
+export const useCategories = create<CategoriesState>()((set, get) => ({
   categories: [],
   editingCategory: undefined,
   addCategory: (newCategory) =>
@@ -26,4 +27,5 @@ export const useCategories = create<CategoriesState>()((set) => ({
       categories: state.categories.filter((item) => item.id !== id),
     })),
   setEditingCategory: (category) => set(() => ({ editingCategory: category })),
+  getCategory: (id) => get().categories.find((category) => category.id === id),
 }));
