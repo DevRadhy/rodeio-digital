@@ -17,5 +17,5 @@ export interface QualificationRegistration {
 
 export interface Qualification {
   currentRound: number;
-  registratinos: QualificationRegistration[];
+  registrations: QualificationRegistration[];
 }
