@@ -1,8 +1,13 @@
 import type { Shot } from "./qualification";
 
+export interface CompetitorShot {
+  competitorId: string;
+  shot: Shot;
+}
+
 export interface FinalResult {
   registrationId: string;
-  shots: Shot[];
+  shots: CompetitorShot[];
 }
 
 export interface FinalRound {
@@ -20,7 +25,7 @@ export interface FinalGroup {
   name: string;
   competitors: FinalCompetitor[];
   rounds: FinalRound[];
-  campionId?: string;
+  championId?: string;
 }
 
 export interface Final {
