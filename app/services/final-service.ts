@@ -41,7 +41,7 @@ export function startRound(
   };
 }
 
-export function setShot(
+export function setFinalShot(
   final: Final,
   groupId: string,
   registrationId: string,

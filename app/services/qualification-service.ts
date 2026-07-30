@@ -24,7 +24,7 @@ export function createQualification(
   };
 }
 
-export function setShot(
+export function setQualificationShot(
   qualification: Qualification,
   registrationId: string,
   competitorId: string,
@@ -54,7 +54,7 @@ export function setShot(
   };
 }
 
-function isLastQualificationRound(
+export function isLastQualificationRound(
   qualification: Qualification,
   category: Category,
 ) {
