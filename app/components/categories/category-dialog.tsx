@@ -120,9 +120,9 @@ export function CategoryDialog({ open, onOpenChange }: CategoryDialogProps) {
   const onDuelChange = (checked: boolean) => {
     if (checked) {
       replace([
-        { name: "A", qualifyingScores: [] },
-        { name: "B", qualifyingScores: [] },
-        { name: "C", qualifyingScores: [] },
+        { id: v4(), name: "A", qualifyingScores: [] },
+        { id: v4(), name: "B", qualifyingScores: [] },
+        { id: v4(), name: "C", qualifyingScores: [] },
       ]);
     } else {
       replace([]);
@@ -218,7 +218,11 @@ export function CategoryDialog({ open, onOpenChange }: CategoryDialogProps) {
                     type="button"
                     variant={"ghost"}
                     onClick={() =>
-                      append({ name: getForceName(fields.length), qualifyingScores: [] })
+                      append({
+                        id: v4(),
+                        name: getForceName(fields.length),
+                        qualifyingScores: [],
+                      })
                     }
                   >
                     <Plus /> Adicionar Força

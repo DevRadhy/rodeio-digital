@@ -29,6 +29,7 @@ export const CategorySchema = z
     isDuel: z.boolean(),
     forces: z.array(
       z.object({
+        id: z.string(),
         name: z
           .string("Você precisa informar o nome da força.")
           .max(24, "O tamanho máximo para o nome é de 24 caracteres."),
