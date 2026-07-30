@@ -1,4 +1,4 @@
-import { CategoryCard } from "@/components/registrations/category-card";
+import { CategoryCard } from "@/components/categories/category-card";
 import { SiteHeader } from "@/components/site-header";
 import { createQualification } from "@/services/qualification-service";
 import { useCategories } from "@/stores/categories";
@@ -13,6 +13,7 @@ export default function Competition() {
     (state) => state.registrationByCompetition,
   );
   const open = useCompetitionSession((state) => state.openSession);
+
   const navigation = useNavigate();
 
   const openCompetition = (category: Category) => {
@@ -24,7 +25,7 @@ export default function Competition() {
       qualification: createQualification(category, registrations),
     });
 
-    navigation(category.id)
+    navigation(category.id);
   };
 
   return (
