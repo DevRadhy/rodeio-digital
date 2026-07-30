@@ -1,0 +1,44 @@
+import { CategoryCard } from "@/components/registrations/category-card";
+import { SiteHeader } from "@/components/site-header";
+import { createQualification } from "@/services/qualification-service";
+import { useCategories } from "@/stores/categories";
+import { useCompetitionSession } from "@/stores/competition";
+import { useRegistrations } from "@/stores/registration";
+import type { Category } from "@/types/category";
+import { useNavigate } from "react-router";
+
+export default function Competition() {
+  const categories = useCategories((state) => state.categories);
+  const registrationByCompetition = useRegistrations(
+    (state) => state.registrationByCompetition,
+  );
+  const open = useCompetitionSession((state) => state.openSession);
+  const navigation = useNavigate();
+
+  const openCompetition = (category: Category) => {
+    const registrations = registrationByCompetition(category.id);
+
+    open(category.id, {
+      categoryId: category.id,
+      phase: "qualification",
+      qualification: createQualification(category, registrations),
+    });
+
+    navigation(category.id)
+  };
+
+  return (
+    <>
+      <SiteHeader />
+      <div className="grid grid-cols-4 gap-4 m-4">
+        {categories.map((category) => (
+          <CategoryCard
+            key={category.id}
+            category={category}
+            onRegister={() => openCompetition(category)}
+          />
+        ))}
+      </div>
+    </>
+  );
+}
