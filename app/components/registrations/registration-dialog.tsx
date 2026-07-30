@@ -38,7 +38,7 @@ export function RegistrationDialog({
   open,
   onOpenChange,
 }: RegistrationDialogProps) {
-  const { addRegistration } = useRegistrations();
+  const addRegistration = useRegistrations((state) => state.addRegistration);
 
   const form = useForm<RegistrationSchemaType>({
     resolver: ZodResolver(RegistrationSchema),
@@ -63,7 +63,7 @@ export function RegistrationDialog({
         name: "",
       })),
     });
-  }, [category]);
+  }, [category, form]);
 
   const onSubmit: SubmitHandler<RegistrationSchemaType> = (data) => {
     toast.promise(
