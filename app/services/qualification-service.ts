@@ -1,5 +1,6 @@
 import type { Category } from "@/types/category";
-import type { Qualification, Shot } from "@/types/qualification";
+import type { Shot } from "@/types/competition";
+import type { Qualification } from "@/types/qualification";
 import type { Registration } from "@/types/registration";
 
 export function createQualification(

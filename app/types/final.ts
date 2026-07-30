@@ -1,9 +1,4 @@
-import type { Shot } from "./qualification";
-
-export interface CompetitorShot {
-  competitorId: string;
-  shot: Shot;
-}
+import type { CompetitorShot } from "./competitor";
 
 export interface FinalResult {
   registrationId: string;

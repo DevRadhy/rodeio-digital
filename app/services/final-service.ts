@@ -1,5 +1,5 @@
+import type { Shot } from "@/types/competition";
 import type { Final, FinalGroup, FinalResult, FinalRound } from "@/types/final";
-import type { Shot } from "@/types/qualification";
 import type { Registration } from "@/types/registration";
 
 export function startRound(

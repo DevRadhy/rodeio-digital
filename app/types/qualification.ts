@@ -1,9 +1,4 @@
-export type Shot = boolean | null;
-
-export interface CompetitorShot {
-  competitorId: string;
-  shot: Shot;
-}
+import type { CompetitorShot } from "./competitor";
 
 export interface QualificationRound {
   number: number;
