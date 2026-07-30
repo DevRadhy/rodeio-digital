@@ -1,14 +1,5 @@
-import type { Competition } from "@/types/competition";
+import type { Competition, CompetitionSession } from "@/types/competition";
 import { create } from "zustand";
-
-export type Status = "running" | "paused" | "finished";
-
-interface CompetitionSession {
-  categoryId: string;
-  status: Status;
-  run: Competition;
-  activeGroupId: string | null;
-}
 
 interface CompetitionSessionState {
   sessions: Record<string, CompetitionSession>;
