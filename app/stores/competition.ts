@@ -20,7 +20,7 @@ interface CompetitionSessionState {
   resumeSession: (categoryId: string) => void;
   finishSession: (categoryId: string) => void;
   setActiveGroup: (categoryId: string, groupId: string) => void;
-  getSession: (categoryId: string) => void;
+  getSession: (categoryId: string) => CompetitionSession;
 }
 
 export const useCompetitionSession = create<CompetitionSessionState>()((set, get) => ({
