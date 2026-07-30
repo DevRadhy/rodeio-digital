@@ -59,6 +59,7 @@ export function RegistrationDialog({
     form.reset({
       categoryId: category.id,
       competitors: Array.from({ length: category.competitors }, () => ({
+        id: v4(),
         name: "",
       })),
     });
