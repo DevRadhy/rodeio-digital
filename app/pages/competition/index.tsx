@@ -1,14 +1,14 @@
 import { CategoryCard } from "@/components/categories/category-card";
 import { SiteHeader } from "@/components/site-header";
 import { createQualification } from "@/services/qualification-service";
-import { useCategories } from "@/stores/categories";
+import { useCategoryStore } from "@/stores/category";
 import { useCompetitionSessionStore } from "@/stores/competition";
 import { useRegistrations } from "@/stores/registration";
 import type { Category } from "@/types/category";
 import { useNavigate } from "react-router";
 
 export default function Competition() {
-  const categories = useCategories((state) => state.categories);
+  const categories = useCategoryStore((state) => state.categories);
   const registrationByCompetition = useRegistrations(
     (state) => state.registrationByCompetition,
   );

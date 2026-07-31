@@ -11,7 +11,7 @@ interface CategoriesState {
   getCategory: (id: string) => Category | undefined;
 }
 
-export const useCategories = create<CategoriesState>()((set, get) => ({
+export const useCategoryStore = create<CategoriesState>()((set, get) => ({
   categories: [],
   editingCategory: undefined,
   addCategory: (newCategory) =>

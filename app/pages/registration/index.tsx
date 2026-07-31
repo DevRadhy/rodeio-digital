@@ -1,12 +1,12 @@
 import { CategoryCard } from "@/components/categories/category-card";
 import { RegistrationDialog } from "@/components/registrations/registration-dialog";
 import { SiteHeader } from "@/components/site-header";
-import { useCategories } from "@/stores/categories";
+import { useCategoryStore } from "@/stores/category";
 import type { Category } from "@/types/category";
 import { useState } from "react";
 
 export default function Registration() {
-  const categories = useCategories((state) => state.categories);
+  const categories = useCategoryStore((state) => state.categories);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
     null,
   );

@@ -1,4 +1,4 @@
-import { useCategories } from "@/stores/categories";
+import { useCategoryStore } from "@/stores/category";
 import type { Category } from "@/types/category";
 import { Edit, Swords, Users } from "lucide-react";
 import { Badge } from "../ui/badge";
@@ -20,7 +20,7 @@ interface CategoryItemProps {
 }
 
 export function CategoryItem({ category, onEdit }: CategoryItemProps) {
-  const { deleteCategory } = useCategories();
+  const { deleteCategory } = useCategoryStore();
 
   const onCurrencyFormat = (value: number) => {
     if (!value) return "Gratuito";

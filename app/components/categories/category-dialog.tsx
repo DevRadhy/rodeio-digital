@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { FieldGroup } from "@/components/ui/field";
-import { useCategories } from "@/stores/categories";
+import { useCategoryStore } from "@/stores/category";
 import { zodResolver as ZodResolver } from "@hookform/resolvers/zod";
 import { Plus, Trash2 } from "lucide-react";
 import { useEffect } from "react";
@@ -40,7 +40,7 @@ interface CategoryDialogProps {
 
 export function CategoryDialog({ open, onOpenChange }: CategoryDialogProps) {
   const { editingCategory, updateCategory, addCategory, setEditingCategory } =
-    useCategories();
+    useCategoryStore();
 
   const form = useForm<CategorySchemaType>({
     resolver: ZodResolver(CategorySchema),
