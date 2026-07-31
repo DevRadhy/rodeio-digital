@@ -2,7 +2,7 @@ import { CategoryCard } from "@/components/categories/category-card";
 import { SiteHeader } from "@/components/site-header";
 import { createQualification } from "@/services/qualification-service";
 import { useCategories } from "@/stores/categories";
-import { useCompetitionSession } from "@/stores/competition";
+import { useCompetitionSessionStore } from "@/stores/competition";
 import { useRegistrations } from "@/stores/registration";
 import type { Category } from "@/types/category";
 import { useNavigate } from "react-router";
@@ -12,7 +12,7 @@ export default function Competition() {
   const registrationByCompetition = useRegistrations(
     (state) => state.registrationByCompetition,
   );
-  const open = useCompetitionSession((state) => state.openSession);
+  const open = useCompetitionSessionStore((state) => state.openSession);
 
   const navigation = useNavigate();
 

@@ -14,7 +14,7 @@ interface CompetitionSessionState {
   getSession: (categoryId: string) => CompetitionSession;
 }
 
-export const useCompetitionSession = create<CompetitionSessionState>()((set, get) => ({
+export const useCompetitionSessionStore = create<CompetitionSessionState>()((set, get) => ({
   sessions: {},
   currentSessionId: null,
   openSession: (categoryId, run) =>

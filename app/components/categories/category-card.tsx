@@ -12,7 +12,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import { useRegistrations } from "@/stores/registration";
-import { useCompetitionSession } from "@/stores/competition";
+import { useCompetitionSessionStore } from "@/stores/competition";
 import { CategoryBadges } from "./category-badges";
 
 interface CategoryCardProps {
@@ -24,7 +24,7 @@ export function CategoryCard({ category, onRegister }: CategoryCardProps) {
   const registrationsByCompetition = useRegistrations(
     (state) => state.registrationByCompetition,
   );
-  const getSession = useCompetitionSession((state) => state.getSession);
+  const getSession = useCompetitionSessionStore((state) => state.getSession);
 
   const session = getSession(category.id)
   const registrations = registrationsByCompetition(category.id)
