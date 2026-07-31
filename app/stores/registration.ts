@@ -7,7 +7,7 @@ interface RegistrationsState {
   registrationByCompetition: (categoryId: string) => Registration[];
 }
 
-export const useRegistrations = create<RegistrationsState>()((set, get) => ({
+export const useRegistrationStore = create<RegistrationsState>()((set, get) => ({
   registrations: [],
   addRegistration: (newRegistration) =>
     set((state) => ({

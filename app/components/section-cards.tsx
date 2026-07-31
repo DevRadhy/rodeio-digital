@@ -8,11 +8,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useCategoryStore } from "@/stores/category";
-import { useRegistrations } from "@/stores/registration";
+import { useRegistrationStore } from "@/stores/registration";
 import { TrendingDown, TrendingUp } from "lucide-react";
 export function SectionCards() {
   const { categories } = useCategoryStore();
-  const { registrations } = useRegistrations();
+  const { registrations } = useRegistrationStore();
 
   const totalRevenue = categories.reduce((acc, cur) => {
     const registratinosCount = registrations.filter(

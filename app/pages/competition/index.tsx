@@ -3,13 +3,13 @@ import { SiteHeader } from "@/components/site-header";
 import { createQualification } from "@/services/qualification-service";
 import { useCategoryStore } from "@/stores/category";
 import { useCompetitionSessionStore } from "@/stores/competition";
-import { useRegistrations } from "@/stores/registration";
+import { useRegistrationStore } from "@/stores/registration";
 import type { Category } from "@/types/category";
 import { useNavigate } from "react-router";
 
 export default function Competition() {
   const categories = useCategoryStore((state) => state.categories);
-  const registrationByCompetition = useRegistrations(
+  const registrationByCompetition = useRegistrationStore(
     (state) => state.registrationByCompetition,
   );
   const open = useCompetitionSessionStore((state) => state.openSession);

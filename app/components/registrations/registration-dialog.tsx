@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { FieldGroup } from "@/components/ui/field";
-import { useRegistrations } from "@/stores/registration";
+import { useRegistrationStore } from "@/stores/registration";
 import type { Category } from "@/types/category";
 import { zodResolver as ZodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
@@ -38,7 +38,7 @@ export function RegistrationDialog({
   open,
   onOpenChange,
 }: RegistrationDialogProps) {
-  const addRegistration = useRegistrations((state) => state.addRegistration);
+  const addRegistration = useRegistrationStore((state) => state.addRegistration);
 
   const form = useForm<RegistrationSchemaType>({
     resolver: ZodResolver(RegistrationSchema),
