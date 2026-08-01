@@ -1,7 +1,7 @@
-import type { RegistrationSchemaType } from "@/schemas/registration-schema";
 import type { Competitor } from "./competitor";
 
-export interface Registration extends RegistrationSchemaType {
+export interface Registration {
   id: string;
+  name?: string;
   competitors: Competitor[];
 }

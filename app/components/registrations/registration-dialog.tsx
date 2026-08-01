@@ -38,7 +38,9 @@ export function RegistrationDialog({
   open,
   onOpenChange,
 }: RegistrationDialogProps) {
-  const addRegistration = useRegistrationStore((state) => state.addRegistration);
+  const addRegistration = useRegistrationStore(
+    (state) => state.addRegistration,
+  );
 
   const form = useForm<RegistrationSchemaType>({
     resolver: ZodResolver(RegistrationSchema),
@@ -98,6 +100,12 @@ export function RegistrationDialog({
     }
   };
 
+  const formatNumber = (value: number) =>
+    Intl.NumberFormat("pt-BR", {
+      style: "decimal",
+      minimumIntegerDigits: 2,
+    }).format(value);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <form id="form" onSubmit={form.handleSubmit(onSubmit, onError)}>
@@ -108,13 +116,21 @@ export function RegistrationDialog({
           </DialogHeader>
           <div className="-mx-4 no-scrollbar max-h-[50vh] overflow-y-auto px-4 max-w-lg">
             <FieldGroup>
+              <FormInput
+                control={form.control}
+                name={`name`}
+                label={`Nome da inscrição`}
+                description={`Dê um nome para inscrição.`}
+                type="text"
+                placeholder={"Digite o nome da inscrição."}
+              />
               {fields.map((field, index) => (
                 <FormInput
                   key={field.id}
                   control={form.control}
                   name={`competitors.${index}.name`}
-                  label={`Competidor ${index + 1}`}
-                  description={`Nome do competidor número ${index + 1}.`}
+                  label={`Competidor ${formatNumber(index + 1)}`}
+                  description={`Nome do ${formatNumber(index + 1)}° competidor.`}
                   type="text"
                   placeholder={"Digite o nome do competidor."}
                 />
