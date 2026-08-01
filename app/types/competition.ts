@@ -1,21 +1,32 @@
-import type { Final } from "./final";
-import type { Qualification } from "./qualification";
+import type { CompetitorResult } from "./competitor";
 
 export type Shot = boolean | null;
 
-export type Phase = "qualification" | "final" | "closed";
+export type Phase = "qualification" | "Competition" | "closed";
 export type Status = "running" | "paused" | "finished";
-
-export interface CompetitionSession {
-  categoryId: string;
-  status: Status;
-  run: Competition;
-  activeGroupId: string | null;
-}
 
 export interface Competition {
   categoryId: string;
+  status: Status;
   phase: Phase;
-  qualification: Qualification;
-  final?: Final;
+  groups: CompetitionGroup[];
+}
+
+export interface CompetitionGroup {
+  id: string;
+  name: string;
+  currentRound: number;
+  registrations: [];
+  status: Status;
+  rounds: CompetitionRound[];
+}
+
+export interface CompetitionRound {
+  number: number;
+  results: CompetitionResult[];
+}
+
+export interface CompetitionResult {
+  registrationId: string;
+  competitors: CompetitorResult[];
 }

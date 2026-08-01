@@ -1,6 +1,6 @@
 import type { Shot } from "./competition";
 
-export interface CompetitorShot {
+export interface CompetitorResult {
   competitorId: string;
   shot: Shot;
 }

@@ -1,4 +1,3 @@
-import type { CategorySchemaType } from "@/schemas/category-schema";
 
 export interface ForceClassification {
   registrationId: string;
@@ -11,7 +10,12 @@ export interface Force {
   qualifyingScores: number[];
 }
 
-export interface Category extends CategorySchemaType {
+export interface Category {
   id: string;
+  name: string;
+  competitors: number;
+  rounds: number;
+  price: number;
+  isDuel: boolean;
   forces: Force[];
 }
