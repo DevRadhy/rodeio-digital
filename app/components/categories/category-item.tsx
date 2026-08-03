@@ -1,4 +1,5 @@
 import { useCategoryStore } from "@/stores/category";
+import { useRegistrationStore } from "@/stores/registration";
 import type { Category } from "@/types/category";
 import { Edit, Swords, Users } from "lucide-react";
 import { Badge } from "../ui/badge";
@@ -13,6 +14,7 @@ import {
   ItemTitle,
 } from "../ui/item";
 import { Alert } from "./alert-dialog";
+import { CategoryBadges } from "./category-badges";
 
 interface CategoryItemProps {
   category: Category;
@@ -21,15 +23,11 @@ interface CategoryItemProps {
 
 export function CategoryItem({ category, onEdit }: CategoryItemProps) {
   const { deleteCategory } = useCategoryStore();
+  const registrationsByCompetition = useRegistrationStore(
+    (state) => state.registrationByCompetition,
+  );
 
-  const onCurrencyFormat = (value: number) => {
-    if (!value) return "Gratuito";
-
-    return Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    }).format(value);
-  };
+  const registrations = registrationsByCompetition(category.id);
 
   return (
     <Item variant={"outline"}>
@@ -39,20 +37,7 @@ export function CategoryItem({ category, onEdit }: CategoryItemProps) {
       <ItemContent>
         <ItemTitle>{category.name}</ItemTitle>
         <ItemDescription className="flex flex-wrap gap-2">
-          <Badge variant={"secondary"}>
-            {category.competitors}{" "}
-            {category.competitors <= 1 ? "competidor" : "competidores"}
-          </Badge>
-          <Badge variant={category.rounds <= 1 ? "destructive" : "secondary"}>
-            {category.rounds <= 1
-              ? "eliminatória"
-              : `${category.rounds} voltas`}
-          </Badge>
-          <Badge variant={"secondary"}>
-            {onCurrencyFormat(category.price)}
-          </Badge>
-
-          {category.isDuel && <Badge variant={"default"}>Duelo</Badge>}
+          <CategoryBadges category={category} registrations={registrations} />
         </ItemDescription>
       </ItemContent>
       <ItemActions>
