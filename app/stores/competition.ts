@@ -1,102 +1,55 @@
-import type { Competition, CompetitionSession } from "@/types/competition";
+import type { Competition, CompetitionGroup } from "@/types/competition";
 import { create } from "zustand";
 
 interface CompetitionSessionState {
-  sessions: Record<string, CompetitionSession>;
+  sessions: Record<string, Competition>;
   currentSessionId: string | null;
-  openSession: (categoryId: string, run: Competition) => void;
-  switchSession: (categoriId: string) => void;
-  updateRun: (categoryId: string, run: Competition) => void;
-  pauseSession: (categoryId: string) => void;
-  resumeSession: (categoryId: string) => void;
-  finishSession: (categoryId: string) => void;
-  setActiveGroup: (categoryId: string, groupId: string) => void;
-  getSession: (categoryId: string) => CompetitionSession;
+  openSession: (categoryId: string, groups: CompetitionGroup[]) => void;
+  updateSession: (categoryId: string, groups: CompetitionGroup) => void;
+  getSession: (categoryId: string) => Competition;
 }
 
-export const useCompetitionSessionStore = create<CompetitionSessionState>()((set, get) => ({
-  sessions: {},
-  currentSessionId: null,
-  openSession: (categoryId, run) =>
-    set((state) => {
-      if (state.sessions[categoryId]) {
+export const useCompetitionSessionStore = create<CompetitionSessionState>()(
+  (set, get) => ({
+    sessions: {},
+    currentSessionId: null,
+    openSession: (categoryId, groups) =>
+      set((state) => {
+        if (state.sessions[categoryId]) {
+          return {
+            currentSessionId: categoryId,
+          };
+        }
+
         return {
           currentSessionId: categoryId,
+          sessions: {
+            ...state.sessions,
+            [categoryId]: {
+              categoryId,
+              status: "running",
+              phase: "qualification",
+              groups: groups,
+            },
+          },
         };
-      }
-
-      return {
-        currentSessionId: categoryId,
+      }),
+    updateSession: (categoryId, group) =>
+      set((state) => ({
         sessions: {
           ...state.sessions,
           [categoryId]: {
-            categoryId,
-            status: "running",
-            run,
-            activeGroupId: null,
+            ...state.sessions[categoryId],
+            groups: state.sessions[categoryId].groups.map((g) => {
+              if (g.id !== group.id) {
+                return g;
+              }
+
+              return group;
+            }),
           },
         },
-      };
-    }),
-  switchSession: (categoryId) => set({ currentSessionId: categoryId }),
-  updateRun: (categoryId, run) =>
-    set((state) => ({
-      sessions: {
-        ...state.sessions,
-        [categoryId]: {
-          ...state.sessions[categoryId],
-          run,
-        },
-      },
-    })),
-  pauseSession: (categoryId) =>
-    set((state) => ({
-      sessions: {
-        ...state.sessions,
-        [categoryId]: {
-          ...state.sessions[categoryId],
-          run: {
-            ...state.sessions[categoryId].run,
-            status: "paused",
-          },
-        },
-      },
-    })),
-  resumeSession: (categoryId) =>
-    set((state) => ({
-      sessions: {
-        ...state.sessions,
-        [categoryId]: {
-          ...state.sessions[categoryId],
-          run: {
-            ...state.sessions[categoryId].run,
-            status: "running",
-          },
-        },
-      },
-    })),
-  finishSession: (categoryId) =>
-    set((state) => ({
-      sessions: {
-        ...state.sessions,
-        [categoryId]: {
-          ...state.sessions[categoryId],
-          run: {
-            ...state.sessions[categoryId].run,
-            status: "finished",
-          },
-        },
-      },
-    })),
-  setActiveGroup: (categoryId, groupId) =>
-    set((state) => ({
-      sessions: {
-        ...state.sessions,
-        [categoryId]: {
-          ...state.sessions[categoryId],
-          activeGroupId: groupId,
-        },
-      },
-    })),
-  getSession: (categoryId: string) => get().sessions[categoryId],
-}));
+      })),
+    getSession: (categoryId: string) => get().sessions[categoryId],
+  }),
+);
