@@ -26,6 +26,7 @@ import {
   type RegistrationSchemaType,
 } from "../../schemas/registration-schema";
 import FormInput from "../form/form-input";
+import { formatNumber } from "@/utils";
 
 interface RegistrationDialogProps {
   category: Category | null;
@@ -41,6 +42,11 @@ export function RegistrationDialog({
   const addRegistration = useRegistrationStore(
     (state) => state.addRegistration,
   );
+  const registrationByCompetition = useRegistrationStore(
+    (state) => state.registrationByCompetition,
+  );
+
+  const registration = registrationByCompetition(category?.id ?? "");
 
   const form = useForm<RegistrationSchemaType>({
     resolver: ZodResolver(RegistrationSchema),
@@ -73,6 +79,7 @@ export function RegistrationDialog({
         setTimeout(() => {
           addRegistration({
             id: v4(),
+            number: registration.length + 1,
             ...data,
           });
 
@@ -100,37 +107,35 @@ export function RegistrationDialog({
     }
   };
 
-  const formatNumber = (value: number) =>
-    Intl.NumberFormat("pt-BR", {
-      style: "decimal",
-      minimumIntegerDigits: 2,
-    }).format(value);
+  if (!category) return;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <form id="form" onSubmit={form.handleSubmit(onSubmit, onError)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{category?.name}</DialogTitle>
+            <DialogTitle>{category.name}</DialogTitle>
             <DialogDescription>Registre uma inscrição.</DialogDescription>
           </DialogHeader>
           <div className="-mx-4 no-scrollbar max-h-[50vh] overflow-y-auto px-4 max-w-lg">
             <FieldGroup>
-              <FormInput
-                control={form.control}
-                name={`name`}
-                label={`Nome da inscrição`}
-                description={`Dê um nome para inscrição.`}
-                type="text"
-                placeholder={"Digite o nome da inscrição."}
-              />
+              {category.competitors > 1 && (
+                <FormInput
+                  control={form.control}
+                  name={`name`}
+                  label={`Nome`}
+                  description={`Dê um nome para inscrição.`}
+                  type="text"
+                  placeholder={"Digite o nome da entidade."}
+                />
+              )}
               {fields.map((field, index) => (
                 <FormInput
                   key={field.id}
                   control={form.control}
                   name={`competitors.${index}.name`}
-                  label={`Competidor ${formatNumber(index + 1)}`}
-                  description={`Nome do ${formatNumber(index + 1)}° competidor.`}
+                  label={`Competidor ${category.competitors > 1 ? formatNumber(index + 1) : ""}`}
+                  description={`Nome do competidor ${category.competitors > 1 ? formatNumber(index + 1) : ""} da inscrição.`}
                   type="text"
                   placeholder={"Digite o nome do competidor."}
                 />
