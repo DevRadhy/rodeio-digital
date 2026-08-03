@@ -1,8 +1,9 @@
 import type { CompetitorResult } from "./competitor";
+import type { Registration } from "./registration";
 
 export type Shot = boolean | null;
 
-export type Phase = "qualification" | "Competition" | "closed";
+export type Phase = "qualification" | "final" | "closed";
 export type Status = "running" | "paused" | "finished";
 
 export interface Competition {
@@ -16,7 +17,7 @@ export interface CompetitionGroup {
   id: string;
   name: string;
   currentRound: number;
-  registrations: [];
+  registrations: Registration[];
   status: Status;
   rounds: CompetitionRound[];
 }
