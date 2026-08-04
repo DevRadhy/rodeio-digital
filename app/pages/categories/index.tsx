@@ -1,6 +1,6 @@
 import { CategoryDialog } from "@/components/categories/category-dialog";
 import { CategoryItem } from "@/components/categories/category-item";
-import { SiteHeader } from "@/components/site-header";
+import { SiteHeader } from "@/components/dashboard/site-header";
 import { Button } from "@/components/ui/button";
 import { ItemGroup } from "@/components/ui/item";
 import { useCategoryStore } from "@/stores/category";

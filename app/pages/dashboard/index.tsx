@@ -1,5 +1,5 @@
-import { SectionCards } from "@/components/section-cards";
-import { SiteHeader } from "@/components/site-header";
+import { SectionCards } from "@/components/dashboard/section-cards";
+import { SiteHeader } from "@/components/dashboard/site-header";
 
 export default function Dashboard() {
   return (
