@@ -3,11 +3,15 @@ import type {
   Competition,
   CompetitionGroup,
   CompetitionResult,
+  CompetitionRound,
   Shot,
 } from "@/types/competition";
 import type { Registration } from "@/types/registration";
 import { everyPositive, getRegistrationChuncks } from "@/utils";
 import { v4 } from "uuid";
+import { QualificationService } from "./qualification-service";
+import { ForceService } from "./force-service";
+import { FinalService } from "./final-service";
 
 export class CompetitionService {
   static create(
@@ -22,22 +26,23 @@ export class CompetitionService {
       status: "running",
       groups: registrationsChunks.map((registrations, index) => ({
         id: v4(),
-        currentRound: 1,
         name: `Pelotão ${index + 1}`,
+        currentRound: 1,
         status: "running",
-        registrations: registrations,
-        rounds: Array.from({ length: category.qualification.rounds }, () => null).map(
-          (_, round) => ({
-            number: round + 1,
-            results: registrations.map((registration) => ({
-              registrationId: registration.id,
-              competitors: registration.competitors.map((competitor) => ({
-                competitorId: competitor.id,
-                shot: null,
-              })),
+        registrations,
+        rounds: Array.from(
+          { length: category.qualification.rounds },
+          () => null,
+        ).map((_, round) => ({
+          number: round + 1,
+          results: registrations.map((registration) => ({
+            registrationId: registration.id,
+            competitors: registration.competitors.map((competitor) => ({
+              competitorId: competitor.id,
+              shot: null,
             })),
-          }),
-        ),
+          })),
+        })),
       })),
     };
   }
@@ -155,20 +160,21 @@ export class CompetitionService {
           return {
             ...group,
             registrations: [...group.registrations, registration],
-            rounds: Array.from({ length: category.qualification.rounds }, () => null).map(
-              (_, round) => ({
-                number: round + 1,
-                results: [...group.registrations, registration].map(
-                  (registration) => ({
-                    registrationId: registration.id,
-                    competitors: registration.competitors.map((competitor) => ({
-                      competitorId: competitor.id,
-                      shot: null,
-                    })),
-                  }),
-                ),
-              }),
-            ),
+            rounds: Array.from(
+              { length: category.qualification.rounds },
+              () => null,
+            ).map((_, round) => ({
+              number: round + 1,
+              results: [...group.registrations, registration].map(
+                (registration) => ({
+                  registrationId: registration.id,
+                  competitors: registration.competitors.map((competitor) => ({
+                    competitorId: competitor.id,
+                    shot: null,
+                  })),
+                }),
+              ),
+            })),
           };
         }),
       };
@@ -184,22 +190,43 @@ export class CompetitionService {
           currentRound: 1,
           registrations: [registration],
           status: "running",
-          rounds: Array.from({ length: category.qualification.rounds }, () => null).map(
-            (_, round) => ({
-              number: round + 1,
-              results: [
-                {
-                  registrationId: registration.id,
-                  competitors: registration.competitors.map((competitor) => ({
-                    competitorId: competitor.id,
-                    shot: null,
-                  })),
-                },
-              ],
-            }),
-          ),
+          rounds: Array.from(
+            { length: category.qualification.rounds },
+            () => null,
+          ).map((_, round) => ({
+            number: round + 1,
+            results: [
+              {
+                registrationId: registration.id,
+                competitors: registration.competitors.map((competitor) => ({
+                  competitorId: competitor.id,
+                  shot: null,
+                })),
+              },
+            ],
+          })),
         },
       ],
+    };
+  }
+
+  static finishQualification(
+    competition: Competition,
+    category: Category,
+  ): Competition {
+    const results = competition.groups.flatMap((group) =>
+      QualificationService.finish(group),
+    );
+
+    const classified = ForceService.classify(category, results);
+
+    const final = FinalService.start(category, classified);
+
+    return {
+      ...competition,
+      phase: "final",
+      status: "running",
+      groups: final,
     };
   }
 }
