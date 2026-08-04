@@ -23,9 +23,7 @@ interface CategoryItemProps {
 
 export function CategoryItem({ category, onEdit }: CategoryItemProps) {
   const { deleteCategory } = useCategoryStore();
-  const registrationsByCompetition = useRegistrationStore(
-    (state) => state.registrationByCompetition,
-  );
+  const { registrationsByCompetition } = useRegistrationStore();
 
   const registrations = registrationsByCompetition(category.id);
 
@@ -46,19 +44,17 @@ export function CategoryItem({ category, onEdit }: CategoryItemProps) {
         </Button>
         <Alert onConfirm={() => deleteCategory(category.id)} />
       </ItemActions>
-      <ItemFooter>
-        <div className="flex gap-4">
-          {category.isDuel &&
-            category.forces.map((force) => (
-              <Badge variant={"secondary"}>
-                <strong>
-                  {force.name}
-                  {": "}
-                </strong>
-                {force.qualifyingScores.join(", ")} Armadas
-              </Badge>
-            ))}
-        </div>
+      <ItemFooter className="flex gap-4">
+        {category.isDuel &&
+          category.forces.map((force) => (
+            <Badge variant={"secondary"} key={force.id}>
+              <strong>
+                {force.name}
+                {": "}
+              </strong>
+              {force.qualifyingScores.join(", ")} Armadas
+            </Badge>
+          ))}
       </ItemFooter>
     </Item>
   );
