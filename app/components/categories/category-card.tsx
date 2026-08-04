@@ -15,13 +15,14 @@ import {
   CardTitle,
 } from "../ui/card";
 import { CategoryBadges } from "./category-badges";
+import type { ReactNode } from "react";
 
 interface CategoryCardProps {
   category: Category;
-  onRegister: () => void;
+  children: ReactNode;
 }
 
-export function CategoryCard({ category, onRegister }: CategoryCardProps) {
+export function CategoryCard({ category, children }: CategoryCardProps) {
   const { registrationsByCompetition } = useRegistrationStore();
   const { competition } = useCompetition(category.id);
 
@@ -58,7 +59,6 @@ export function CategoryCard({ category, onRegister }: CategoryCardProps) {
     <Card>
       <CardHeader>
         <CardTitle>{category.name}</CardTitle>
-        <CardDescription>teste</CardDescription>
         <CardAction>
           <Badge variant={"secondary"} className={`${status.color}`}>
             {status.text}
@@ -69,14 +69,7 @@ export function CategoryCard({ category, onRegister }: CategoryCardProps) {
         <CategoryBadges category={category} registrations={registrations} />
       </CardContent>
       <CardFooter>
-        <Button
-          variant={"ghost"}
-          onClick={onRegister}
-          className={"w-full"}
-          disabled={competition && competition.phase !== "qualification"}
-        >
-          <Plus /> Adicionar Inscrição
-        </Button>
+        {children}
       </CardFooter>
     </Card>
   );

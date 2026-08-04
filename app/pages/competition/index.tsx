@@ -1,5 +1,6 @@
 import { CategoryCard } from "@/components/categories/category-card";
 import { SiteHeader } from "@/components/dashboard/site-header";
+import { Button } from "@/components/ui/button";
 import { CompetitionService } from "@/services/competition-service";
 import { useCategoryStore } from "@/stores/category";
 import { useCompetitionSessionStore } from "@/stores/competition";
@@ -29,11 +30,15 @@ export default function Competition() {
       <SiteHeader />
       <div className="grid grid-cols-1 gap-4 m-4 @xl:grid-cols-2 @5xl:grid-cols-4">
         {categories.map((category) => (
-          <CategoryCard
-            key={category.id}
-            category={category}
-            onRegister={() => openCompetition(category)}
-          />
+          <CategoryCard key={category.id} category={category}>
+            <Button
+              variant={"secondary"}
+              onClick={() => openCompetition(category)}
+              className={"w-full"}
+            >
+              Abrir Modalidade
+            </Button>
+          </CategoryCard>
         ))}
       </div>
     </div>
