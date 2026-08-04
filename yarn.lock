@@ -551,6 +551,11 @@
     morgan "^1.10.1"
     source-map-support "^0.5.21"
 
+"@redux-devtools/extension@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@redux-devtools/extension/-/extension-4.0.0.tgz#bd03401ff0f033350b1f0bfa9b210029c5450627"
+  integrity sha512-pLIzgo5MvqdDLe5D1pzHLgmr8THra/DOyRf5MvOEPZnKKDn6RhFbNSS5oXZ3Cal0cpx08kx7sR6zD8QgoXEnZA==
+
 "@remix-run/node-fetch-server@^0.13.3":
   version "0.13.3"
   resolved "https://registry.yarnpkg.com/@remix-run/node-fetch-server/-/node-fetch-server-0.13.3.tgz#33105c8e32b0bcc99755b7ed6d641195ca2cd1c2"
