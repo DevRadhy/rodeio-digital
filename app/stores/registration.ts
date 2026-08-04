@@ -4,7 +4,7 @@ import { create } from "zustand";
 interface RegistrationsState {
   registrations: Registration[];
   addRegistration: (newRegistration: Registration) => void;
-  registrationByCompetition: (categoryId: string) => Registration[];
+  registrationsByCompetition: (categoryId: string) => Registration[];
 }
 
 export const useRegistrationStore = create<RegistrationsState>()((set, get) => ({
@@ -13,7 +13,7 @@ export const useRegistrationStore = create<RegistrationsState>()((set, get) => (
     set((state) => ({
       registrations: [...state.registrations, newRegistration],
     })),
-  registrationByCompetition: (categoryId) =>
+  registrationsByCompetition: (categoryId) =>
     get().registrations.filter(
       (registration) => registration.categoryId === categoryId,
     ),
