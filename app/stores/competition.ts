@@ -1,55 +1,42 @@
-import type { Competition, CompetitionGroup } from "@/types/competition";
+import type { Competition } from "@/types/competition";
 import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 
 interface CompetitionSessionState {
   sessions: Record<string, Competition>;
   currentSessionId: string | null;
-  openSession: (categoryId: string, groups: CompetitionGroup[]) => void;
-  updateSession: (categoryId: string, groups: CompetitionGroup) => void;
+  createCompetition: (competition: Competition) => void;
+  updateCompetition: (competition: Competition) => void;
   getSession: (categoryId: string) => Competition;
 }
 
 export const useCompetitionSessionStore = create<CompetitionSessionState>()(
-  (set, get) => ({
+  devtools((set, get) => ({
     sessions: {},
     currentSessionId: null,
-    openSession: (categoryId, groups) =>
+    createCompetition: (competition) =>
       set((state) => {
-        if (state.sessions[categoryId]) {
+        if (state.sessions[competition.categoryId]) {
           return {
-            currentSessionId: categoryId,
+            currentSessionId: competition.categoryId,
           };
         }
 
         return {
-          currentSessionId: categoryId,
+          currentSessionId: competition.categoryId,
           sessions: {
             ...state.sessions,
-            [categoryId]: {
-              categoryId,
-              status: "running",
-              phase: "qualification",
-              groups: groups,
-            },
+            [competition.categoryId]: competition,
           },
         };
       }),
-    updateSession: (categoryId, group) =>
+    updateCompetition: (competition) =>
       set((state) => ({
         sessions: {
           ...state.sessions,
-          [categoryId]: {
-            ...state.sessions[categoryId],
-            groups: state.sessions[categoryId].groups.map((g) => {
-              if (g.id !== group.id) {
-                return g;
-              }
-
-              return group;
-            }),
-          },
+          [competition.categoryId]: competition,
         },
       })),
     getSession: (categoryId: string) => get().sessions[categoryId],
-  }),
+  })),
 );
