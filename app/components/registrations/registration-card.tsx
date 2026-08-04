@@ -1,8 +1,8 @@
 import type { Registration } from "@/types/registration";
-import { CompetitionCompetitor } from "../qualification/competition-competitor";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { ItemGroup } from "../ui/item";
 import type { CompetitionGroup } from "@/types/competition";
+import { CompetitionCompetitor } from "../competition/competition-competitor";
 
 interface RegistrationCardProps {
   registration: Registration;
