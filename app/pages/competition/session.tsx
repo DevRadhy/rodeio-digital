@@ -16,9 +16,7 @@ export default function CompetitionRun() {
     <div>
       <CompetitionSessionHeader competition={competition} category={category} />
 
-      {competition.phase === "qualification" && (
-        <CompetitionView competition={competition} category={category} />
-      )}
+      <CompetitionView competition={competition} category={category} />
     </div>
   );
 }
