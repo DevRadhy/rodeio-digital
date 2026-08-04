@@ -25,9 +25,9 @@ export default function Competition() {
   };
 
   return (
-    <>
+    <div className="@container">
       <SiteHeader />
-      <div className="grid grid-cols-4 gap-4 m-4">
+      <div className="grid grid-cols-1 gap-4 m-4 @xl:grid-cols-2 @5xl:grid-cols-4">
         {categories.map((category) => (
           <CategoryCard
             key={category.id}
@@ -36,6 +36,6 @@ export default function Competition() {
           />
         ))}
       </div>
-    </>
+    </div>
   );
 }
