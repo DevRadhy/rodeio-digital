@@ -72,10 +72,13 @@ export function RegistrationDialog({
 
     form.reset({
       categoryId: category.id,
-      competitors: Array.from({ length: category.competitors }, () => ({
-        id: v4(),
-        name: "",
-      })),
+      competitors: Array.from(
+        { length: category.competitorsPerRegistration },
+        () => ({
+          id: v4(),
+          name: "",
+        }),
+      ),
     });
   }, [category]);
 
@@ -144,7 +147,7 @@ export function RegistrationDialog({
           </DialogHeader>
           <div className="-mx-4 no-scrollbar max-h-[50vh] overflow-y-auto px-4 max-w-lg">
             <FieldGroup>
-              {category.competitors > 1 && (
+              {category.competitorsPerRegistration >= 4 && (
                 <FormInput
                   control={form.control}
                   name={`name`}
@@ -159,8 +162,8 @@ export function RegistrationDialog({
                   key={field.id}
                   control={form.control}
                   name={`competitors.${index}.name`}
-                  label={`Competidor ${category.competitors > 1 ? formatNumber(index + 1) : ""}`}
-                  description={`Nome do competidor ${category.competitors > 1 ? formatNumber(index + 1) : ""} da inscrição.`}
+                  label={`Competidor ${category.competitorsPerRegistration > 1 ? formatNumber(index + 1) : ""}`}
+                  description={`Nome do competidor.`}
                   type="text"
                   placeholder={"Digite o nome do competidor."}
                 />

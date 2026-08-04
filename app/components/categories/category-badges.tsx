@@ -16,21 +16,21 @@ export function CategoryBadges({
 
   return (
     <div className="flex flex-wrap items-center flex-1 gap-2">
-      <Badge variant={"secondary"}>{category.competitors} competidor(es)</Badge>
+      <Badge variant={"secondary"}>{category.competitorsPerRegistration} competidor(es)</Badge>
 
-      <Badge variant={category.rounds <= 1 ? "destructive" : "secondary"}>
-        {category.rounds <= 1 ? "eliminatória" : `${category.rounds} voltas`}
+      <Badge variant={category.qualification.rounds <= 1 ? "destructive" : "secondary"}>
+        {category.qualification.rounds <= 1 ? "eliminatória" : `${category.qualification.rounds} voltas`}
       </Badge>
 
-      {category.price ? (
-        <Badge variant={"secondary"}>{formatCurrency(category.price)}</Badge>
+      {category.pricePerRegistration ? (
+        <Badge variant={"secondary"}>{formatCurrency(category.pricePerRegistration)}</Badge>
       ) : (
         <Badge>Gratuito</Badge>
       )}
 
       <Badge>{registrationsCount} Inscrições</Badge>
 
-      {category.isDuel && <Badge variant={"default"}>Duelo</Badge>}
+      {category.duel && <Badge variant={"default"}>Duelo</Badge>}
     </div>
   );
 }

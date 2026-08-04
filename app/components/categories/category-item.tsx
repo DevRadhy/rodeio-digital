@@ -30,7 +30,7 @@ export function CategoryItem({ category, onEdit }: CategoryItemProps) {
   return (
     <Item variant={"outline"}>
       <ItemMedia variant={"icon"}>
-        {category.forces.length ? <Swords /> : <Users />}
+        {category.duel ? <Swords /> : <Users />}
       </ItemMedia>
       <ItemContent>
         <ItemTitle>{category.name}</ItemTitle>
@@ -45,14 +45,14 @@ export function CategoryItem({ category, onEdit }: CategoryItemProps) {
         <Alert onConfirm={() => deleteCategory(category.id)} />
       </ItemActions>
       <ItemFooter className="flex gap-4">
-        {category.isDuel &&
-          category.forces.map((force) => (
-            <Badge variant={"secondary"} key={force.id}>
+        {category.duel &&
+          category.qualification.groups.map((group) => (
+            <Badge variant={"secondary"} key={group.id}>
               <strong>
-                {force.name}
+                {group.name}
                 {": "}
               </strong>
-              {force.qualifyingScores.join(", ")} Armadas
+              {group.qualifyingScores.join(", ")} Armadas
             </Badge>
           ))}
       </ItemFooter>

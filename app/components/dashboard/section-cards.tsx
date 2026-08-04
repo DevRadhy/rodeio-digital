@@ -20,7 +20,7 @@ export function SectionCards() {
       (registration) => registration.categoryId === cur.id,
     ).length;
 
-    return (acc += cur.price * registratinosCount);
+    return (acc += cur.pricePerRegistration * registratinosCount);
   }, 0);
 
   return (

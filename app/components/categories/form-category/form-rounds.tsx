@@ -1,3 +1,4 @@
+import type { Group } from "@/types/category";
 import { X } from "lucide-react";
 import { useState } from "react";
 import {
@@ -9,9 +10,13 @@ import {
   type FieldValues,
 } from "react-hook-form";
 import { Button } from "../../ui/button";
-import { Field, FieldDescription, FieldError, FieldLabel } from "../../ui/field";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "../../ui/field";
 import { Input } from "../../ui/input";
-import type { Force } from "@/types/category";
 
 type FormRoundsProps<T extends FieldValues> = {
   control: Control<T>;
@@ -24,13 +29,13 @@ export function FormRounds<T extends FieldValues>({
 }: FormRoundsProps<T>) {
   const { setValue, watch, setError } = useFormContext();
 
-  const forceRounds = useWatch({
+  const groupRounds = useWatch({
     control,
     name,
   });
 
-  const rounds = watch("rounds");
-  const forces = watch("forces");
+  const rounds = watch("qualification.rounds");
+  const groups = watch("groups");
 
   const [round, setRound] = useState("");
 
@@ -46,9 +51,8 @@ export function FormRounds<T extends FieldValues>({
       return;
     }
 
-    const valueAlreadyExists = forces.find(
-      (force: Force) =>
-        force.qualifyingScores.some((round: number) => round === value),
+    const valueAlreadyExists = groups?.find((group: Group) =>
+      group.qualifyingScores.some((round: number) => round === value),
     );
 
     if (valueAlreadyExists) {
@@ -58,7 +62,7 @@ export function FormRounds<T extends FieldValues>({
       return;
     }
 
-    setValue(name, [...(forceRounds ?? []), value] as T[typeof name], {
+    setValue(name, [...(groupRounds ?? []), value] as T[typeof name], {
       shouldDirty: true,
       shouldTouch: true,
       shouldValidate: true,
@@ -70,7 +74,7 @@ export function FormRounds<T extends FieldValues>({
   const removeValue = (index: number) => {
     setValue(
       name,
-      (forceRounds ?? []).filter((_, i) => i !== index) as T[typeof name],
+      (groupRounds ?? []).filter((_, i) => i !== index) as T[typeof name],
       {
         shouldDirty: true,
         shouldTouch: true,
@@ -86,7 +90,7 @@ export function FormRounds<T extends FieldValues>({
           name={name}
           control={control}
           render={({ field, fieldState }) => (
-            <Field data-invalid={forceRounds.invalid}>
+            <Field data-invalid={groupRounds.invalid}>
               <FieldLabel htmlFor={name}>Voltas</FieldLabel>
               <div className="grid grid-cols-[1fr_auto] gap-4">
                 <Input
@@ -116,7 +120,7 @@ export function FormRounds<T extends FieldValues>({
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {forceRounds.map((round: number, index: number) => (
+        {groupRounds.map((round: number, index: number) => (
           <Button onClick={() => removeValue(index)} variant={"secondary"}>
             {round}
             <X />

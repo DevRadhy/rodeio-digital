@@ -26,10 +26,10 @@ import {
   CategorySchema,
   type CategorySchemaType,
 } from "../../schemas/category-schema";
-import { FormRounds } from "./form-category/form-rounds";
 import FormInput from "../form/form-input";
 import FormSwitch from "../form/form-switch";
 import { Card, CardContent, CardFooter } from "../ui/card";
+import { FormRounds } from "./form-category/form-rounds";
 
 const A_IN_CHARCODE = 65;
 
@@ -46,19 +46,21 @@ export function CategoryDialog({ open, onOpenChange }: CategoryDialogProps) {
     resolver: ZodResolver(CategorySchema),
     defaultValues: {
       name: "",
-      competitors: 1,
-      rounds: 1,
-      isDuel: false,
-      forces: [],
+      competitorsPerRegistration: 1,
+      duel: false,
+      qualification: {
+        rounds: 1,
+        groups: [],
+      },
     },
   });
 
   const { fields, append, remove, replace } = useFieldArray({
     control: form.control,
-    name: "forces",
+    name: "qualification.groups",
   });
 
-  const isDuel = form.watch("isDuel");
+  const isDuel = form.watch("duel");
 
   useEffect(() => {
     if (editingCategory) {
@@ -66,10 +68,12 @@ export function CategoryDialog({ open, onOpenChange }: CategoryDialogProps) {
     } else {
       form.reset({
         name: "",
-        competitors: 1,
-        rounds: 1,
-        isDuel: false,
-        forces: [],
+        competitorsPerRegistration: 1,
+        duel: false,
+        qualification: {
+          rounds: 1,
+          groups: [],
+        },
       });
     }
   }, [open, editingCategory]);
@@ -104,6 +108,8 @@ export function CategoryDialog({ open, onOpenChange }: CategoryDialogProps) {
 
   const onError = (validationError: FieldErrors<CategorySchemaType>) => {
     const errors = Object.values(validationError);
+
+    console.log(validationError);
 
     return toast.error(errors[0].message);
   };
@@ -152,7 +158,7 @@ export function CategoryDialog({ open, onOpenChange }: CategoryDialogProps) {
                 <div className="grid grid-cols-2 gap-4">
                   <FormInput
                     control={form.control}
-                    name="competitors"
+                    name="competitorsPerRegistration"
                     label="Competidores"
                     description="Número de competidores por inscrição."
                     type="number"
@@ -160,7 +166,7 @@ export function CategoryDialog({ open, onOpenChange }: CategoryDialogProps) {
 
                   <FormInput
                     control={form.control}
-                    name="rounds"
+                    name="qualification.rounds"
                     label="Voltas"
                     description="Número de voltas de classificatórias."
                     type="number"
@@ -169,7 +175,7 @@ export function CategoryDialog({ open, onOpenChange }: CategoryDialogProps) {
 
                 <FormInput
                   control={form.control}
-                  name="price"
+                  name="pricePerRegistration"
                   label="Valor (R$)"
                   description="Valor da inscrição"
                   type="number"
@@ -178,7 +184,7 @@ export function CategoryDialog({ open, onOpenChange }: CategoryDialogProps) {
 
                 <FormSwitch
                   control={form.control}
-                  name="isDuel"
+                  name="duel"
                   label="Duelo"
                   onCheckedChange={onDuelChange}
                 />
@@ -188,7 +194,7 @@ export function CategoryDialog({ open, onOpenChange }: CategoryDialogProps) {
                     <CardContent>
                       <FormInput
                         control={form.control}
-                        name={`forces.${index}.name`}
+                        name={`qualification.groups.${index}.name`}
                         label="Nome da Força"
                         description="Nome da Força de classificação."
                         type="text"
@@ -197,7 +203,7 @@ export function CategoryDialog({ open, onOpenChange }: CategoryDialogProps) {
 
                       <FormRounds
                         control={form.control}
-                        name={`forces.${index}.qualifyingScores`}
+                        name={`qualification.groups.${index}.qualifyingScores`}
                       />
                     </CardContent>
                     <CardFooter>
