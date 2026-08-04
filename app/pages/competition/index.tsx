@@ -8,23 +8,18 @@ import type { Category } from "@/types/category";
 import { useNavigate } from "react-router";
 
 export default function Competition() {
-  const categories = useCategoryStore((state) => state.categories);
-  const registrationsByCompetition = useRegistrationStore(
-    (state) => state.registrationsByCompetition,
-  );
-  const open = useCompetitionSessionStore((state) => state.createCompetition);
+  const { categories } = useCategoryStore();
+  const { registrationsByCompetition } = useRegistrationStore();
+  const { createCompetition } = useCompetitionSessionStore();
 
   const navigation = useNavigate();
 
   const openCompetition = (category: Category) => {
     const registrations = registrationsByCompetition(category.id);
 
-    const createCompetition = CompetitionService.create(
-      category,
-      registrations,
-    );
+    const competition = CompetitionService.create(category, registrations);
 
-    open(createCompetition);
+    createCompetition(competition);
 
     navigation(category.id);
   };
