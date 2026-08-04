@@ -9,8 +9,11 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { FieldGroup } from "@/components/ui/field";
+import { CompetitionService } from "@/services/competition-service";
+import { useCompetitionSessionStore } from "@/stores/competition";
 import { useRegistrationStore } from "@/stores/registration";
 import type { Category } from "@/types/category";
+import { formatNumber } from "@/utils";
 import { zodResolver as ZodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import {
@@ -26,7 +29,6 @@ import {
   type RegistrationSchemaType,
 } from "../../schemas/registration-schema";
 import FormInput from "../form/form-input";
-import { formatNumber } from "@/utils";
 
 interface RegistrationDialogProps {
   category: Category | null;
@@ -42,11 +44,15 @@ export function RegistrationDialog({
   const addRegistration = useRegistrationStore(
     (state) => state.addRegistration,
   );
-  const registrationByCompetition = useRegistrationStore(
-    (state) => state.registrationByCompetition,
+  const registrationsByCompetition = useRegistrationStore(
+    (state) => state.registrationsByCompetition,
   );
-
-  const registration = registrationByCompetition(category?.id ?? "");
+  const getCompetition = useCompetitionSessionStore(
+    (state) => state.getSession,
+  );
+  const updateCompetition = useCompetitionSessionStore(
+    (state) => state.updateCompetition,
+  );
 
   const form = useForm<RegistrationSchemaType>({
     resolver: ZodResolver(RegistrationSchema),
@@ -71,17 +77,36 @@ export function RegistrationDialog({
         name: "",
       })),
     });
-  }, [category, form]);
+  }, [category]);
 
   const onSubmit: SubmitHandler<RegistrationSchemaType> = (data) => {
+    if (!category) return;
+
+    const registrations = registrationsByCompetition(category.id);
+    const competition = getCompetition(category.id);
+
     toast.promise(
       new Promise((resolve) => {
         setTimeout(() => {
-          addRegistration({
+          const registration = {
             id: v4(),
-            number: registration.length + 1,
+            number: registrations.length + 1,
             ...data,
-          });
+          };
+
+          addRegistration(registration);
+
+          if (competition) {
+            const competitionRegistration = CompetitionService.addRegistration(
+              competition,
+              category,
+              registration,
+            );
+
+            if (!competitionRegistration) return;
+
+            updateCompetition(competitionRegistration);
+          }
 
           resolve(true);
           onOpenChange(false);
