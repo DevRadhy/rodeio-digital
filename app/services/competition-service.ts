@@ -26,7 +26,7 @@ export class CompetitionService {
         name: `Pelotão ${index + 1}`,
         status: "running",
         registrations: registrations,
-        rounds: Array.from({ length: category.rounds }, () => null).map(
+        rounds: Array.from({ length: category.qualification.rounds }, () => null).map(
           (_, round) => ({
             number: round + 1,
             results: registrations.map((registration) => ({
@@ -98,7 +98,7 @@ export class CompetitionService {
         }
 
         if (competition.phase === "qualification") {
-          if (group.currentRound === category.rounds) {
+          if (group.currentRound === category.qualification.rounds) {
             return {
               ...group,
               currentRound: group.currentRound,
@@ -155,7 +155,7 @@ export class CompetitionService {
           return {
             ...group,
             registrations: [...group.registrations, registration],
-            rounds: Array.from({ length: category.rounds }, () => null).map(
+            rounds: Array.from({ length: category.qualification.rounds }, () => null).map(
               (_, round) => ({
                 number: round + 1,
                 results: [...group.registrations, registration].map(
@@ -184,7 +184,7 @@ export class CompetitionService {
           currentRound: 1,
           registrations: [registration],
           status: "running",
-          rounds: Array.from({ length: category.rounds }, () => null).map(
+          rounds: Array.from({ length: category.qualification.rounds }, () => null).map(
             (_, round) => ({
               number: round + 1,
               results: [
