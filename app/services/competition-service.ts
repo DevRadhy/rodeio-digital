@@ -1,136 +1,234 @@
 import type { Category } from "@/types/category";
-import type { Competition, Shot } from "@/types/competition";
+import type {
+  Competition,
+  CompetitionGroup,
+  CompetitionResult,
+  Shot,
+} from "@/types/competition";
 import type { Registration } from "@/types/registration";
-import {
-  finishRound,
-  isFinished,
-  setFinalShot,
-  startRound,
-} from "./final-service";
-import { createFinalGroups } from "./force-service";
-import {
-  createQualification,
-  finishCurrentRound,
-  isLastQualificationRound,
-  setQualificationShot,
-} from "./qualification-service";
+import { v4 } from "uuid";
 
-function createCompetition(
+function getRegistrationChuncks(registrations: Registration[], length: number) {
+  const chunks = [];
+
+  for (let i = 0; i < registrations.length; i += length) {
+    chunks.push(registrations.slice(i, i + length));
+  }
+
+  return chunks;
+}
+
+function create(
   category: Category,
   registrations: Registration[],
 ): Competition {
+  const registrationsChunks = getRegistrationChuncks(registrations, 5);
+
   return {
     categoryId: category.id,
     phase: "qualification",
-    qualification: createQualification(category, registrations),
-    final: undefined,
+    status: "running",
+    groups: registrationsChunks.map((registrations, index) => ({
+      id: v4(),
+      currentRound: 1,
+      name: `Pelotão ${index + 1}`,
+      status: "running",
+      registrations: registrations,
+      rounds: Array.from({ length: category.rounds }, () => null).map(
+        (_, round) => ({
+          number: round + 1,
+          results: registrations.map((registration) => ({
+            registrationId: registration.id,
+            competitors: registration.competitors.map((competitor) => ({
+              competitorId: competitor.id,
+              shot: null,
+            })),
+          })),
+        }),
+      ),
+    })),
   };
 }
 
-function updateQualificationShot(
-  competition: Competition,
+function updateShot(
+  group: CompetitionGroup,
   registrationId: string,
   competitorId: string,
   shot: Shot,
-): Competition {
+): CompetitionGroup {
+  const rounds = group.rounds.map((round) => {
+    if (round.number !== group.currentRound) {
+      return round;
+    }
+
+    return {
+      ...round,
+      results: round.results.map((result) => {
+        if (result.registrationId !== registrationId) {
+          return result;
+        }
+
+        return {
+          ...result,
+          competitors: result.competitors.map((competitor) => {
+            if (competitor.competitorId !== competitorId) {
+              return competitor;
+            }
+
+            return {
+              ...competitor,
+              shot,
+            };
+          }),
+        };
+      }),
+    };
+  });
+
   return {
-    ...competition,
-    qualification: setQualificationShot(
-      competition.qualification,
-      registrationId,
-      competitorId,
-      shot,
-    ),
+    ...group,
+    rounds: rounds,
   };
 }
 
-function finishQualificationRound(
-  category: Category,
+function nextRound(
   competition: Competition,
+  group: CompetitionGroup,
+  category: Category,
 ): Competition {
-  if (!isLastQualificationRound(competition.qualification, category)) {
+  const results = group.rounds[group.currentRound - 1].results;
+  const isCompetitionFinished = isFinished(results);
+
+  return {
+    ...competition,
+    groups: competition.groups.map((g) => {
+      if (g.id !== group.id) {
+        return g;
+      }
+
+      if (competition.phase === "qualification") {
+        if (group.currentRound === category.rounds) {
+          return {
+            ...group,
+            currentRound: group.currentRound,
+            status: "finished",
+          };
+        }
+
+        return {
+          ...group,
+          currentRound: group.currentRound + 1,
+        };
+      }
+
+      return {
+        ...group,
+        currentRound: group.currentRound + 1,
+        status: isCompetitionFinished ? "finished" : "running",
+        rounds: [
+          ...group.rounds,
+          {
+            number: group.currentRound + 1,
+            results: results.filter(everyPositive).map((result) => ({
+              registrationId: result.registrationId,
+              competitors: result.competitors.map((competitor) => ({
+                ...competitor,
+                shot: null,
+              })),
+            })),
+          },
+        ],
+      };
+    }),
+  };
+}
+
+function isFinished(results: CompetitionResult[]) {
+  return results.length <= 1;
+}
+
+function getCurrentRound(group: CompetitionGroup) {
+  return group.rounds.at(-1);
+}
+
+function everyPositive(result: CompetitionResult) {
+  return result.competitors.every((competitor) => competitor.shot);
+}
+
+function addRegistration(
+  competition: Competition,
+  category: Category,
+  registration: Registration,
+): Competition {
+  if (competition.phase !== "qualification") return competition;
+
+  const availableGroup = competition.groups.find(
+    (group) => group.currentRound <= 1 && group.registrations.length < 5,
+  );
+
+  if (availableGroup) {
     return {
       ...competition,
-      qualification: finishCurrentRound(category, competition.qualification),
+      groups: competition.groups.map((group) => {
+        if (group.id !== availableGroup.id) {
+          return group;
+        }
+
+        return {
+          ...group,
+          registrations: [...group.registrations, registration],
+          rounds: Array.from({ length: category.rounds }, () => null).map(
+            (_, round) => ({
+              number: round + 1,
+              results: [...group.registrations, registration].map(
+                (registration) => ({
+                  registrationId: registration.id,
+                  competitors: registration.competitors.map((competitor) => ({
+                    competitorId: competitor.id,
+                    shot: null,
+                  })),
+                }),
+              ),
+            }),
+          ),
+        };
+      }),
     };
   }
 
   return {
-    categoryId: category.id,
-    phase: "final",
-    qualification: competition.qualification,
-    final: {
-      groups: createFinalGroups(category, competition.qualification),
-    },
-  };
-}
-
-function startFinalRound(
-  competition: Competition,
-  groupId: string,
-  registrations: Registration[],
-): Competition {
-  if (!competition.final) {
-    return competition;
-  }
-
-  return {
     ...competition,
-    final: startRound(competition.final, groupId, registrations),
-  };
-}
-
-function updateFinalShot(
-  competition: Competition,
-  groupId: string,
-  registrationId: string,
-  competitiorId: string,
-  shot: Shot,
-): Competition {
-  if (!competition.final) {
-    return competition;
-  }
-
-  return {
-    ...competition,
-    final: setFinalShot(
-      competition.final,
-      groupId,
-      registrationId,
-      competitiorId,
-      shot,
-    ),
-  };
-}
-
-function finishFinalRound(
-  competition: Competition,
-  groupId: string,
-): Competition {
-  if (!competition.final) {
-    return competition;
-  }
-
-  const final = finishRound(competition.final, groupId);
-
-  const closed = final.groups.every(isFinished);
-
-  return {
-    ...competition,
-    phase: closed ? "closed" : "final",
-    final,
+    groups: [
+      ...competition.groups,
+      {
+        id: v4(),
+        name: `Pelotão ${competition.groups.length + 1}`,
+        currentRound: 1,
+        registrations: [registration],
+        status: "running",
+        rounds: Array.from({ length: category.rounds }, () => null).map(
+          (_, round) => ({
+            number: round + 1,
+            results: [
+              {
+                registrationId: registration.id,
+                competitors: registration.competitors.map((competitor) => ({
+                  competitorId: competitor.id,
+                  shot: null,
+                })),
+              },
+            ],
+          }),
+        ),
+      },
+    ],
   };
 }
 
 export const CompetitionService = {
-  create: createCompetition,
-  qualification: {
-    updateShot: updateQualificationShot,
-    finishRound: finishQualificationRound,
-  },
-  final: {
-    startRound: startFinalRound,
-    updateShot: updateFinalShot,
-    finishRound: finishFinalRound,
-  }
-}
+  create,
+  updateShot,
+  nextRound,
+  isFinished,
+  addRegistration,
+};

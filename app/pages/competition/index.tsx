@@ -1,6 +1,6 @@
 import { CategoryCard } from "@/components/categories/category-card";
-import { SiteHeader } from "@/components/site-header";
-import { createQualification } from "@/services/qualification-service";
+import { SiteHeader } from "@/components/dashboard/site-header";
+import { CompetitionService } from "@/services/competition-service";
 import { useCategoryStore } from "@/stores/category";
 import { useCompetitionSessionStore } from "@/stores/competition";
 import { useRegistrationStore } from "@/stores/registration";
@@ -9,21 +9,22 @@ import { useNavigate } from "react-router";
 
 export default function Competition() {
   const categories = useCategoryStore((state) => state.categories);
-  const registrationByCompetition = useRegistrationStore(
-    (state) => state.registrationByCompetition,
+  const registrationsByCompetition = useRegistrationStore(
+    (state) => state.registrationsByCompetition,
   );
-  const open = useCompetitionSessionStore((state) => state.openSession);
+  const open = useCompetitionSessionStore((state) => state.createCompetition);
 
   const navigation = useNavigate();
 
   const openCompetition = (category: Category) => {
-    const registrations = registrationByCompetition(category.id);
+    const registrations = registrationsByCompetition(category.id);
 
-    open(category.id, {
-      categoryId: category.id,
-      phase: "qualification",
-      qualification: createQualification(category, registrations),
-    });
+    const createCompetition = CompetitionService.create(
+      category,
+      registrations,
+    );
+
+    open(createCompetition);
 
     navigation(category.id);
   };

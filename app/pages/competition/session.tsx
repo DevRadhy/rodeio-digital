@@ -1,23 +1,23 @@
-import { useSession } from "@/hooks/use-session";
+import { useCompetition } from "@/hooks/use-competition";
 import { useParams } from "react-router";
-import { CompetitionHeader } from "../../components/competition/competition-header";
-import { QualificationView } from "@/components/qualification/qualification-view";
+import { CompetitionSessionHeader } from "../../components/competition/competition-session-header";
+import { CompetitionView } from "@/components/competition/competition-view";
 
 export default function CompetitionRun() {
   const { categoryId } = useParams();
 
   if (!categoryId) return;
 
-  const { session, competition } = useSession(categoryId);
+  const { category, competition } = useCompetition(categoryId);
 
-  if (!session || !competition) return;
+  if (!category || !competition) return;
 
   return (
     <div>
-      <CompetitionHeader competition={competition} session={session} />
+      <CompetitionSessionHeader competition={competition} category={category} />
 
-      {session.run.phase === "qualification" && (
-        <QualificationView competition={competition} session={session} />
+      {competition.phase === "qualification" && (
+        <CompetitionView competition={competition} category={category} />
       )}
     </div>
   );
