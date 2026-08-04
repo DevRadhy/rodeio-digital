@@ -1,4 +1,7 @@
+import { useCompetition } from "@/hooks/use-competition";
+import { useRegistrationStore } from "@/stores/registration";
 import type { Category } from "@/types/category";
+import type { Status } from "@/types/competition";
 import { Plus } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
@@ -11,10 +14,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { useRegistrationStore } from "@/stores/registration";
-import { useCompetitionSessionStore } from "@/stores/competition";
 import { CategoryBadges } from "./category-badges";
-import type { Status } from "@/types/competition";
 
 interface CategoryCardProps {
   category: Category;
@@ -22,12 +22,9 @@ interface CategoryCardProps {
 }
 
 export function CategoryCard({ category, onRegister }: CategoryCardProps) {
-  const registrationsByCompetition = useRegistrationStore(
-    (state) => state.registrationByCompetition,
-  );
-  const getSession = useCompetitionSessionStore((state) => state.getSession);
+  const { registrationsByCompetition } = useRegistrationStore();
+  const { competition } = useCompetition(category.id);
 
-  const session = getSession(category.id);
   const registrations = registrationsByCompetition(category.id);
 
   const formatStatus = (status: Status) => {
@@ -55,22 +52,29 @@ export function CategoryCard({ category, onRegister }: CategoryCardProps) {
     }
   };
 
-  const status = formatStatus(session?.status)
-  
+  const status = formatStatus(competition?.status);
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>{category.name}</CardTitle>
         <CardDescription>teste</CardDescription>
         <CardAction>
-          <Badge variant={"secondary"} className={`${status.color}`}>{status.text}</Badge>
+          <Badge variant={"secondary"} className={`${status.color}`}>
+            {status.text}
+          </Badge>
         </CardAction>
       </CardHeader>
       <CardContent className="flex gap-2">
         <CategoryBadges category={category} registrations={registrations} />
       </CardContent>
       <CardFooter>
-        <Button variant={"ghost"} onClick={onRegister} className={"w-full"}>
+        <Button
+          variant={"ghost"}
+          onClick={onRegister}
+          className={"w-full"}
+          disabled={competition && competition.phase !== "qualification"}
+        >
           <Plus /> Adicionar Inscrição
         </Button>
       </CardFooter>
