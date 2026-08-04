@@ -1,10 +1,4 @@
-
-export interface ForceClassification {
-  registrationId: string;
-  forceId: string;
-}
-
-export interface Force {
+export interface Group {
   id: string;
   name: string;
   qualifyingScores: number[];
@@ -13,9 +7,13 @@ export interface Force {
 export interface Category {
   id: string;
   name: string;
-  competitors: number;
+  competitorsPerRegistration: number;
+  pricePerRegistration: number;
+  duel: boolean;
+  qualification: Qualification;
+}
+
+interface Qualification {
   rounds: number;
-  price: number;
-  isDuel: boolean;
-  forces: Force[];
+  groups: Group[];
 }
