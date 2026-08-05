@@ -4,7 +4,7 @@ import type { Registration } from "./registration";
 export type Shot = boolean | null;
 
 export type Phase = "qualification" | "final" | "closed";
-export type Status = "running" | "paused" | "finished";
+export type Status = "not_started" | "running" | "paused" | "finished";
 
 export interface Competition {
   categoryId: string;
