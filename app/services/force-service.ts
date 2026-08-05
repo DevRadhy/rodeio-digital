@@ -14,15 +14,15 @@ export class ForceService {
     const groups = new Map<string, Registration[]>();
 
     for (const result of results) {
-      const classification = category.qualification.groups.find((group) =>
-        group.qualifyingScores.includes(result.shots),
+      const classification = category.final.groups.find((group) =>
+        group.qualifyingShots.includes(result.shots),
       );
 
       if (!classification) {
         continue;
       }
 
-      const groupId = category.duel ? classification.id : v4();
+      const groupId = category.final.duel ? classification.id : v4();
 
       const registrations = groups.get(groupId) ?? [];
 

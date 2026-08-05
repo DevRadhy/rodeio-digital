@@ -14,8 +14,8 @@ export class FinalService {
   ): CompetitionGroup[] {
     return groups.map((group) => ({
       id: group.groupId,
-      name: category.duel
-        ? `Força ${category.qualification.groups.find((g) => g.id === group.groupId)?.name ?? "Final"}`
+      name: category.final.duel
+        ? `Força ${category.final.groups.find((g) => g.id === group.groupId)?.name ?? "Final"}`
         : "Final",
       currentRound: 1,
       status: "running",

@@ -31,7 +31,7 @@ export class CompetitionService {
         status: "running",
         registrations,
         rounds: Array.from(
-          { length: category.qualification.rounds },
+          { length: category.qualification.qualifyingRounds },
           () => null,
         ).map((_, round) => ({
           number: round + 1,
@@ -103,7 +103,7 @@ export class CompetitionService {
         }
 
         if (competition.phase === "qualification") {
-          if (group.currentRound === category.qualification.rounds) {
+          if (group.currentRound === category.qualification.qualifyingRounds) {
             return {
               ...group,
               currentRound: group.currentRound,
@@ -161,7 +161,7 @@ export class CompetitionService {
             ...group,
             registrations: [...group.registrations, registration],
             rounds: Array.from(
-              { length: category.qualification.rounds },
+              { length: category.qualification.qualifyingRounds },
               () => null,
             ).map((_, round) => ({
               number: round + 1,
@@ -191,7 +191,7 @@ export class CompetitionService {
           registrations: [registration],
           status: "running",
           rounds: Array.from(
-            { length: category.qualification.rounds },
+            { length: category.qualification.qualifyingRounds },
             () => null,
           ).map((_, round) => ({
             number: round + 1,
