@@ -1,13 +1,12 @@
-import type { Category } from "@/types/category";
-import type { Competition } from "@/types/competition";
-import { CompetitionHeader } from "./competition-header";
-import { CompetitionList } from "./competition-list";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { CompetitionFooter } from "./competition-footer";
-import { Button } from "../ui/button";
-import { QualificationService } from "@/services/qualification-service";
 import { CompetitionService } from "@/services/competition-service";
 import { useCompetitionSessionStore } from "@/stores/competition";
+import type { Category } from "@/types/category";
+import type { Competition } from "@/types/competition";
+import { Button } from "../ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { CompetitionFooter } from "./competition-footer";
+import { CompetitionHeader } from "./competition-header";
+import { CompetitionList } from "./competition-list";
 
 interface CompetitionViewProps {
   category: Category;
@@ -18,7 +17,7 @@ export function CompetitionView({
   category,
   competition,
 }: CompetitionViewProps) {
-  const { updateCompetition } = useCompetitionSessionStore()
+  const { updateCompetition } = useCompetitionSessionStore();
 
   const groups = competition.groups;
   const isAllQualifieds = competition.groups.every(
@@ -26,9 +25,14 @@ export function CompetitionView({
   );
 
   const handleFinish = () => {
-    const finish = CompetitionService.finishQualification(competition, category);
+    const finish = CompetitionService.finishQualification(
+      competition,
+      category,
+    );
 
-    updateCompetition(finish)
+    console.log(finish)
+
+    updateCompetition(finish);
   };
 
   return (
@@ -36,7 +40,9 @@ export function CompetitionView({
       <Tabs className="px-8">
         <TabsList>
           {groups.map((group) => (
-            <TabsTrigger value={group.id}>{group.name}</TabsTrigger>
+            <TabsTrigger value={group.id} key={group.id}>
+              {group.name}
+            </TabsTrigger>
           ))}
         </TabsList>
         {groups.map((group) => (
