@@ -65,8 +65,6 @@ export function useCategoryForm({ onOpenChange }: CategoryFormProps) {
   }, [editingCategory, open]);
 
   const onSubmit = (data: CategorySchemaType) => {
-    console.log(data);
-
     if (editingCategory) {
       updateCategory({
         ...editingCategory,
@@ -84,8 +82,6 @@ export function useCategoryForm({ onOpenChange }: CategoryFormProps) {
 
   const onError = (validationError: FieldErrors<CategorySchemaType>) => {
     const errors = Object.values(validationError);
-
-    console.log(validationError);
 
     return toast.error(errors[0].message);
   };
