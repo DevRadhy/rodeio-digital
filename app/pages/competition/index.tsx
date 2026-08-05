@@ -36,7 +36,7 @@ export default function Competition() {
               onClick={() => openCompetition(category)}
               className={"w-full"}
             >
-              Abrir Modalidade
+              Iniciar Competição
             </Button>
           </CategoryCard>
         ))}
