@@ -1,5 +1,6 @@
 import type { Category } from "@/types/category";
-import type { Competition, Status } from "@/types/competition";
+import type { Competition } from "@/types/competition";
+import { formatPhase } from "@/utils";
 import { ChevronLeft } from "lucide-react";
 import { useNavigate } from "react-router";
 import { Badge } from "../ui/badge";
@@ -16,18 +17,7 @@ export function CompetitionSessionHeader({
 }: CompetitionHeadeSessionrProps) {
   const navigation = useNavigate();
 
-  const formatStatus = (status: Status) => {
-    switch (status) {
-      case "running":
-        return "Em Andamento";
-      case "paused":
-        return "Em Pausa";
-      case "finished":
-        return "Encerrada";
-      default:
-        return "Não Iniciada";
-    }
-  };
+  const phase = formatPhase(competition.phase);
 
   return (
     <div className="px-8 py-8">
@@ -41,7 +31,9 @@ export function CompetitionSessionHeader({
 
       <div className="flex items-center justify-between py-4">
         <h1 className="text-3xl font-bold">{category.name}</h1>
-        <Badge>{formatStatus(competition.status)}</Badge>
+        <Badge className={`${phase.color} font-semibold text-muted`}>
+          {phase.text}
+        </Badge>
       </div>
     </div>
   );
