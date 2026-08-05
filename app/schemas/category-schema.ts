@@ -3,12 +3,17 @@ import { z } from "zod";
 export const CategorySchema = z
   .object({
     name: z
-      .string("Você precisa informar o nome da modalidade.")
+      .string("Informe o nome da modalidade.")
       .min(3, "O nome da modalidade precisa conter pelo menos 3 caracteres.")
-      .max(32, "O tamanho máximo para o nome é de 32 caracteres."),
+      .max(
+        32,
+        "O tamanho máximo para o nome da modalidade é de 32 caracteres.",
+      ),
     competitorsPerRegistration: z
-      .number("Você precisa informar o número de competidores por inscrição.")
-      .positive("O número precisa ser maior que 0.")
+      .number("Informe o número de competidores por inscrição.")
+      .positive(
+        "O número de competidores por inscrição precisa ser maior que 0.",
+      )
       .min(
         1,
         "O número mínimo de competidores por inscrição é de 1 competidor.",
@@ -19,63 +24,88 @@ export const CategorySchema = z
       ),
 
     pricePerRegistration: z
-      .float32("Você precisa informar o valor da inscriçao.")
-      .min(0, "O valor minimo de incrição não pode ser menor que R$0,00.")
-      .max(99999, "Valor de inscrição inválido."),
-    duel: z.boolean(),
+      .float32("Informe o preço por inscriçao.")
+      .min(0, "O preço mínimo para uma incrição não pode ser menor que R$0,00.")
+      .max(99999, "Preço de inscrição inválido."),
     qualification: z.object({
-      rounds: z
-        .number("Você precisa informar o número de voltas de classificatória.")
-        .positive("O número precisar ser maior que 0.")
-        .min(1, "O número mínimo de voltas não pode ser menor que 1.")
-        .max(100, "O número máximo de voltas não pode ser maior 100."),
+      qualifyingRounds: z
+        .number("Informe o número de voltas de classificatória.")
+        .positive(
+          "O número de voltas de classificatória precisa ser maior que 0.",
+        )
+        .min(
+          1,
+          "O número mínimo de voltas de classificatória não pode ser menor que 1.",
+        )
+        .max(
+          100,
+          "O número máximo de voltas de classificatória não pode ser maior 100.",
+        ),
+      elimination: z.boolean(),
+    }),
+    final: z.object({
+      duel: z.boolean(),
       groups: z.array(
         z.object({
           id: z.string(),
           name: z
-            .string("Você precisa informar o nome da força.")
-            .max(24, "O tamanho máximo para o nome é de 24 caracteres."),
-          qualifyingScores: z.array(
+            .string("Informe o nome do grupo.")
+            .max(
+              24,
+              "O tamanho máximo para o nome do grupo é de 24 caracteres.",
+            ),
+          qualifyingShots: z.array(
             z
               .number(
-                "Você precisa informar o número de voltas de classificatória da força.",
+                "Você precisa informar o número de armadas de classificatória do grupo.",
               )
-              .positive("O número precisar ser maior que 0.")
-              .min(1, "O número mínimo de voltas não pode ser menor que 1.")
-              .max(100, "O número máximo de voltas não pode ser maior 100."),
+              .positive(
+                "O número de armadas de classificatória do grupo precisa ser maior que 0.",
+              )
+              .min(
+                1,
+                "O número mínimo de armadas de classificatória do grupo não pode ser menor que 1.",
+              )
+              .max(
+                100,
+                "O número máximo de armadas de classificatória não pode ser maior 100.",
+              ),
           ),
         }),
       ),
     }),
   })
   .superRefine((data, ctx) => {
-    if (!data.duel) return;
+    const usedShots = new Map<number, number>();
 
-    const usedRounds = new Map<number, number>();
-
-    data.qualification.groups.forEach((group, forceIndex) => {
-      if (group.qualifyingScores.length === 0) {
+    data.final.groups.forEach((group, groupIndex) => {
+      if (group.qualifyingShots.length === 0) {
         ctx.addIssue({
           code: "custom",
-          message: `A força ${group.name} deve possuir pelo menos uma volta de classificatória.`,
+          message: `O grupo ${group.name} deve possuir pelo menos uma armada de classificatória.`,
         });
       }
 
-      group.qualifyingScores.forEach((round, roundIndex) => {
-        if (round < 1 || round > data.qualification.rounds) {
+      group.qualifyingShots.forEach((shot) => {
+        if (
+          shot < 1 ||
+          shot >
+            data.qualification.qualifyingRounds *
+              data.competitorsPerRegistration
+        ) {
           ctx.addIssue({
             code: "custom",
-            message: `As voltas de classificatória da força ${group.name} devem estar entre 1 e ${data.qualification.rounds}.`,
+            message: `As armadas de classificatória do grupo ${group.name} devem estar entre 1 e ${data.qualification.qualifyingRounds * data.competitorsPerRegistration}.`,
           });
         }
 
-        if (usedRounds.has(round)) {
+        if (usedShots.has(shot)) {
           ctx.addIssue({
             code: "custom",
-            message: `A volta ${round} já pertence a outra força.`,
+            message: `o número de ${shot} armadas já pertence a outra força.`,
           });
         } else {
-          usedRounds.set(round, forceIndex);
+          usedShots.set(shot, groupIndex);
         }
       });
     });
