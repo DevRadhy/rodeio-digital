@@ -1,7 +1,7 @@
 export interface Group {
   id: string;
   name: string;
-  qualifyingScores: number[];
+  qualifyingShots: number[];
 }
 
 export interface Category {
@@ -9,11 +9,14 @@ export interface Category {
   name: string;
   competitorsPerRegistration: number;
   pricePerRegistration: number;
-  duel: boolean;
   qualification: Qualification;
+  final: {
+    duel: boolean;
+    groups: Group[];
+  };
 }
 
 interface Qualification {
-  rounds: number;
-  groups: Group[];
+  qualifyingRounds: number;
+  elimination: boolean;
 }
