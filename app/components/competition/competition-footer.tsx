@@ -27,7 +27,7 @@ export function CompetitionFooter({
   };
 
   const isFinished = group.status === "finished";
-  const isLastRound = group.currentRound === category.qualification.rounds;
+  const isLastRound = group.currentRound === category.qualification.qualifyingRounds;
 
   return (
     <div>

@@ -30,7 +30,7 @@ export function CompetitionView({
       category,
     );
 
-    console.log(finish)
+    console.log(finish);
 
     updateCompetition(finish);
   };
@@ -47,7 +47,11 @@ export function CompetitionView({
         </TabsList>
         {groups.map((group) => (
           <TabsContent value={group.id} key={group.id}>
-            <CompetitionHeader category={category} group={group} />
+            <CompetitionHeader
+              competition={competition}
+              category={category}
+              group={group}
+            />
 
             <CompetitionList group={group} />
 
