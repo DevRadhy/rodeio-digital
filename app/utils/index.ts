@@ -1,6 +1,8 @@
 import type { CompetitionResult } from "@/types/competition";
 import type { Registration } from "@/types/registration";
 
+const A_IN_CHARCODE = 65;
+
 export const formatNumber = (value: number, digits = 2) => {
   return Intl.NumberFormat("pt-BR", {
     style: "decimal",
@@ -30,4 +32,8 @@ export const getRegistrationChuncks = (
 
 export const everyPositive = (result: CompetitionResult) => {
   return result.competitors.every((competitor) => competitor.shot);
+};
+
+export const getGroupName = (index: number) => {
+  return String.fromCharCode(A_IN_CHARCODE + index);
 };
