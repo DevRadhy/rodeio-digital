@@ -65,7 +65,7 @@ export function CategoryCard({ category, children }: CategoryCardProps) {
           </Badge>
         </CardAction>
       </CardHeader>
-      <CardContent className="flex gap-2">
+      <CardContent className="flex flex-wrap items-center flex-1 gap-2">
         <CategoryBadges category={category} registrations={registrations} />
       </CardContent>
       <CardFooter>

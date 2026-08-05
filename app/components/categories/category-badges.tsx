@@ -1,7 +1,7 @@
 import type { Category } from "@/types/category";
 import type { Registration } from "@/types/registration";
-import { Badge } from "../ui/badge";
 import { formatCurrency } from "@/utils";
+import { Badge } from "../ui/badge";
 
 interface CategoryBadgesProps {
   category: Category;
@@ -15,22 +15,30 @@ export function CategoryBadges({
   const registrationsCount = registrations.length;
 
   return (
-    <div className="flex flex-wrap items-center flex-1 gap-2">
-      <Badge variant={"secondary"}>{category.competitorsPerRegistration} competidor(es)</Badge>
-
-      <Badge variant={category.qualification.rounds <= 1 ? "destructive" : "secondary"}>
-        {category.qualification.rounds <= 1 ? "eliminatória" : `${category.qualification.rounds} voltas`}
+    <>
+      <Badge variant={"secondary"}>
+        {category.competitorsPerRegistration} competidor(es)
       </Badge>
 
+      <Badge variant={"secondary"}>
+        {category.qualification.qualifyingRounds} voltas
+      </Badge>
+
+      {category.qualification.elimination && (
+        <Badge variant={"destructive"}>eliminatória</Badge>
+      )}
+
       {category.pricePerRegistration ? (
-        <Badge variant={"secondary"}>{formatCurrency(category.pricePerRegistration)}</Badge>
+        <Badge variant={"secondary"}>
+          {formatCurrency(category.pricePerRegistration)}
+        </Badge>
       ) : (
         <Badge>Gratuito</Badge>
       )}
 
-      <Badge>{registrationsCount} Inscrições</Badge>
+      {category.final.duel && <Badge variant={"default"}>Duelo</Badge>}
 
-      {category.duel && <Badge variant={"default"}>Duelo</Badge>}
-    </div>
+      <Badge>{registrationsCount} Inscrições</Badge>
+    </>
   );
 }

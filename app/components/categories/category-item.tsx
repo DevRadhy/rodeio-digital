@@ -30,11 +30,11 @@ export function CategoryItem({ category, onEdit }: CategoryItemProps) {
   return (
     <Item variant={"outline"}>
       <ItemMedia variant={"icon"}>
-        {category.duel ? <Swords /> : <Users />}
+        {category.final.duel ? <Swords /> : <Users />}
       </ItemMedia>
       <ItemContent>
         <ItemTitle>{category.name}</ItemTitle>
-        <ItemDescription className="flex flex-wrap gap-2">
+        <ItemDescription className="flex flex-wrap items-center flex-1 gap-2">
           <CategoryBadges category={category} registrations={registrations} />
         </ItemDescription>
       </ItemContent>
@@ -44,15 +44,15 @@ export function CategoryItem({ category, onEdit }: CategoryItemProps) {
         </Button>
         <Alert onConfirm={() => deleteCategory(category.id)} />
       </ItemActions>
-      <ItemFooter className="flex gap-4">
-        {category.duel &&
-          category.qualification.groups.map((group) => (
+      <ItemFooter className="inline-block space-x-2">
+        {category.final.duel &&
+          category.final.groups.map((group) => (
             <Badge variant={"secondary"} key={group.id}>
-              <strong>
+              <span className="font-bold">
                 {group.name}
                 {": "}
-              </strong>
-              {group.qualifyingScores.join(", ")} Armadas
+              </span>
+              {group.qualifyingShots.join(", ")} Armadas
             </Badge>
           ))}
       </ItemFooter>

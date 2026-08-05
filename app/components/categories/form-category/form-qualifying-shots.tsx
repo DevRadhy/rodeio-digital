@@ -1,5 +1,5 @@
 import type { Group } from "@/types/category";
-import { X } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import { useState } from "react";
 import {
   Controller,
@@ -17,16 +17,17 @@ import {
   FieldLabel,
 } from "../../ui/field";
 import { Input } from "../../ui/input";
+import { ButtonGroup } from "@/components/ui/button-group";
 
-type FormRoundsProps<T extends FieldValues> = {
+type FormQualifyingShotsProps<T extends FieldValues> = {
   control: Control<T>;
   name: FieldPath<T>;
 };
 
-export function FormRounds<T extends FieldValues>({
+export function FormQualifyingShots<T extends FieldValues>({
   control,
   name,
-}: FormRoundsProps<T>) {
+}: FormQualifyingShotsProps<T>) {
   const { setValue, watch, setError } = useFormContext();
 
   const groupRounds = useWatch({
@@ -35,6 +36,7 @@ export function FormRounds<T extends FieldValues>({
   });
 
   const rounds = watch("qualification.rounds");
+  const competitorsPerRegistration = watch("competitorsPerRegistration");
   const groups = watch("groups");
 
   const [round, setRound] = useState("");
@@ -44,15 +46,15 @@ export function FormRounds<T extends FieldValues>({
 
     if (!Number.isFinite(value)) return;
 
-    if (value < 1 || value > rounds) {
+    if (value < 1 || value > competitorsPerRegistration * rounds) {
       setError(name, {
-        message: `O número de armadas deve estar entre 1 e ${rounds}.`,
+        message: `O número de armadas deve estar entre 1 e ${competitorsPerRegistration * rounds}.`,
       });
       return;
     }
 
     const valueAlreadyExists = groups?.find((group: Group) =>
-      group.qualifyingScores.some((round: number) => round === value),
+      group.qualifyingShots.some((round: number) => round === value),
     );
 
     if (valueAlreadyExists) {
@@ -91,8 +93,8 @@ export function FormRounds<T extends FieldValues>({
           control={control}
           render={({ field, fieldState }) => (
             <Field data-invalid={groupRounds.invalid}>
-              <FieldLabel htmlFor={name}>Voltas</FieldLabel>
-              <div className="grid grid-cols-[1fr_auto] gap-4">
+              <FieldLabel htmlFor={name}>Armadas de Classificatória</FieldLabel>
+              <ButtonGroup>
                 <Input
                   {...field}
                   type="number"
@@ -105,14 +107,16 @@ export function FormRounds<T extends FieldValues>({
                   value={round}
                 />
                 <Button
-                  type="button"
+                  type={"button"}
                   onClick={addValue}
                   className={"self-center"}
+                  variant={"outline"}
+                  aria-invalid={fieldState.invalid}
                 >
-                  Adicionar
+                  <Plus /> Adicionar
                 </Button>
-              </div>
-              <FieldDescription>Voltas de classificatória.</FieldDescription>
+              </ButtonGroup>
+              <FieldDescription>Armadas necessárias para classificar no grupo.</FieldDescription>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
