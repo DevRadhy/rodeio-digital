@@ -22,7 +22,7 @@ export class ForceService {
         continue;
       }
 
-      const groupId = category.final.duel ? classification.id : v4();
+      const groupId = classification.id;
 
       const registrations = groups.get(groupId) ?? [];
 

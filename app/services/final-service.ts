@@ -1,11 +1,13 @@
 import type { Category } from "@/types/category";
 import type {
+  Competition,
   CompetitionGroup,
   CompetitionResult,
   CompetitionRound,
 } from "@/types/competition";
 import type { ClassifiedGroup } from "@/types/qualification";
 import type { Registration } from "@/types/registration";
+import { everyPositive } from "@/utils";
 
 export class FinalService {
   static start(
@@ -43,6 +45,40 @@ export class FinalService {
         competitorId: competitor.id,
         shot: null,
       })),
+    };
+  }
+
+  static nextRound(
+    competition: Competition,
+    group: CompetitionGroup,
+  ): Competition {
+    const results = group.rounds[group.currentRound - 1].results;
+
+    return {
+      ...competition,
+      groups: competition.groups.map((g) => {
+        if (g.id !== group.id) {
+          return g;
+        }
+
+        return {
+          ...group,
+          currentRound: group.currentRound + 1,
+          rounds: [
+            ...group.rounds,
+            {
+              number: group.currentRound + 1,
+              results: results.filter(everyPositive).map((result) => ({
+                registrationId: result.registrationId,
+                competitors: result.competitors.map((competitor) => ({
+                  ...competitor,
+                  shot: null,
+                })),
+              })),
+            },
+          ],
+        };
+      }),
     };
   }
 }

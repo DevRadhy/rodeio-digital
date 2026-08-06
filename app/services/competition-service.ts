@@ -93,49 +93,11 @@ export class CompetitionService {
     group: CompetitionGroup,
     category: Category,
   ): Competition {
-    const results = group.rounds[group.currentRound - 1].results;
+    if (competition.phase === "qualification") {
+      return QualificationService.nextRound(competition, group, category);
+    }
 
-    return {
-      ...competition,
-      groups: competition.groups.map((g) => {
-        if (g.id !== group.id) {
-          return g;
-        }
-
-        if (competition.phase === "qualification") {
-          if (group.currentRound === category.qualification.qualifyingRounds) {
-            return {
-              ...group,
-              currentRound: group.currentRound,
-              status: "finished",
-            };
-          }
-
-          return {
-            ...group,
-            currentRound: group.currentRound + 1,
-          };
-        }
-
-        return {
-          ...group,
-          currentRound: group.currentRound + 1,
-          rounds: [
-            ...group.rounds,
-            {
-              number: group.currentRound + 1,
-              results: results.filter(everyPositive).map((result) => ({
-                registrationId: result.registrationId,
-                competitors: result.competitors.map((competitor) => ({
-                  ...competitor,
-                  shot: null,
-                })),
-              })),
-            },
-          ],
-        };
-      }),
-    };
+    return FinalService.nextRound(competition, group);
   }
 
   static addRegistration(
