@@ -10,7 +10,7 @@ import {
   CardContent,
   CardFooter,
   CardHeader,
-  CardTitle
+  CardTitle,
 } from "../ui/card";
 import { CategoryBadges } from "./category-badges";
 
@@ -25,7 +25,7 @@ export function CategoryCard({ category, children }: CategoryCardProps) {
 
   const registrations = registrationsByCompetition(category.id);
 
-  const phase = formatPhase(competition.phase);
+  const phase = formatPhase(competition?.phase);
 
   return (
     <Card>
@@ -34,7 +34,7 @@ export function CategoryCard({ category, children }: CategoryCardProps) {
         <CardAction>
           <Badge
             variant={"secondary"}
-            className={`${phase.color} font-semibold text-muted`}
+            className={`${phase.bg} ${phase.color} font-semibold`}
           >
             {phase.text}
           </Badge>

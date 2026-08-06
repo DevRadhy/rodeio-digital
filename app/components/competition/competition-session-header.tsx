@@ -17,7 +17,7 @@ export function CompetitionSessionHeader({
 }: CompetitionHeadeSessionrProps) {
   const navigation = useNavigate();
 
-  const phase = formatPhase(competition.phase);
+  const phase = formatPhase(competition?.phase);
 
   return (
     <div className="px-8 py-8">
@@ -31,7 +31,7 @@ export function CompetitionSessionHeader({
 
       <div className="flex items-center justify-between py-4">
         <h1 className="text-3xl font-bold">{category.name}</h1>
-        <Badge className={`${phase.color} font-semibold text-muted`}>
+        <Badge className={`${phase.bg} ${phase.color} font-semibold`}>
           {phase.text}
         </Badge>
       </div>

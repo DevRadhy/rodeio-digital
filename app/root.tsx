@@ -9,8 +9,6 @@ import {
 
 import { Toaster } from "sonner";
 import type { Route } from "./+types/root";
-import { AppSidebar } from "./components/app-sidebar";
-import { SidebarProvider } from "./components/ui/sidebar";
 import "./styles/globals.css";
 
 export const links: Route.LinksFunction = () => [
@@ -41,17 +39,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <SidebarProvider
-          style={
-            {
-              "--sidebar-width": "calc(var(--spacing) * 72)",
-              "--header-height": "calc(var(--spacing) * 12)",
-            } as React.CSSProperties
-          }
-        >
-          <AppSidebar />
-          <main className="w-full">{children}</main>
-        </SidebarProvider>
+        {children}
         <ScrollRestoration />
         <Scripts />
         <Toaster />

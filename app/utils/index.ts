@@ -74,24 +74,28 @@ export const formatPhase = (value: Phase) => {
     case "qualification":
       return {
         text: "Classificatórias",
-        color: "bg-amber-500",
+        bg: "bg-amber-500",
+        color: "text-muted"
       };
     case "final": {
       return {
         text: "Final",
-        color: "bg-emerald-500",
+        bg: "bg-emerald-500",
+        color: "text-muted"
       };
     }
     case "closed": {
       return {
         text: "Encerrada",
-        color: "bg-rose-500",
+        bg: "bg-rose-500",
+        color: "text-muted"
       };
     }
     default: {
       return {
         text: "Não Iniciada",
-        color: "bg-secondary",
+        bg: "bg-secondary",
+        color: "text-primary"
       };
     }
   }
