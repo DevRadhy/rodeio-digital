@@ -1,5 +1,5 @@
 import { Check, X } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import type { Shot } from "@/types/competition";
 
 interface ShotButtonProps {

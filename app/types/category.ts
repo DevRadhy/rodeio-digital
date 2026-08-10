@@ -10,10 +10,8 @@ export interface Category {
   competitorsPerRegistration: number;
   pricePerRegistration: number;
   qualification: Qualification;
-  final: {
-    duel: boolean;
-    groups: Group[];
-  };
+  duel: boolean;
+  groups: Group[];
 }
 
 interface Qualification {

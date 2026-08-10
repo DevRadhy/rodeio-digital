@@ -22,11 +22,6 @@ export const CategorySchema = z
         50,
         "O número máximo de competidores por inscrição é de 50 competidores.",
       ),
-
-    pricePerRegistration: z
-      .float32("Informe o preço por inscriçao.")
-      .min(0, "O preço mínimo para uma incrição não pode ser menor que R$0,00.")
-      .max(99999, "Preço de inscrição inválido."),
     qualification: z.object({
       qualifyingRounds: z
         .number("Informe o número de voltas de classificatória.")
@@ -43,42 +38,37 @@ export const CategorySchema = z
         ),
       elimination: z.boolean(),
     }),
-    final: z.object({
-      duel: z.boolean(),
-      groups: z.array(
-        z.object({
-          id: z.string(),
-          name: z
-            .string("Informe o nome do grupo.")
+    duel: z.boolean(),
+    groups: z.array(
+      z.object({
+        id: z.string(),
+        name: z
+          .string("Informe o nome do grupo.")
+          .max(24, "O tamanho máximo para o nome do grupo é de 24 caracteres."),
+        qualifyingShots: z.array(
+          z
+            .number(
+              "Você precisa informar o número de armadas de classificatória do grupo.",
+            )
+            .positive(
+              "O número de armadas de classificatória do grupo precisa ser maior que 0.",
+            )
+            .min(
+              1,
+              "O número mínimo de armadas de classificatória do grupo não pode ser menor que 1.",
+            )
             .max(
-              24,
-              "O tamanho máximo para o nome do grupo é de 24 caracteres.",
+              100,
+              "O número máximo de armadas de classificatória não pode ser maior 100.",
             ),
-          qualifyingShots: z.array(
-            z
-              .number(
-                "Você precisa informar o número de armadas de classificatória do grupo.",
-              )
-              .positive(
-                "O número de armadas de classificatória do grupo precisa ser maior que 0.",
-              )
-              .min(
-                1,
-                "O número mínimo de armadas de classificatória do grupo não pode ser menor que 1.",
-              )
-              .max(
-                100,
-                "O número máximo de armadas de classificatória não pode ser maior 100.",
-              ),
-          ),
-        }),
-      ),
-    }),
+        ),
+      }),
+    ),
   })
   .superRefine((data, ctx) => {
     const usedShots = new Map<number, number>();
 
-    data.final.groups.forEach((group, groupIndex) => {
+    data.groups.forEach((group, groupIndex) => {
       if (group.qualifyingShots.length === 0) {
         ctx.addIssue({
           code: "custom",

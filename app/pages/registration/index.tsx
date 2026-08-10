@@ -1,5 +1,5 @@
-import { CategoryCard } from "@/components/categories/category-card";
-import { RegistrationDialog } from "@/components/registrations/registration-dialog";
+import { CategoryCard } from "@/components/shared/categories/category-card";
+import { RegistrationDialog } from "@/components/shared/registrations/registration-dialog";
 import { Button } from "@/components/ui/button";
 import { useCategoryStore } from "@/stores/category";
 import type { Category } from "@/types/category";

@@ -1,9 +1,12 @@
+import { api } from "@/providers/api";
 import {
   CategorySchema,
   type CategorySchemaType,
 } from "@/schemas/category-schema";
 import { useCategoryStore } from "@/stores/category";
+import type { Category } from "@/types/category";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useFieldArray, useForm, type FieldErrors } from "react-hook-form";
 import { toast } from "sonner";
@@ -20,8 +23,23 @@ interface CategoryFormProps {
 }
 
 export function useCategoryForm({ onOpenChange }: CategoryFormProps) {
-  const { editingCategory, updateCategory, addCategory, setEditingCategory } =
+  const { editingCategory, setEditingCategory } =
     useCategoryStore();
+
+  const handleCategorySave = async (props: Category) => {
+    try {
+      const { data } = await api.post("/categories", props)
+
+      return data
+    } catch (error) {}
+  }
+    
+  const mutation = useMutation({
+    mutationFn: handleCategorySave,
+    onSuccess: (result, _variables, _onMutateResult, context) => {
+      context.client.setQueryData(['categories'], (old: any) => [...old, result])
+    }
+  })
 
   const form = useForm<CategorySchemaType>({
     resolver: zodResolver(CategorySchema),
@@ -32,56 +50,47 @@ export function useCategoryForm({ onOpenChange }: CategoryFormProps) {
         qualifyingRounds: 1,
         elimination: true,
       },
-      final: {
-        duel: false,
-        groups: [DEFAULT_FINAL_GROUP()],
-      },
+      duel: false,
+      groups: [DEFAULT_FINAL_GROUP()],
     },
   });
 
   const { fields, append, remove, replace } = useFieldArray({
     control: form.control,
-    name: "final.groups",
+    name: "groups",
   });
 
-  const duel = form.watch("final.duel");
+  const duel = form.watch("duel");
 
   const createDefaultCategory = (): CategorySchemaType => ({
     name: "",
     competitorsPerRegistration: 1,
-    pricePerRegistration: 0,
     qualification: {
       qualifyingRounds: 1,
       elimination: true,
     },
-    final: {
-      duel: false,
-      groups: [DEFAULT_FINAL_GROUP()],
-    },
+    duel: false,
+    groups: [DEFAULT_FINAL_GROUP()],
   });
 
   useEffect(() => {
     form.reset(editingCategory ?? createDefaultCategory());
   }, [editingCategory, open]);
 
-  const onSubmit = (data: CategorySchemaType) => {
+  const onSubmit = (data: Category) => {
     if (editingCategory) {
-      updateCategory({
-        ...editingCategory,
-        ...data,
-      });
-    } else {
-      addCategory({
-        id: v4(),
-        ...data,
-      });
+      return 
     }
+
+    mutation.mutateAsync(data)
 
     onClose();
   };
 
   const onError = (validationError: FieldErrors<CategorySchemaType>) => {
     const errors = Object.values(validationError);
+
+    console.log(validationError)
 
     return toast.error(errors[0].message);
   };
@@ -99,14 +108,14 @@ export function useCategoryForm({ onOpenChange }: CategoryFormProps) {
           id: v4(),
           name: "Final",
           qualifyingShots:
-            form.getValues("final.groups.0.qualifyingShots") ?? [],
+            form.getValues("groups.0.qualifyingShots") ?? [],
         },
       ]);
 
       return;
     }
 
-    const groups = form.getValues("final.groups");
+    const groups = form.getValues("groups");
 
     if (groups.length === 1 && groups[0].name === "Final") {
       replace([

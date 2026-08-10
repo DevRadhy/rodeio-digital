@@ -2,7 +2,7 @@ import { CompetitionService } from "@/services/competition-service";
 import { useCompetitionSessionStore } from "@/stores/competition";
 import type { Competition, CompetitionGroup } from "@/types/competition";
 import { ChevronRight } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import type { Category } from "@/types/category";
 
 interface CompetitionFooterProps {
@@ -27,7 +27,8 @@ export function CompetitionFooter({
   };
 
   const isFinished = group.status === "finished";
-  const isLastRound = group.currentRound === category.qualification.qualifyingRounds;
+  const isLastRound =
+    group.currentRound === category.qualification.qualifyingRounds;
 
   return (
     <div>

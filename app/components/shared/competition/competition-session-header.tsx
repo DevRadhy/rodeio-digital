@@ -3,8 +3,8 @@ import type { Competition } from "@/types/competition";
 import { formatPhase } from "@/utils";
 import { ChevronLeft } from "lucide-react";
 import { useNavigate } from "react-router";
-import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
+import { Badge } from "../../ui/badge";
+import { Button } from "../../ui/button";
 
 interface CompetitionHeadeSessionrProps {
   competition: Competition;

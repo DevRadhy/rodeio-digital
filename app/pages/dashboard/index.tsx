@@ -1,4 +1,4 @@
-import { SectionCards } from "@/components/dashboard/section-cards";
+import { SectionCards } from "@/components/shared/dashboard/section-cards";
 
 export default function Dashboard() {
   return (

@@ -1,4 +1,4 @@
-import FormInput from "@/components/form/form-input";
+import FormInput from "@/components/shared/form/form-input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { FieldGroup } from "@/components/ui/field";
@@ -11,7 +11,6 @@ import type {
   UseFieldArrayAppend,
   UseFieldArrayRemove,
 } from "react-hook-form";
-import { toast } from "sonner";
 import { v4 } from "uuid";
 import { FormQualifyingShots } from "./form-qualifying-shots";
 
@@ -37,7 +36,7 @@ export function FormCategoryFinal({
           <CardContent>
             <FormInput
               control={control}
-              name={`final.groups.${index}.name`}
+              name={`groups.${index}.name`}
               label="Nome da Força"
               description="Nome da Força de classificação."
               type="text"
@@ -46,7 +45,7 @@ export function FormCategoryFinal({
 
             <FormQualifyingShots
               control={control}
-              name={`final.groups.${index}.qualifyingShots`}
+              name={`groups.${index}.qualifyingShots`}
             />
           </CardContent>
           <CardFooter>

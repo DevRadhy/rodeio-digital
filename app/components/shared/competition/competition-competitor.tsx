@@ -1,6 +1,6 @@
 import type { Competitor } from "@/types/competitor";
-import { ShotButtons } from "../competition/shot-buttons";
-import { Item, ItemActions, ItemContent, ItemTitle } from "../ui/item";
+import { ShotButtons } from "./shot-buttons";
+import { Item, ItemActions, ItemContent, ItemTitle } from "../../ui/item";
 import type { Registration } from "@/types/registration";
 import type { Competition, CompetitionGroup, Shot } from "@/types/competition";
 import { CompetitionService } from "@/services/competition-service";
@@ -33,8 +33,8 @@ export function CompetitionCompetitor({
     );
 
     if (!categoryId) return;
-    
-    const session = getSession(categoryId)
+
+    const session = getSession(categoryId);
 
     const newSession: Competition = {
       ...session,
@@ -43,9 +43,9 @@ export function CompetitionCompetitor({
           return group;
         }
 
-        return updatedGroup
-      })
-    }
+        return updatedGroup;
+      }),
+    };
 
     updateCompetition(newSession);
   };

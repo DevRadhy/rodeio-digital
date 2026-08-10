@@ -1,5 +1,5 @@
-import { AppSidebar } from "@/components/app-sidebar";
-import { SiteHeader } from "@/components/dashboard/site-header";
+import { AppSidebar } from "@/components/shared/app-sidebar";
+import { SiteHeader } from "@/components/shared/dashboard/site-header";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import type { ReactNode } from "react";
 import { Outlet } from "react-router";

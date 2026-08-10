@@ -1,7 +1,7 @@
 import { useCompetition } from "@/hooks/use-competition";
 import { useParams } from "react-router";
-import { CompetitionSessionHeader } from "../../components/competition/competition-session-header";
-import { CompetitionView } from "@/components/competition/competition-view";
+import { CompetitionSessionHeader } from "../../components/shared/competition/competition-session-header";
+import { CompetitionView } from "@/components/shared/competition/competition-view";
 
 export default function CompetitionRun() {
   const { categoryId } = useParams();

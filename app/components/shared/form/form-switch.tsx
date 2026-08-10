@@ -4,8 +4,8 @@ import {
   type FieldPath,
   type FieldValues,
 } from "react-hook-form";
-import { Field, FieldError, FieldLabel } from "../ui/field";
-import { Switch } from "../ui/switch";
+import { Field, FieldError, FieldLabel } from "../../ui/field";
+import { Switch } from "../../ui/switch";
 
 type FormSwitchProps<T extends FieldValues> = {
   control: Control<T>;

@@ -1,5 +1,5 @@
-import FormInput from "@/components/form/form-input";
-import FormSwitch from "@/components/form/form-switch";
+import FormInput from "@/components/shared/form/form-input";
+import FormSwitch from "@/components/shared/form/form-switch";
 import { FieldGroup } from "@/components/ui/field";
 import type { CategorySchemaType } from "@/schemas/category-schema";
 import type { Control } from "react-hook-form";
@@ -25,7 +25,7 @@ export function FormCategoryQualification({
 
       <FormSwitch
         control={control}
-        name="final.duel"
+        name="duel"
         label="Duelo"
         onCheckedChange={onDuelChange}
       />

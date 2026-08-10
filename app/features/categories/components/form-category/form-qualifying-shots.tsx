@@ -1,3 +1,12 @@
+import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 import type { Group } from "@/types/category";
 import { Plus, X } from "lucide-react";
 import { useState } from "react";
@@ -9,15 +18,6 @@ import {
   type FieldPath,
   type FieldValues,
 } from "react-hook-form";
-import { Button } from "../../ui/button";
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldLabel,
-} from "../../ui/field";
-import { Input } from "../../ui/input";
-import { ButtonGroup } from "@/components/ui/button-group";
 
 type FormQualifyingShotsProps<T extends FieldValues> = {
   control: Control<T>;
@@ -116,7 +116,9 @@ export function FormQualifyingShots<T extends FieldValues>({
                   <Plus /> Adicionar
                 </Button>
               </ButtonGroup>
-              <FieldDescription>Armadas necessárias para classificar no grupo.</FieldDescription>
+              <FieldDescription>
+                Armadas necessárias para classificar no grupo.
+              </FieldDescription>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}

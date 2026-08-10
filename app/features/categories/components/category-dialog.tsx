@@ -8,12 +8,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useCategoryForm } from "@/hooks/use-category-form";
+import { useCategoryForm } from "@/features/categories/hooks/use-category-form";
 import { FormProvider } from "react-hook-form";
 import { FormCategoryFinal } from "./form-category/form-category-final";
 import { FormCategoryGeneral } from "./form-category/form-category-general";
 import { FormCategoryQualification } from "./form-category/form-category-qualification";
-import { FieldGroup } from "../ui/field";
+import { FieldGroup } from "../../../components/ui/field";
 
 interface CategoryDialogProps {
   open: boolean;

@@ -1,6 +1,6 @@
 import type { Registration } from "@/types/registration";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { ItemGroup } from "../ui/item";
+import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
+import { ItemGroup } from "../../ui/item";
 import type { CompetitionGroup } from "@/types/competition";
 import { CompetitionCompetitor } from "../competition/competition-competitor";
 
@@ -9,7 +9,10 @@ interface RegistrationCardProps {
   group: CompetitionGroup;
 }
 
-export function RegistrationCard({ registration, group }: RegistrationCardProps) {
+export function RegistrationCard({
+  registration,
+  group,
+}: RegistrationCardProps) {
   return (
     <Card size="sm">
       <CardHeader>

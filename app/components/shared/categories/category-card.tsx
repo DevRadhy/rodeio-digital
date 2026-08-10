@@ -3,7 +3,7 @@ import { useRegistrationStore } from "@/stores/registration";
 import type { Category } from "@/types/category";
 import { formatPhase } from "@/utils";
 import type { ReactNode } from "react";
-import { Badge } from "../ui/badge";
+import { Badge } from "../../ui/badge";
 import {
   Card,
   CardAction,
@@ -11,7 +11,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
+} from "../../ui/card";
 import { CategoryBadges } from "./category-badges";
 
 interface CategoryCardProps {

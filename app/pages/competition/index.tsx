@@ -1,4 +1,4 @@
-import { CategoryCard } from "@/components/categories/category-card";
+import { CategoryCard } from "@/components/shared/categories/category-card";
 import { Button } from "@/components/ui/button";
 import { CompetitionService } from "@/services/competition-service";
 import { useCategoryStore } from "@/stores/category";

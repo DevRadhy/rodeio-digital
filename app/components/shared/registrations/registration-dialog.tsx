@@ -27,7 +27,7 @@ import { v4 } from "uuid";
 import {
   RegistrationSchema,
   type RegistrationSchemaType,
-} from "../../schemas/registration-schema";
+} from "../../../schemas/registration-schema";
 import FormInput from "../form/form-input";
 
 interface RegistrationDialogProps {
