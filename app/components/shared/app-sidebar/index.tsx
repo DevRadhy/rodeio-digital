@@ -7,24 +7,13 @@ import {
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
-  SidebarMenuItem
+  SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import {
-  Eclipse,
-  Gauge,
-  Gavel,
-  LayoutList,
-  Users
-} from "lucide-react";
+import { Eclipse, Gavel, LayoutList, Users } from "lucide-react";
 import { useLocation, useNavigate } from "react-router";
 
 const data = {
   navMain: [
-    {
-      title: "Dashboard",
-      icon: Gauge,
-      href: "/dashboard",
-    },
     {
       title: "Modalidades",
       icon: LayoutList,
