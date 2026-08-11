@@ -1,18 +1,17 @@
+import { useFormContext } from "react-hook-form";
 import FormInput from "@/components/shared/form/form-input";
 import FormSwitch from "@/components/shared/form/form-switch";
 import { FieldGroup } from "@/components/ui/field";
-import type { CategorySchemaType } from "@/schemas/category-schema";
-import type { Control } from "react-hook-form";
 
 interface FormCategoryQualificationProps {
-  control: Control<CategorySchemaType>;
   onDuelChange: (checked: boolean) => void;
 }
 
 export function FormCategoryQualification({
-  control,
   onDuelChange,
 }: FormCategoryQualificationProps) {
+  const { control } = useFormContext();
+
   return (
     <FieldGroup>
       <FormInput

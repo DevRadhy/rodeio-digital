@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router";
 import { CategoryCard } from "@/components/shared/categories/category-card";
 import { Button } from "@/components/ui/button";
 import { CompetitionService } from "@/services/competition-service";
@@ -5,7 +6,6 @@ import { useCategoryStore } from "@/stores/category";
 import { useCompetitionSessionStore } from "@/stores/competition";
 import { useRegistrationStore } from "@/stores/registration";
 import type { Category } from "@/types/category";
-import { useNavigate } from "react-router";
 
 export default function Competition() {
   const { categories } = useCategoryStore();

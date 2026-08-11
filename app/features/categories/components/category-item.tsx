@@ -1,4 +1,4 @@
-import { Alert } from "@/features/categories/components/alert-dialog";
+import { Swords, Users } from "lucide-react";
 import { CategoryBadges } from "@/components/shared/categories/category-badges";
 import {
   Item,
@@ -8,8 +8,8 @@ import {
   ItemMedia,
   ItemTitle,
 } from "@/components/ui/item";
+import { Alert } from "@/features/categories/components/alert-dialog";
 import type { Category } from "@/types/category";
-import { Swords, Users } from "lucide-react";
 
 interface CategoryItemProps {
   category: Category;

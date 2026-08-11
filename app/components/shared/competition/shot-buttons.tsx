@@ -1,6 +1,6 @@
 import { Check, X } from "lucide-react";
-import { Button } from "../../ui/button";
 import type { Shot } from "@/types/competition";
+import { Button } from "../../ui/button";
 
 interface ShotButtonProps {
   value: Shot | null;

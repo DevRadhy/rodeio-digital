@@ -8,13 +8,12 @@ export interface Category {
   id: string;
   name: string;
   competitorsPerRegistration: number;
-  pricePerRegistration: number;
   qualification: Qualification;
   duel: boolean;
   groups: Group[];
 }
 
-interface Qualification {
+export interface Qualification {
   qualifyingRounds: number;
   elimination: boolean;
 }

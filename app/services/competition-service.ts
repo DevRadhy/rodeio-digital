@@ -1,3 +1,4 @@
+import { v4 } from "uuid";
 import type { Category } from "@/types/category";
 import type {
   Competition,
@@ -8,10 +9,9 @@ import type {
 } from "@/types/competition";
 import type { Registration } from "@/types/registration";
 import { everyPositive, getRegistrationChuncks } from "@/utils";
-import { v4 } from "uuid";
-import { QualificationService } from "./qualification-service";
-import { ForceService } from "./force-service";
 import { FinalService } from "./final-service";
+import { ForceService } from "./force-service";
+import { QualificationService } from "./qualification-service";
 
 export class CompetitionService {
   static create(

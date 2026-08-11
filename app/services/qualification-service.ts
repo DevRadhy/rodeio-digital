@@ -21,7 +21,7 @@ export class QualificationService {
   static finish(group: CompetitionGroup): QualificationResult[] {
     return group.registrations.map((registration) => ({
       registration,
-      shots: this.getShots(group, registration.id),
+      shots: QualificationService.getShots(group, registration.id),
     }));
   }
 

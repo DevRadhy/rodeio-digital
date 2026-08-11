@@ -1,6 +1,6 @@
-import type { Competition } from "@/types/competition";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
+import type { Competition } from "@/types/competition";
 
 interface CompetitionSessionState {
   sessions: Record<string, Competition>;

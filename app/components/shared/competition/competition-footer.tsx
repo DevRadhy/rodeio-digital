@@ -1,9 +1,9 @@
+import { ChevronRight } from "lucide-react";
 import { CompetitionService } from "@/services/competition-service";
 import { useCompetitionSessionStore } from "@/stores/competition";
-import type { Competition, CompetitionGroup } from "@/types/competition";
-import { ChevronRight } from "lucide-react";
-import { Button } from "../../ui/button";
 import type { Category } from "@/types/category";
+import type { Competition, CompetitionGroup } from "@/types/competition";
+import { Button } from "../../ui/button";
 
 interface CompetitionFooterProps {
   competition: Competition;

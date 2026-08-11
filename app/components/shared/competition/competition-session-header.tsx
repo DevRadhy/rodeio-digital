@@ -1,8 +1,8 @@
+import { ChevronLeft } from "lucide-react";
+import { useNavigate } from "react-router";
 import type { Category } from "@/types/category";
 import type { Competition } from "@/types/competition";
 import { formatPhase } from "@/utils";
-import { ChevronLeft } from "lucide-react";
-import { useNavigate } from "react-router";
 import { Badge } from "../../ui/badge";
 import { Button } from "../../ui/button";
 

@@ -1,17 +1,17 @@
-import { CategoryDialog } from "@/features/categories/components/category-dialog";
-import { CategoryItem } from "@/features/categories/components/category-item";
-import { Button } from "@/components/ui/button";
-import { ItemGroup } from "@/components/ui/item";
-import { useCategoryStore } from "@/stores/category";
-import type { Category } from "@/types/category";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import { useState } from "react";
-import type { Route } from "../../pages/categories/+types";
+import { Button } from "@/components/ui/button";
+import { ItemGroup } from "@/components/ui/item";
+import { CategoryDialog } from "@/features/categories/components/category-dialog";
+import { CategoryItem } from "@/features/categories/components/category-item";
+import {
+  deleteCategory,
+  listCategories,
+} from "@/features/categories/services/category-service";
 import { EmptyCategories } from "./empty";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { api } from "@/providers/api";
 
-export function meta({}: Route.MetaArgs) {
+export function meta() {
   return [
     { title: "Modalidades" },
     {
@@ -22,57 +22,33 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Categories() {
-  const { setEditingCategory } = useCategoryStore();
+  const [selectedId, setSelectedId] = useState(null);
   const [open, setOpen] = useState<boolean>(false);
 
-  const fetchCategories = async (): Promise<Category[]> => {
-    try {
-      const { data } = await api.get("/categories");
+  const queryClient = useQueryClient();
 
-      return data;
-    } catch (error) {
-      console.error(error);
-      return [];
-    }
-  };
-
-  const deleteCategory = async (categoryId: string) => {
-    try {
-      return await api.delete(`/categories/${categoryId}`);
-    } catch (error) {
-      console.error(error);
-      return;
-    }
-  };
-
-  const { data } = useQuery({
+  const {
+    data: categories = [],
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["categories"],
-    queryFn: fetchCategories,
+    queryFn: listCategories,
   });
 
-  const mutation = useMutation({
+  const deleteMutation = useMutation({
     mutationFn: deleteCategory,
-    onSuccess: (_result, variables, _onMutateResult, context) => {
-      context.client.setQueryData(["categories"], (old: any) =>
-        old.filter((state: any) => state.id !== variables),
-      );
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
+      if (selectedId) setSelectedId(null);
     },
   });
 
-  const onEdit = (category: Category) => {
-    setEditingCategory(category);
-    setOpen(true);
-  };
-
-  const onDelete = (categoryId: string) => {
-    mutation.mutateAsync(categoryId);
-  };
-
-  if (!data) return;
+  if (isLoading || error) return;
 
   return (
     <>
-      {data.length ? (
+      {categories.length ? (
         <>
           <div className="flex justify-end">
             <Button onClick={() => setOpen(true)}>
@@ -81,11 +57,11 @@ export default function Categories() {
           </div>
 
           <ItemGroup className="flex flex-col gap-4 p-4">
-            {data.map((category) => (
+            {categories.map((category) => (
               <CategoryItem
                 key={category.id}
                 category={category}
-                onDelete={() => onDelete(category.id)}
+                onDelete={() => deleteMutation.mutate(category.id)}
               />
             ))}
           </ItemGroup>

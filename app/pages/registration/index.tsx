@@ -1,10 +1,10 @@
+import { Plus } from "lucide-react";
+import { useState } from "react";
 import { CategoryCard } from "@/components/shared/categories/category-card";
 import { RegistrationDialog } from "@/components/shared/registrations/registration-dialog";
 import { Button } from "@/components/ui/button";
 import { useCategoryStore } from "@/stores/category";
 import type { Category } from "@/types/category";
-import { Plus } from "lucide-react";
-import { useState } from "react";
 
 export default function Registration() {
   const categories = useCategoryStore((state) => state.categories);

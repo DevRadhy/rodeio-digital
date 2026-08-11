@@ -1,3 +1,13 @@
+import { zodResolver as ZodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
+import {
+  type FieldErrors,
+  type SubmitHandler,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
+import { toast } from "sonner";
+import { v4 } from "uuid";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -14,16 +24,6 @@ import { useCompetitionSessionStore } from "@/stores/competition";
 import { useRegistrationStore } from "@/stores/registration";
 import type { Category } from "@/types/category";
 import { formatNumber } from "@/utils";
-import { zodResolver as ZodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
-import {
-  useFieldArray,
-  useForm,
-  type FieldErrors,
-  type SubmitHandler,
-} from "react-hook-form";
-import { toast } from "sonner";
-import { v4 } from "uuid";
 import {
   RegistrationSchema,
   type RegistrationSchemaType,

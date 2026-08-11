@@ -1,8 +1,8 @@
+import type { ReactNode } from "react";
 import { useCompetition } from "@/hooks/use-competition";
 import { useRegistrationStore } from "@/stores/registration";
 import type { Category } from "@/types/category";
 import { formatPhase } from "@/utils";
-import type { ReactNode } from "react";
 import { Badge } from "../../ui/badge";
 import {
   Card,

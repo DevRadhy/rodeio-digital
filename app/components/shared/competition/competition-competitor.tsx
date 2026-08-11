@@ -1,11 +1,11 @@
-import type { Competitor } from "@/types/competitor";
-import { ShotButtons } from "./shot-buttons";
-import { Item, ItemActions, ItemContent, ItemTitle } from "../../ui/item";
-import type { Registration } from "@/types/registration";
-import type { Competition, CompetitionGroup, Shot } from "@/types/competition";
+import { useParams } from "react-router";
 import { CompetitionService } from "@/services/competition-service";
 import { useCompetitionSessionStore } from "@/stores/competition";
-import { useParams } from "react-router";
+import type { Competition, CompetitionGroup, Shot } from "@/types/competition";
+import type { Competitor } from "@/types/competitor";
+import type { Registration } from "@/types/registration";
+import { Item, ItemActions, ItemContent, ItemTitle } from "../../ui/item";
+import { ShotButtons } from "./shot-buttons";
 
 interface CompetitionCompetitorProps {
   competitor: Competitor;

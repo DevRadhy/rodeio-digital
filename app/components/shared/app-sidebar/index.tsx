@@ -1,3 +1,5 @@
+import { Eclipse, Gavel, LayoutList, Users } from "lucide-react";
+import { useLocation, useNavigate } from "react-router";
 import {
   Sidebar,
   SidebarContent,
@@ -9,8 +11,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Eclipse, Gavel, LayoutList, Users } from "lucide-react";
-import { useLocation, useNavigate } from "react-router";
 
 const data = {
   navMain: [

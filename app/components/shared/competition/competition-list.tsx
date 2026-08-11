@@ -11,9 +11,9 @@ export function CompetitionList({ group }: CompetitionListProps) {
       {group.rounds[group.currentRound - 1].results.map((result) => (
         <RegistrationCard
           key={result.registrationId}
-          registration={group.registrations.find(
-            (r) => r.id === result.registrationId,
-          )!}
+          registration={
+            group.registrations.find((r) => r.id === result.registrationId)!
+          }
           group={group}
         />
       ))}

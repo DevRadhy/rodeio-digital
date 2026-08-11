@@ -1,3 +1,12 @@
+import { Plus, X } from "lucide-react";
+import { useState } from "react";
+import {
+  Controller,
+  type FieldPath,
+  type FieldValues,
+  useFormContext,
+  useWatch,
+} from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import {
@@ -8,27 +17,15 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import type { Group } from "@/types/category";
-import { Plus, X } from "lucide-react";
-import { useState } from "react";
-import {
-  Controller,
-  useFormContext,
-  useWatch,
-  type Control,
-  type FieldPath,
-  type FieldValues,
-} from "react-hook-form";
 
 type FormQualifyingShotsProps<T extends FieldValues> = {
-  control: Control<T>;
   name: FieldPath<T>;
 };
 
 export function FormQualifyingShots<T extends FieldValues>({
-  control,
   name,
 }: FormQualifyingShotsProps<T>) {
-  const { setValue, watch, setError } = useFormContext();
+  const { setValue, watch, setError, control } = useFormContext();
 
   const groupRounds = useWatch({
     control,
@@ -127,7 +124,11 @@ export function FormQualifyingShots<T extends FieldValues>({
 
       <div className="flex flex-wrap gap-2">
         {groupRounds.map((round: number, index: number) => (
-          <Button onClick={() => removeValue(index)} variant={"secondary"}>
+          <Button
+            key={round}
+            onClick={() => removeValue(index)}
+            variant={"secondary"}
+          >
             {round}
             <X />
           </Button>

@@ -1,34 +1,37 @@
+import { Plus, Trash2 } from "lucide-react";
+import {
+  type FieldArrayWithId,
+  type UseFieldArrayAppend,
+  type UseFieldArrayRemove,
+  useFormContext,
+  useWatch,
+} from "react-hook-form";
 import FormInput from "@/components/shared/form/form-input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { FieldGroup } from "@/components/ui/field";
-import type { CategorySchemaType } from "@/schemas/category-schema";
+import type { CreateCategoryInput } from "@/schemas/category-schema";
 import { getGroupName } from "@/utils";
-import { Plus, Trash2 } from "lucide-react";
-import type {
-  Control,
-  FieldArrayWithId,
-  UseFieldArrayAppend,
-  UseFieldArrayRemove,
-} from "react-hook-form";
-import { v4 } from "uuid";
 import { FormQualifyingShots } from "./form-qualifying-shots";
 
 interface FormCategoryFinalProps {
-  control: Control<CategorySchemaType>;
-  fields: FieldArrayWithId<CategorySchemaType>[];
-  duel: boolean;
+  fields: FieldArrayWithId<CreateCategoryInput>[];
   remove: UseFieldArrayRemove;
-  append: UseFieldArrayAppend<CategorySchemaType>;
+  append: UseFieldArrayAppend<CreateCategoryInput>;
 }
 
 export function FormCategoryFinal({
-  control,
   fields,
-  duel,
   remove,
   append,
 }: FormCategoryFinalProps) {
+  const { control } = useFormContext();
+
+  const duel = useWatch({
+    name: "duel",
+    control,
+  });
+
   return (
     <FieldGroup>
       {fields.map((field, index) => (
@@ -43,10 +46,7 @@ export function FormCategoryFinal({
               placeholder={`padrão Força ${getGroupName(index)}`}
             />
 
-            <FormQualifyingShots
-              control={control}
-              name={`groups.${index}.qualifyingShots`}
-            />
+            <FormQualifyingShots name={`groups.${index}.qualifyingShots`} />
           </CardContent>
           <CardFooter>
             {fields.length > 1 && (
@@ -63,21 +63,19 @@ export function FormCategoryFinal({
         </Card>
       ))}
 
-      {duel && (
-        <Button
-          type="button"
-          variant={"ghost"}
-          onClick={() =>
-            append({
-              id: v4(),
-              name: getGroupName(fields.length),
-              qualifyingShots: [],
-            })
-          }
-        >
-          <Plus /> Adicionar Força
-        </Button>
-      )}
+      <Button
+        type="button"
+        variant={"outline"}
+        disabled={!duel}
+        onClick={() =>
+          append({
+            name: getGroupName(fields.length),
+            qualifyingShots: [],
+          })
+        }
+      >
+        <Plus /> Adicionar Força
+      </Button>
     </FieldGroup>
   );
 }

@@ -1,16 +1,14 @@
-import { api } from "@/providers/api";
-import {
-  CategorySchema,
-  type CategorySchemaType,
-} from "@/schemas/category-schema";
-import { useCategoryStore } from "@/stores/category";
-import type { Category } from "@/types/category";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
-import { useFieldArray, useForm, type FieldErrors } from "react-hook-form";
+import { type FieldErrors, useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { v4 } from "uuid";
+import {
+  CategorySchema,
+  type CreateCategoryInput,
+} from "@/schemas/category-schema";
+import type { Category } from "@/types/category";
+import { createCategory } from "../services/category-service";
 
 const DEFAULT_FINAL_GROUP = () => ({
   id: v4(),
@@ -23,25 +21,9 @@ interface CategoryFormProps {
 }
 
 export function useCategoryForm({ onOpenChange }: CategoryFormProps) {
-  const { editingCategory, setEditingCategory } =
-    useCategoryStore();
+  const queryClient = useQueryClient();
 
-  const handleCategorySave = async (props: Category) => {
-    try {
-      const { data } = await api.post("/categories", props)
-
-      return data
-    } catch (error) {}
-  }
-    
-  const mutation = useMutation({
-    mutationFn: handleCategorySave,
-    onSuccess: (result, _variables, _onMutateResult, context) => {
-      context.client.setQueryData(['categories'], (old: any) => [...old, result])
-    }
-  })
-
-  const form = useForm<CategorySchemaType>({
+  const form = useForm<CreateCategoryInput>({
     resolver: zodResolver(CategorySchema),
     defaultValues: {
       name: "",
@@ -55,82 +37,69 @@ export function useCategoryForm({ onOpenChange }: CategoryFormProps) {
     },
   });
 
+  const { reset, control, getValues } = form;
+
   const { fields, append, remove, replace } = useFieldArray({
-    control: form.control,
+    control: control,
     name: "groups",
   });
 
-  const duel = form.watch("duel");
+  const createMutation = useMutation({
+    mutationFn: createCategory,
+    onSuccess: (data, _variables, _onMutateResult, context) => {
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
 
-  const createDefaultCategory = (): CategorySchemaType => ({
-    name: "",
-    competitorsPerRegistration: 1,
-    qualification: {
-      qualifyingRounds: 1,
-      elimination: true,
+      context.client.setQueryData(["categories"], (old: Category[]) => [
+        ...old,
+        data,
+      ]);
+
+      onClose();
     },
-    duel: false,
-    groups: [DEFAULT_FINAL_GROUP()],
   });
 
-  useEffect(() => {
-    form.reset(editingCategory ?? createDefaultCategory());
-  }, [editingCategory, open]);
-
-  const onSubmit = (data: Category) => {
-    if (editingCategory) {
-      return 
-    }
-
-    mutation.mutateAsync(data)
-
-    onClose();
+  const onSubmit = (data: CreateCategoryInput) => {
+    createMutation.mutate(data);
   };
 
-  const onError = (validationError: FieldErrors<CategorySchemaType>) => {
+  const onError = (validationError: FieldErrors<CreateCategoryInput>) => {
     const errors = Object.values(validationError);
 
-    console.log(validationError)
+    console.log(validationError);
 
     return toast.error(errors[0].message);
   };
 
   const onClose = () => {
-    setEditingCategory(undefined);
     onOpenChange(false);
-    form.reset();
+    reset();
   };
 
   const onDuelChange = (checked: boolean) => {
     if (!checked) {
       replace([
         {
-          id: v4(),
           name: "Final",
-          qualifyingShots:
-            form.getValues("groups.0.qualifyingShots") ?? [],
+          qualifyingShots: getValues("groups.0.qualifyingShots") ?? [],
         },
       ]);
 
       return;
     }
 
-    const groups = form.getValues("groups");
+    const groups = getValues("groups");
 
     if (groups.length === 1 && groups[0].name === "Final") {
       replace([
         {
-          id: v4(),
           name: "A",
           qualifyingShots: [],
         },
         {
-          id: v4(),
           name: "B",
           qualifyingShots: [],
         },
         {
-          id: v4(),
           name: "C",
           qualifyingShots: [],
         },
@@ -141,7 +110,6 @@ export function useCategoryForm({ onOpenChange }: CategoryFormProps) {
   return {
     form,
     fields,
-    duel,
     append,
     remove,
     onSubmit,

@@ -22,7 +22,7 @@ export class FinalService {
       currentRound: 1,
       status: "running",
       registrations: group.registrations,
-      rounds: [this.createRound(1, group.registrations)],
+      rounds: [FinalService.createRound(1, group.registrations)],
     }));
   }
 
@@ -33,7 +33,7 @@ export class FinalService {
     return {
       number,
       results: registrations.map((registration) =>
-        this.createResult(registration),
+        FinalService.createResult(registration),
       ),
     };
   }

@@ -1,5 +1,5 @@
-import type { Registration } from "@/types/registration";
 import { create } from "zustand";
+import type { Registration } from "@/types/registration";
 
 interface RegistrationsState {
   registrations: Registration[];
@@ -7,14 +7,16 @@ interface RegistrationsState {
   registrationsByCompetition: (categoryId: string) => Registration[];
 }
 
-export const useRegistrationStore = create<RegistrationsState>()((set, get) => ({
-  registrations: [],
-  addRegistration: (newRegistration) =>
-    set((state) => ({
-      registrations: [...state.registrations, newRegistration],
-    })),
-  registrationsByCompetition: (categoryId) =>
-    get().registrations.filter(
-      (registration) => registration.categoryId === categoryId,
-    ),
-}));
+export const useRegistrationStore = create<RegistrationsState>()(
+  (set, get) => ({
+    registrations: [],
+    addRegistration: (newRegistration) =>
+      set((state) => ({
+        registrations: [...state.registrations, newRegistration],
+      })),
+    registrationsByCompetition: (categoryId) =>
+      get().registrations.filter(
+        (registration) => registration.categoryId === categoryId,
+      ),
+  }),
+);

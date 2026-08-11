@@ -1,3 +1,4 @@
+import { FileCog } from "lucide-react";
 import {
   Empty,
   EmptyContent,
@@ -6,7 +7,6 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
-import { FileCog } from "lucide-react";
 
 type EmptyProps = {
   children: React.ReactNode;

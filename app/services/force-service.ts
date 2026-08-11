@@ -1,10 +1,10 @@
+import { v4 } from "uuid";
 import type { Category } from "@/types/category";
 import type {
   ClassifiedGroup,
   QualificationResult,
 } from "@/types/qualification";
 import type { Registration } from "@/types/registration";
-import { v4 } from "uuid";
 
 export class ForceService {
   static classify(

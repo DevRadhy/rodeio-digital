@@ -1,3 +1,4 @@
+import { FormProvider } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,11 +10,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useCategoryForm } from "@/features/categories/hooks/use-category-form";
-import { FormProvider } from "react-hook-form";
+import { FieldGroup } from "../../../components/ui/field";
 import { FormCategoryFinal } from "./form-category/form-category-final";
 import { FormCategoryGeneral } from "./form-category/form-category-general";
 import { FormCategoryQualification } from "./form-category/form-category-qualification";
-import { FieldGroup } from "../../../components/ui/field";
 
 interface CategoryDialogProps {
   open: boolean;
@@ -24,7 +24,6 @@ export function CategoryDialog({ open, onOpenChange }: CategoryDialogProps) {
   const {
     form,
     fields,
-    duel,
     append,
     remove,
     onSubmit,
@@ -44,17 +43,12 @@ export function CategoryDialog({ open, onOpenChange }: CategoryDialogProps) {
           <div className="-mx-4 no-scrollbar max-h-[50vh] overflow-y-auto px-4 max-w-lg">
             <FormProvider {...form}>
               <FieldGroup>
-                <FormCategoryGeneral control={form.control} />
+                <FormCategoryGeneral />
 
-                <FormCategoryQualification
-                  control={form.control}
-                  onDuelChange={onDuelChange}
-                />
+                <FormCategoryQualification onDuelChange={onDuelChange} />
 
                 <FormCategoryFinal
-                  control={form.control}
                   fields={fields}
-                  duel={duel}
                   remove={remove}
                   append={append}
                 />

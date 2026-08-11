@@ -1,13 +1,10 @@
+import { useFormContext } from "react-hook-form";
 import FormInput from "@/components/shared/form/form-input";
 import { FieldGroup } from "@/components/ui/field";
-import type { CategorySchemaType } from "@/schemas/category-schema";
-import type { Control } from "react-hook-form";
 
-interface FormCategoryGeneralProps {
-  control: Control<CategorySchemaType>;
-}
+export function FormCategoryGeneral() {
+  const { control } = useFormContext();
 
-export function FormCategoryGeneral({ control }: FormCategoryGeneralProps) {
   return (
     <FieldGroup>
       <FormInput

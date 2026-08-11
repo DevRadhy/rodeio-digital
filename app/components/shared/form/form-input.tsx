@@ -1,6 +1,6 @@
 import {
-  Controller,
   type Control,
+  Controller,
   type FieldPath,
   type FieldValues,
 } from "react-hook-form";
