@@ -41,7 +41,7 @@ export function FormCategoryFinal({
               control={control}
               name={`groups.${index}.name`}
               label="Nome da Força"
-              description="Nome da Força de classificação."
+              description="Nome do grupo de classificação."
               type="text"
               placeholder={`padrão Força ${getGroupName(index)}`}
             />

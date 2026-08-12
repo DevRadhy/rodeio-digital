@@ -32,7 +32,7 @@ export function Alert({ onConfirm }: AlertProps) {
             Você deseja mesmo exluir essa modalidade?
           </AlertDialogTitle>
           <AlertDialogDescription>
-            Essa ação não poderá ser desfeira. A modalidade será exluida
+            Essa ação não poderá ser desfeita. A modalidade será exluida
             permanentemente.
           </AlertDialogDescription>
         </AlertDialogHeader>

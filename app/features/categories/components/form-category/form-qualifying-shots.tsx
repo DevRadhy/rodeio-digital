@@ -114,7 +114,7 @@ export function FormQualifyingShots<T extends FieldValues>({
                 </Button>
               </ButtonGroup>
               <FieldDescription>
-                Armadas necessárias para classificar no grupo.
+                Armadas necessárias para classificar.
               </FieldDescription>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
