@@ -8,7 +8,7 @@ const groupSchema = z.object({
 
   qualifyingShots: z
     .array(z.number().int().positive())
-    .min(1, "Informe pelo menos uma quantidade de armadas"),
+    .min(1, "Informe a quantidade de armadas"),
 });
 
 export const CategorySchema = z
@@ -18,15 +18,19 @@ export const CategorySchema = z
       .min(3, "O nome deve ter pelo menos 3 caracteres")
       .max(32, "O nome deve ter pelo menos 32 caracteres"),
     competitorsPerRegistration: z
-      .number()
+      .number("Informe o número de competidores")
       .positive()
       .min(1, "Informe pelo menos 1 competidor")
       .max(50, "Máximo de 50 competidores"),
     qualification: z.object({
       qualifyingRounds: z
-        .number()
+        .number("Informe o número de rodadas")
         .int()
         .min(1, "Informe pelo menos uma rodada"),
+      pelotonSize: z
+        .number("Informe o tamanho do pelotão")
+        .int()
+        .min(5, "O pelotão deve conter pelo menos 5 inscrições"),
       elimination: z.boolean(),
     }),
     duel: z.boolean(),
