@@ -14,13 +14,24 @@ export function FormCategoryQualification({
 
   return (
     <FieldGroup>
-      <FormInput
-        control={control}
-        name="qualification.qualifyingRounds"
-        label="Voltas de Classificatória"
-        description="Número de voltas de classificatórias."
-        type="number"
-      />
+      <div className="flex gap-4">
+        <FormInput
+          control={control}
+          name="qualification.rounds"
+          label="Voltas de Classificatória"
+          description="Número de voltas de classificatórias."
+          type="number"
+        />
+
+        <FormInput
+          control={control}
+          name="qualification.pelotonSize"
+          label="Tamanho do Pelotão"
+          description="Número de inscrições por pelotão."
+          placeholder="ex: 10, 20"
+          type="number"
+        />
+      </div>
 
       <FormSwitch
         control={control}

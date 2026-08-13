@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const RegistrationSchema = z.object({
   categoryId: z.string("Você precisa informar uma modalidade."),
+  number: z.number(),
   name: z
     .string()
     .min(2, "O nome da inscrição deve ter pelo menos 2 caracteres.")
@@ -18,4 +19,4 @@ export const RegistrationSchema = z.object({
   ),
 });
 
-export type RegistrationSchemaType = z.infer<typeof RegistrationSchema>;
+export type CreateRegistrationInput = z.infer<typeof RegistrationSchema>;

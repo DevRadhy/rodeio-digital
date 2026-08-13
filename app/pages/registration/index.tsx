@@ -1,16 +1,21 @@
+import { useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import { CategoryCard } from "@/components/shared/categories/category-card";
-import { RegistrationDialog } from "@/components/shared/registrations/registration-dialog";
 import { Button } from "@/components/ui/button";
-import { useCategoryStore } from "@/stores/category";
+import { listCategories } from "@/features/categories/services/category-service";
+import { RegistrationDialog } from "@/features/registration/components/registration-dialog";
 import type { Category } from "@/types/category";
 
 export default function Registration() {
-  const categories = useCategoryStore((state) => state.categories);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
     null,
   );
+
+  const { data: categories = [] } = useQuery({
+    queryKey: ["categories"],
+    queryFn: listCategories,
+  });
 
   return (
     <div className="@container">

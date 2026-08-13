@@ -39,14 +39,14 @@ export function FormCategoryFinal({
           <CardContent>
             <FormInput
               control={control}
-              name={`groups.${index}.name`}
+              name={`finals.${index}.name`}
               label="Nome da Força"
               description="Nome do grupo de classificação."
               type="text"
               placeholder={`padrão Força ${getGroupName(index)}`}
             />
 
-            <FormQualifyingShots name={`groups.${index}.qualifyingShots`} />
+            <FormQualifyingShots name={`finals.${index}.qualificationScores`} />
           </CardContent>
           <CardFooter>
             {fields.length > 1 && (
@@ -70,7 +70,7 @@ export function FormCategoryFinal({
         onClick={() =>
           append({
             name: getGroupName(fields.length),
-            qualifyingShots: [],
+            qualificationScores: [],
           })
         }
       >

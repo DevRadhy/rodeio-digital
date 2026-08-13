@@ -1,6 +1,8 @@
+import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { CategoryCard } from "@/components/shared/categories/category-card";
 import { Button } from "@/components/ui/button";
+import { listCategories } from "@/features/categories/services/category-service";
 import { CompetitionService } from "@/services/competition-service";
 import { useCategoryStore } from "@/stores/category";
 import { useCompetitionSessionStore } from "@/stores/competition";
@@ -8,19 +10,18 @@ import { useRegistrationStore } from "@/stores/registration";
 import type { Category } from "@/types/category";
 
 export default function Competition() {
-  const { categories } = useCategoryStore();
-  const { registrationsByCompetition } = useRegistrationStore();
-  const { createCompetition } = useCompetitionSessionStore();
-
   const navigation = useNavigate();
 
+  const {
+    data: categories = [],
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["categories"],
+    queryFn: listCategories,
+  });
+
   const openCompetition = (category: Category) => {
-    const registrations = registrationsByCompetition(category.id);
-
-    const competition = CompetitionService.create(category, registrations);
-
-    createCompetition(competition);
-
     navigation(category.id);
   };
 

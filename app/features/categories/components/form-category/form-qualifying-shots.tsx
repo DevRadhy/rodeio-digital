@@ -16,7 +16,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import type { Group } from "@/types/category";
+import type { Final } from "@/types/category";
 
 type FormQualifyingShotsProps<T extends FieldValues> = {
   name: FieldPath<T>;
@@ -34,7 +34,7 @@ export function FormQualifyingShots<T extends FieldValues>({
 
   const rounds = watch("qualification.rounds");
   const competitorsPerRegistration = watch("competitorsPerRegistration");
-  const groups = watch("groups");
+  const finals = watch("finals");
 
   const [round, setRound] = useState("");
 
@@ -50,8 +50,8 @@ export function FormQualifyingShots<T extends FieldValues>({
       return;
     }
 
-    const valueAlreadyExists = groups?.find((group: Group) =>
-      group.qualifyingShots.some((round: number) => round === value),
+    const valueAlreadyExists = finals?.find((final: Final) =>
+      final.qualificationScores.some((round: number) => round === value),
     );
 
     if (valueAlreadyExists) {

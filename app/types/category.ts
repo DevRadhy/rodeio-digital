@@ -1,16 +1,16 @@
-export interface Group {
+export interface Final {
   id: string;
   name: string;
-  qualifyingShots: number[];
+  qualificationScores: number[];
 }
 
 export interface Category {
   id: string;
   name: string;
   competitorsPerRegistration: number;
-  qualification: Qualification;
+  qualifyingRounds: number;
   duel: boolean;
-  groups: Group[];
+  session: unknown;
 }
 
 export interface Qualification {

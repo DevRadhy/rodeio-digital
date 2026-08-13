@@ -1,5 +1,4 @@
 import type { Category } from "@/types/category";
-import { formatCurrency } from "@/utils";
 import { Badge } from "../../ui/badge";
 
 interface CategoryBadgesProps {
@@ -13,11 +12,9 @@ export function CategoryBadges({ category }: CategoryBadgesProps) {
         {category.competitorsPerRegistration} competidor(es)
       </Badge>
 
-      {/* <Badge variant={"secondary"}>
-        {category.qualification.qualifyingRounds} voltas
-      </Badge>
+      {<Badge variant={"secondary"}>{category.qualifyingRounds} voltas</Badge>}
 
-      {category.qualification.elimination && (
+      {/* {category.qualification.elimination && (
         <Badge variant={"destructive"}>eliminatória</Badge>
       )} */}
 

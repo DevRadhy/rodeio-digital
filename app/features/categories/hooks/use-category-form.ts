@@ -13,7 +13,7 @@ import { createCategory } from "../services/category-service";
 const DEFAULT_FINAL_GROUP = () => ({
   id: v4(),
   name: "Final",
-  qualifyingShots: [],
+  qualificationScores: [],
 });
 
 interface CategoryFormProps {
@@ -29,11 +29,11 @@ export function useCategoryForm({ onOpenChange }: CategoryFormProps) {
       name: "",
       competitorsPerRegistration: 1,
       qualification: {
-        qualifyingRounds: 1,
+        rounds: 1,
         elimination: true,
       },
       duel: false,
-      groups: [DEFAULT_FINAL_GROUP()],
+      finals: [DEFAULT_FINAL_GROUP()],
     },
   });
 
@@ -41,7 +41,7 @@ export function useCategoryForm({ onOpenChange }: CategoryFormProps) {
 
   const { fields, append, remove, replace } = useFieldArray({
     control: control,
-    name: "groups",
+    name: "finals",
   });
 
   const createMutation = useMutation({
@@ -80,28 +80,28 @@ export function useCategoryForm({ onOpenChange }: CategoryFormProps) {
       replace([
         {
           name: "Final",
-          qualifyingShots: getValues("groups.0.qualifyingShots") ?? [],
+          qualificationScores: getValues("finals.0.qualificationScores") ?? [],
         },
       ]);
 
       return;
     }
 
-    const groups = getValues("groups");
+    const finals = getValues("finals");
 
-    if (groups.length === 1 && groups[0].name === "Final") {
+    if (finals.length === 1 && finals[0].name === "Final") {
       replace([
         {
           name: "A",
-          qualifyingShots: [],
+          qualificationScores: [],
         },
         {
           name: "B",
-          qualifyingShots: [],
+          qualificationScores: [],
         },
         {
           name: "C",
-          qualifyingShots: [],
+          qualificationScores: [],
         },
       ]);
     }

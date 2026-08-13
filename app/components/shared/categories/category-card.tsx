@@ -1,8 +1,5 @@
 import type { ReactNode } from "react";
-import { useCompetition } from "@/hooks/use-competition";
-import { useRegistrationStore } from "@/stores/registration";
 import type { Category } from "@/types/category";
-import { formatPhase } from "@/utils";
 import { Badge } from "../../ui/badge";
 import {
   Card,
@@ -20,12 +17,11 @@ interface CategoryCardProps {
 }
 
 export function CategoryCard({ category, children }: CategoryCardProps) {
-  const { registrationsByCompetition } = useRegistrationStore();
-  const { competition } = useCompetition(category.id);
-
-  const registrations = registrationsByCompetition(category.id);
-
-  const phase = formatPhase(competition?.phase);
+  const phase = {
+    bg: "bg-muted",
+    color: "text-primary",
+    text: "Aguardando",
+  };
 
   return (
     <Card>
@@ -41,7 +37,7 @@ export function CategoryCard({ category, children }: CategoryCardProps) {
         </CardAction>
       </CardHeader>
       <CardContent className="flex flex-wrap items-center flex-1 gap-2">
-        <CategoryBadges category={category} registrations={registrations} />
+        <CategoryBadges category={category} />
       </CardContent>
       <CardFooter>{children}</CardFooter>
     </Card>

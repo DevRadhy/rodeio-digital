@@ -1,12 +1,12 @@
 import { z } from "zod";
 
-const groupSchema = z.object({
+const finalSchema = z.object({
   name: z
     .string()
     .min(1, "Informe o nome do grupo")
     .max(32, "O nome deve ter no máximo 32 caracteres"),
 
-  qualifyingShots: z
+  qualificationScores: z
     .array(z.number().int().positive())
     .min(1, "Informe a quantidade de armadas"),
 });
@@ -23,7 +23,7 @@ export const CategorySchema = z
       .min(1, "Informe pelo menos 1 competidor")
       .max(50, "Máximo de 50 competidores"),
     qualification: z.object({
-      qualifyingRounds: z
+      rounds: z
         .number("Informe o número de rodadas")
         .int()
         .min(1, "Informe pelo menos uma rodada"),
@@ -34,31 +34,29 @@ export const CategorySchema = z
       elimination: z.boolean(),
     }),
     duel: z.boolean(),
-    groups: z.array(groupSchema),
+    finals: z.array(finalSchema),
   })
   .superRefine((data, ctx) => {
     const usedShots = new Map<number, number>();
 
-    data.groups.forEach((group, groupIndex) => {
-      if (group.qualifyingShots.length === 0) {
+    data.finals.forEach((group, groupIndex) => {
+      if (group.qualificationScores.length === 0) {
         ctx.addIssue({
           code: "custom",
           message: `O grupo ${group.name} deve possuir armadas de classificatória`,
-          path: ["groups"],
+          path: ["finals"],
         });
       }
 
-      group.qualifyingShots.forEach((shot) => {
+      group.qualificationScores.forEach((shot) => {
         if (
           shot < 1 ||
-          shot >
-            data.qualification.qualifyingRounds *
-              data.competitorsPerRegistration
+          shot > data.qualification.rounds * data.competitorsPerRegistration
         ) {
           ctx.addIssue({
             code: "custom",
-            message: `As armadas de classificatória do grupo ${group.name} devem estar entre 1 e ${data.qualification.qualifyingRounds * data.competitorsPerRegistration}`,
-            path: ["groups"],
+            message: `As armadas de classificatória do grupo ${group.name} devem estar entre 1 e ${data.qualification.rounds * data.competitorsPerRegistration}`,
+            path: ["finals"],
           });
         }
 
@@ -66,7 +64,7 @@ export const CategorySchema = z
           ctx.addIssue({
             code: "custom",
             message: `O quantidade de ${shot} armadas já está sendo usado`,
-            path: ["groups"],
+            path: ["finals"],
           });
         } else {
           usedShots.set(shot, groupIndex);
