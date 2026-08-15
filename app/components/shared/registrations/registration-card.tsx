@@ -1,38 +1,33 @@
-import type { CompetitionGroup } from "@/types/competition";
-import type { Registration } from "@/types/registration";
+import { CompetitionCompetitor } from "@/features/competition/components/competition-competitor";
+import type { QualificationRegistrationState } from "@/features/competition/types/competition";
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
 import { ItemGroup } from "../../ui/item";
-import { CompetitionCompetitor } from "../competition/competition-competitor";
 
 interface RegistrationCardProps {
-  registration: Registration;
-  group: CompetitionGroup;
+  registration: QualificationRegistrationState;
 }
 
-export function RegistrationCard({
-  registration,
-  group,
-}: RegistrationCardProps) {
+export function RegistrationCard({ registration }: RegistrationCardProps) {
+  const registrationsName = registration.competitors
+    .map((competitor) => competitor.name)
+    .join(" / ");
+
   return (
     <Card size="sm">
       <CardHeader>
         <CardTitle className="text-muted-foreground">
-          {registration.competitors
-            .map((competitor) => competitor.name)
-            .join(" / ")}
+          {registrationsName}
         </CardTitle>
       </CardHeader>
       <CardContent className="flex items-center">
         <span className="pr-2 text-2xl font-bold text-muted-foreground">
           {registration.number}
         </span>
-        <ItemGroup>
+        <ItemGroup className="gap-0">
           {registration.competitors.map((competitor) => (
             <CompetitionCompetitor
               key={competitor.id}
               competitor={competitor}
-              registration={registration}
-              group={group}
             />
           ))}
         </ItemGroup>
