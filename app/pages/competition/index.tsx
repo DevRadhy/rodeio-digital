@@ -3,26 +3,24 @@ import { useNavigate } from "react-router";
 import { CategoryCard } from "@/components/shared/categories/category-card";
 import { Button } from "@/components/ui/button";
 import { listCategories } from "@/features/categories/services/category-service";
-import { CompetitionService } from "@/services/competition-service";
-import { useCategoryStore } from "@/stores/category";
-import { useCompetitionSessionStore } from "@/stores/competition";
-import { useRegistrationStore } from "@/stores/registration";
+import { useCompetition } from "@/features/competition/hooks/use-competition";
 import type { Category } from "@/types/category";
 
 export default function Competition() {
   const navigation = useNavigate();
+  const competition = useCompetition();
 
-  const {
-    data: categories = [],
-    isLoading,
-    error,
-  } = useQuery({
+  const { data: categories = [] } = useQuery({
     queryKey: ["categories"],
     queryFn: listCategories,
   });
 
   const openCompetition = (category: Category) => {
-    navigation(category.id);
+    if (!category.session) {
+      competition.createCompetition(category.id);
+    }
+
+    navigation(category.session?.id);
   };
 
   return (
@@ -35,7 +33,7 @@ export default function Competition() {
               onClick={() => openCompetition(category)}
               className={"w-full"}
             >
-              Abrir Modalidade
+              {category.session ? "Entrar" : "Iniciar Competição"}
             </Button>
           </CategoryCard>
         ))}

@@ -1,30 +1,25 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
-import { findCategoryById } from "@/features/categories/services/category-service";
-import { findRegistrations } from "@/features/registration/services/registration-service";
-import { CompetitionSessionHeader } from "../../components/shared/competition/competition-session-header";
-import { CompetitionView } from "@/components/shared/competition/competition-view";
+import { findCompetition } from "@/features/competition/api/findCompetition";
+import { CompetitionSessionHeader } from "@/features/competition/components/competition-session-header";
+import { CompetitionView } from "@/features/competition/components/competition-view";
 
 export default function CompetitionRun() {
-  const { categoryId } = useParams();
+  const { competitionId } = useParams();
 
-  const { data: registrations = [] } = useQuery({
-    queryKey: ["registrations"],
-    queryFn: () => findRegistrations(categoryId ?? ""),
+  const { data: competition } = useQuery({
+    queryKey: ["competitions", competitionId],
+    queryFn: () => findCompetition(String(competitionId)),
+    enabled: !!competitionId,
   });
 
-  const { data: category } = useQuery({
-    queryKey: ["category"],
-    queryFn: () => findCategoryById(categoryId ?? ""),
-  });
-
-  if (!category) return;
+  if (!competition) return;
 
   return (
     <div>
-      <CompetitionSessionHeader category={category} />
+      <CompetitionSessionHeader competition={competition} />
 
-      <CompetitionView competition={competition} category={category} />
+      <CompetitionView competition={competition} />
     </div>
   );
 }
