@@ -1,16 +1,20 @@
 import { ChevronLeft } from "lucide-react";
 import { useNavigate } from "react-router";
-import type { Category } from "@/types/category";
-import { Button } from "../../ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { formatPhase } from "@/utils";
+import type { CompetitionState } from "../types/competition";
 
 interface CompetitionHeadeSessionrProps {
-  category: Category;
+  competition: CompetitionState;
 }
 
 export function CompetitionSessionHeader({
-  category,
+  competition,
 }: CompetitionHeadeSessionrProps) {
   const navigation = useNavigate();
+
+  const phase = formatPhase(competition.phase);
 
   return (
     <div className="px-8 py-8">
@@ -23,7 +27,8 @@ export function CompetitionSessionHeader({
       </Button>
 
       <div className="flex items-center justify-between py-4">
-        <h1 className="text-3xl font-bold">{category.name}</h1>
+        <h1 className="text-3xl font-bold">{competition.category.name}</h1>
+        <Badge className={`${phase.bg} ${phase.color}`}>{phase.text}</Badge>
       </div>
     </div>
   );
