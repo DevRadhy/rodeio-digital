@@ -12,7 +12,7 @@ export default [
     route("/registrations", "pages/registration/index.tsx"),
     ...prefix("/competition", [
       index("pages/competition/index.tsx"),
-      route(":categoryId", "pages/competition/session.tsx"),
+      route(":competitionId", "pages/competition/session.tsx"),
     ]),
   ]),
 ] satisfies RouteConfig;
