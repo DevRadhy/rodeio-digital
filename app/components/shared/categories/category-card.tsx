@@ -17,12 +17,6 @@ interface CategoryCardProps {
 }
 
 export function CategoryCard({ category, children }: CategoryCardProps) {
-  const phase = {
-    bg: "bg-muted",
-    color: "text-primary",
-    text: "Aguardando",
-  };
-
   return (
     <Card>
       <CardHeader>
@@ -30,9 +24,9 @@ export function CategoryCard({ category, children }: CategoryCardProps) {
         <CardAction>
           <Badge
             variant={"secondary"}
-            className={`${phase.bg} ${phase.color} font-semibold`}
+            className={`bg-muted text-primary font-semibold`}
           >
-            {phase.text}
+            Aguardando
           </Badge>
         </CardAction>
       </CardHeader>
