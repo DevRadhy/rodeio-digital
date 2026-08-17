@@ -1,4 +1,4 @@
-import type { Shot } from "./competition";
+type Shot = "positive" | "negative";
 
 export interface CompetitorResult {
   competitorId: string;
