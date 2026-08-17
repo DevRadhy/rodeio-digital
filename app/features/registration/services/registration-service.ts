@@ -1,5 +1,5 @@
+import type { CreateRegistrationInput } from "@/features/registration/schemas/registration-schema";
 import { api } from "@/providers/api";
-import type { CreateRegistrationInput } from "@/schemas/registration-schema";
 import type { Registration } from "@/types/registration";
 
 export const createRegistration = async (

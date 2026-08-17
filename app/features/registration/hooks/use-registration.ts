@@ -12,7 +12,7 @@ import { v4 } from "uuid";
 import {
   type CreateRegistrationInput,
   RegistrationSchema,
-} from "@/schemas/registration-schema";
+} from "@/features/registration/schemas/registration-schema";
 import type { Category } from "@/types/category";
 import { createRegistration } from "../services/registration-service";
 
