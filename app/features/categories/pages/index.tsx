@@ -5,11 +5,9 @@ import { Button } from "@/components/ui/button";
 import { ItemGroup } from "@/components/ui/item";
 import { CategoryDialog } from "@/features/categories/components/category-dialog";
 import { CategoryItem } from "@/features/categories/components/category-item";
-import {
-  deleteCategory,
-  listCategories,
-} from "@/features/categories/services/category-service";
-import { EmptyCategories } from "./empty";
+import { deleteCategory } from "../api/delete-category";
+import { listCategories } from "../api/list-categories";
+import { EmptyCategories } from "../components/category-empty";
 
 export function meta() {
   return [
@@ -67,9 +65,7 @@ export default function Categories() {
           </ItemGroup>
         </>
       ) : (
-        <EmptyCategories>
-          <Button onClick={() => setOpen(true)}>Adicionar Modalidade</Button>
-        </EmptyCategories>
+        <EmptyCategories onAction={() => setOpen(true)} />
       )}
 
       <CategoryDialog open={open} onOpenChange={setOpen} />

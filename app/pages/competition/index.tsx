@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { CategoryCard } from "@/components/shared/categories/category-card";
 import { Button } from "@/components/ui/button";
-import { listCategories } from "@/features/categories/services/category-service";
+import { listCategories } from "@/features/categories/api/list-categories";
 import { useCompetition } from "@/features/competition/hooks/use-competition";
 import type { Category } from "@/types/category";
 

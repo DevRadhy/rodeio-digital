@@ -8,7 +8,7 @@ import {
   type CreateCategoryInput,
 } from "@/features/categories/schemas/category-schema";
 import type { Category } from "@/types/category";
-import { createCategory } from "../services/category-service";
+import { createCategory } from "../api/category-service";
 
 const DEFAULT_FINAL_GROUP = () => ({
   id: v4(),

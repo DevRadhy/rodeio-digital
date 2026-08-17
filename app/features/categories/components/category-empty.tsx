@@ -1,4 +1,5 @@
 import { FileCog } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   Empty,
   EmptyContent,
@@ -8,11 +9,11 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 
-type EmptyProps = {
-  children: React.ReactNode;
-};
+interface EmptyProps {
+  onAction: () => void;
+}
 
-export function EmptyCategories({ children }: EmptyProps) {
+export function EmptyCategories({ onAction }: EmptyProps) {
   return (
     <Empty>
       <EmptyHeader>
@@ -24,7 +25,9 @@ export function EmptyCategories({ children }: EmptyProps) {
           Nenhuma modalidade foi encontrada até o momento.
         </EmptyDescription>
       </EmptyHeader>
-      <EmptyContent>{children}</EmptyContent>
+      <EmptyContent>
+        <Button onClick={onAction}>Adicionar Modalidade</Button>
+      </EmptyContent>
     </Empty>
   );
 }

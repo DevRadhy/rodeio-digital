@@ -3,7 +3,7 @@ import { Plus } from "lucide-react";
 import { useState } from "react";
 import { CategoryCard } from "@/components/shared/categories/category-card";
 import { Button } from "@/components/ui/button";
-import { listCategories } from "@/features/categories/services/category-service";
+import { listCategories } from "@/features/categories/api/list-categories";
 import { RegistrationDialog } from "@/features/registration/components/registration-dialog";
 import type { Category } from "@/types/category";
 
