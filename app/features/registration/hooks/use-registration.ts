@@ -14,7 +14,7 @@ import {
   type CreateRegistrationInput,
   RegistrationSchema,
 } from "@/features/registration/schemas/registration-schema";
-import { createRegistration } from "../services/registration-service";
+import { createRegistration } from "../api/create-registration";
 
 interface RegistrationProps {
   category: Category | null;

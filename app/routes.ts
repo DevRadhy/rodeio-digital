@@ -8,7 +8,7 @@ import {
 
 export default [
   layout("./layouts/pages/layout.tsx", [
-    route("/categories", "pages/categories/index.tsx"),
+    route("/categories", "features/categories/pages/index.tsx"),
     route("/registrations", "pages/registration/index.tsx"),
     ...prefix("/competition", [
       index("pages/competition/index.tsx"),

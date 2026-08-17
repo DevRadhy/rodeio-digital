@@ -1,4 +1,4 @@
-import type { Competitor } from "./competitor";
+import type { Competitor } from "@/types/competitor";
 
 export interface Registration {
   id: string;
