@@ -6,7 +6,7 @@ import { v4 } from "uuid";
 import {
   CategorySchema,
   type CreateCategoryInput,
-} from "@/schemas/category-schema";
+} from "@/features/categories/schemas/category-schema";
 import type { Category } from "@/types/category";
 import { createCategory } from "../services/category-service";
 

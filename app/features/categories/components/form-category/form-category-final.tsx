@@ -10,7 +10,7 @@ import FormInput from "@/components/shared/form/form-input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { FieldGroup } from "@/components/ui/field";
-import type { CreateCategoryInput } from "@/schemas/category-schema";
+import type { CreateCategoryInput } from "@/features/categories/schemas/category-schema";
 import { getGroupName } from "@/utils";
 import { FormQualifyingShots } from "./form-qualifying-shots";
 
