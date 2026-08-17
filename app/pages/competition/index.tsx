@@ -6,8 +6,18 @@ import { listCategories } from "@/features/categories/services/category-service"
 import { useCompetition } from "@/features/competition/hooks/use-competition";
 import type { Category } from "@/types/category";
 
+export function meta() {
+  return [
+    { title: "Competições" },
+    {
+      name: "Inicie ou entre em uma competição.",
+      content: "Visualize as competições em andamento do evento.",
+    },
+  ];
+}
+
 export default function Competition() {
-  const navigation = useNavigate();
+  const navigate = useNavigate();
   const competition = useCompetition();
 
   const { data: categories = [] } = useQuery({
@@ -17,10 +27,10 @@ export default function Competition() {
 
   const openCompetition = (category: Category) => {
     if (!category.session) {
-      competition.createCompetition(category.id);
+      return competition.createCompetition(category.id);
     }
 
-    navigation(category.session?.id);
+    navigate(category.session.id);
   };
 
   return (
