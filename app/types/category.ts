@@ -1,3 +1,5 @@
+import type { Phase, Status } from "./competition";
+
 export interface Final {
   id: string;
   name: string;
@@ -10,10 +12,16 @@ export interface Category {
   competitorsPerRegistration: number;
   qualifyingRounds: number;
   duel: boolean;
-  session: unknown;
+  session: CompetitionSession | null;
 }
 
 export interface Qualification {
   qualifyingRounds: number;
   elimination: boolean;
+}
+
+export interface CompetitionSession {
+  id: string;
+  status: Status;
+  phase: Phase;
 }
