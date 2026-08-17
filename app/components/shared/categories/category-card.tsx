@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { Category } from "@/types/category";
+import type { Category } from "@/features/categories/types/category";
 import { Badge } from "../../ui/badge";
 import {
   Card,

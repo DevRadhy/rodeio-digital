@@ -3,8 +3,8 @@ import { useNavigate } from "react-router";
 import { CategoryCard } from "@/components/shared/categories/category-card";
 import { Button } from "@/components/ui/button";
 import { listCategories } from "@/features/categories/api/list-categories";
+import type { Category } from "@/features/categories/types/category";
 import { useCompetition } from "@/features/competition/hooks/use-competition";
-import type { Category } from "@/types/category";
 
 export function meta() {
   return [

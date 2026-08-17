@@ -1,7 +1,7 @@
 import { ChevronRight } from "lucide-react";
+import type { Category } from "@/features/categories/types/category";
 import { CompetitionService } from "@/services/competition-service";
 import { useCompetitionSessionStore } from "@/stores/competition";
-import type { Category } from "@/types/category";
 import type { Competition, CompetitionGroup } from "@/types/competition";
 import { Button } from "../../ui/button";
 

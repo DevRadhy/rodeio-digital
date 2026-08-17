@@ -1,4 +1,4 @@
-import type { Phase, Status } from "./competition";
+import type { Phase, Status } from "../../../types/competition";
 
 export interface Final {
   id: string;

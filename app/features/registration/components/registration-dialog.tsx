@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { FieldGroup } from "@/components/ui/field";
-import type { Category } from "@/types/category";
+import type { Category } from "@/features/categories/types/category";
 import { formatNumber } from "@/utils";
 import FormInput from "../../../components/shared/form/form-input";
 import { useRegistration } from "../hooks/use-registration";

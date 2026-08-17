@@ -9,11 +9,11 @@ import {
 } from "react-hook-form";
 import { toast } from "sonner";
 import { v4 } from "uuid";
+import type { Category } from "@/features/categories/types/category";
 import {
   type CreateRegistrationInput,
   RegistrationSchema,
 } from "@/features/registration/schemas/registration-schema";
-import type { Category } from "@/types/category";
 import { createRegistration } from "../services/registration-service";
 
 interface RegistrationProps {

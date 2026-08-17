@@ -7,7 +7,7 @@ import {
   CategorySchema,
   type CreateCategoryInput,
 } from "@/features/categories/schemas/category-schema";
-import type { Category } from "@/types/category";
+import type { Category } from "@/features/categories/types/category";
 import { createCategory } from "../api/category-service";
 
 const DEFAULT_FINAL_GROUP = () => ({

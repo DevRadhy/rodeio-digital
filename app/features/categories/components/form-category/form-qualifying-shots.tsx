@@ -16,7 +16,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import type { Final } from "@/types/category";
+import type { Final } from "@/features/categories/types/category";
 
 type FormQualifyingShotsProps<T extends FieldValues> = {
   name: FieldPath<T>;

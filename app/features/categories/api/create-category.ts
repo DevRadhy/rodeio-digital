@@ -1,5 +1,5 @@
+import type { Category } from "@/features/categories/types/category";
 import { api } from "@/providers/api";
-import type { Category } from "@/types/category";
 import type { CreateCategoryInput } from "../schemas/category-schema";
 
 export const createCategory = async (

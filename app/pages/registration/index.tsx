@@ -4,8 +4,8 @@ import { useState } from "react";
 import { CategoryCard } from "@/components/shared/categories/category-card";
 import { Button } from "@/components/ui/button";
 import { listCategories } from "@/features/categories/api/list-categories";
+import type { Category } from "@/features/categories/types/category";
 import { RegistrationDialog } from "@/features/registration/components/registration-dialog";
-import type { Category } from "@/types/category";
 
 export function meta() {
   return [

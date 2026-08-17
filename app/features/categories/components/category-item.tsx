@@ -9,7 +9,7 @@ import {
   ItemTitle,
 } from "@/components/ui/item";
 import { Alert } from "@/features/categories/components/alert-dialog";
-import type { Category } from "@/types/category";
+import type { Category } from "@/features/categories/types/category";
 
 interface CategoryItemProps {
   category: Category;
