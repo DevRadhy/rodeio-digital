@@ -11,13 +11,13 @@ export function CompetitionView({ competition }: CompetitionViewProps) {
   return (
     <Tabs className="px-8">
       <TabsList>
-        {competition.qualification.groups.map((group) => (
+        {competition.groups.map((group) => (
           <TabsTrigger value={group.id} key={group.id}>
             {group.name}
           </TabsTrigger>
         ))}
       </TabsList>
-      {competition.qualification.groups.map((group) => (
+      {competition.groups.map((group) => (
         <TabsContent value={group.id} key={group.id}>
           <CompetitionHeader competition={competition} group={group} />
 

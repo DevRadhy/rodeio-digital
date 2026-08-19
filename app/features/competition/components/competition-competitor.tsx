@@ -20,7 +20,13 @@ export function CompetitionCompetitor({
         <ItemTitle className="text-base font-bold">{competitor.name}</ItemTitle>
       </ItemContent>
       <ItemActions>
-        <ShotButtons value={null} setShot={() => {}} disabled={false} />
+        <ShotButtons
+          value={null}
+          setShot={(shot) => {
+            console.log(competitor, shot);
+          }}
+          disabled={false}
+        />
       </ItemActions>
     </Item>
   );
