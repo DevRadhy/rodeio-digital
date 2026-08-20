@@ -5,14 +5,19 @@ import {
   ItemTitle,
 } from "@/components/ui/item";
 import type { Competitor } from "@/types/competitor";
+import type { QualificationResultState, Shot } from "../types/competition";
 import { ShotButtons } from "./shot-buttons";
 
 interface CompetitionCompetitorProps {
   competitor: Competitor;
+  result?: QualificationResultState;
+  handleRegisterShot(competitorId: string, shot: Shot): void;
 }
 
 export function CompetitionCompetitor({
   competitor,
+  result,
+  handleRegisterShot,
 }: CompetitionCompetitorProps) {
   return (
     <Item size={"xs"}>
@@ -21,11 +26,8 @@ export function CompetitionCompetitor({
       </ItemContent>
       <ItemActions>
         <ShotButtons
-          value={null}
-          setShot={(shot) => {
-            console.log(competitor, shot);
-          }}
-          disabled={false}
+          value={result?.shot ?? null}
+          setShot={(shot) => handleRegisterShot(competitor.id, shot)}
         />
       </ItemActions>
     </Item>

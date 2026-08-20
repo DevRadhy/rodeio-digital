@@ -1,6 +1,6 @@
 import { Check, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { Shot } from "@/types/competition";
+import type { Shot } from "../types/competition";
 
 interface ShotButtonProps {
   value: Shot | null;
@@ -13,8 +13,10 @@ export function ShotButtons({
   setShot,
   disabled = false,
 }: ShotButtonProps) {
-  const onSetShot = (shot: boolean) => {
-    setShot(shot === value ? null : shot);
+  const onSetShot = (shot: Shot) => {
+    if (shot === value) return;
+
+    setShot(shot);
   };
 
   return (
@@ -22,8 +24,8 @@ export function ShotButtons({
       <Button
         variant={"outline"}
         disabled={disabled}
-        onClick={() => onSetShot(true)}
-        className={`${value === true ? "bg-emerald-500 outline-emerald-400 text-emerald-100" : "outline-slate-400 text-slate-400 "}
+        onClick={() => onSetShot("positive")}
+        className={`${value === "positive" ? "bg-emerald-500 outline-emerald-400 text-emerald-100" : "outline-slate-400 text-slate-400 "}
           rounded-sm font-bold w-12 h-10 px-3.5 flex justify-center items-center outline
           hover:bg-emerald-400 hover:outline-emerald-300 hover:text-emerald-100
         `}
@@ -33,8 +35,8 @@ export function ShotButtons({
       <Button
         variant={"outline"}
         disabled={disabled}
-        onClick={() => onSetShot(false)}
-        className={`${value === false ? "bg-rose-500 outline-rose-400 text-rose-100" : "outline-slate-400 text-slate-400"} 
+        onClick={() => onSetShot("negative")}
+        className={`${value === "negative" ? "bg-rose-500 outline-rose-400 text-rose-100" : "outline-slate-400 text-slate-400"} 
           rounded-sm font-bold w-12 h-10 px-3.5 flex justify-center items-center outline 
           hover:bg-rose-400 hover:outline-rose-300 hover:text-rose-100
         `}

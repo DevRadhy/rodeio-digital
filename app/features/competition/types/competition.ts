@@ -1,6 +1,6 @@
-type Phase = "qualification" | "final";
-type Status = "not_started" | "running" | "finished";
-type Shot = "positive" | "negative";
+export type Status = "not_started" | "running" | "finished";
+export type Phase = "qualification" | "final";
+export type Shot = "positive" | "negative";
 
 export type CompetitionState = {
   id: string;
@@ -17,16 +17,21 @@ export type QualificationGroupState = {
   id: string;
   name: string;
   status: Status;
-  rounds: QualificationRoundState[];
-  registrations: QualificationRegistrationState[];
+  currentRound: QualificationRoundState | null;
 };
 
-export type QualificationRegistrationState = {
+export type QualificationRoundState = {
+  id: string;
+  number: number;
+  status: Status;
+  registrations: CompetitionRoundRegistrationState[];
+  results: QualificationResultState[];
+};
+
+export type CompetitionRoundRegistrationState = {
   id: string;
   number: number;
   name: string | null;
-  score: number;
-  eliminated: boolean;
   competitors: QualificationCompetitorState[];
 };
 
@@ -35,20 +40,9 @@ export type QualificationCompetitorState = {
   name: string;
 };
 
-export type QualificationRoundState = {
-  id: string;
-  number: number;
-  status: Status;
-  registrations: QualificationRegistrationState[];
-  results: QualificationResultState[];
-};
-
 export type QualificationResultState = {
   id: string;
   registrationId: string;
-  competitors: {
-    id: string;
-    name: string;
-    shot: Shot;
-  }[];
+  competitorId: string;
+  shot: Shot | null;
 };

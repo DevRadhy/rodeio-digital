@@ -8,8 +8,15 @@ interface CompetitionListProps {
 export function CompetitionList({ group }: CompetitionListProps) {
   return (
     <div className="flex flex-col justify-center gap-4 py-8">
-      {group.registrations.map((registration) => (
-        <RegistrationCard key={registration.id} registration={registration} />
+      {group.currentRound?.registrations.map((registration) => (
+        <RegistrationCard
+          key={registration.id}
+          group={group}
+          registration={registration}
+          results={group.currentRound?.results.filter(
+            (result) => result.registrationId === registration.id,
+          )}
+        />
       ))}
     </div>
   );
