@@ -2,47 +2,63 @@ export type Status = "not_started" | "running" | "finished";
 export type Phase = "qualification" | "final";
 export type Shot = "positive" | "negative";
 
-export type CompetitionState = {
+export interface Competition {
   id: string;
-  status: Status;
-  phase: Phase;
-  category: {
-    id: string;
-    name: string;
-  };
-  groups: QualificationGroupState[];
-};
-
-export type QualificationGroupState = {
-  id: string;
+  categoryId: string;
   name: string;
   status: Status;
-  currentRound: QualificationRoundState | null;
-};
+  phase: Phase;
+  startedAt: Date;
+  finishedAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
-export type QualificationRoundState = {
+export interface Group {
   id: string;
-  number: number;
+  competitionId: string;
+  name: string;
   status: Status;
-  registrations: CompetitionRoundRegistrationState[];
-  results: QualificationResultState[];
-};
+  currentRound: string;
+}
 
-export type CompetitionRoundRegistrationState = {
+export interface GroupRegistration {
   id: string;
   number: number;
   name: string | null;
-  competitors: QualificationCompetitorState[];
-};
+  competitors: Competitor[];
+}
 
-export type QualificationCompetitorState = {
+export interface Competitor {
   id: string;
   name: string;
-};
+}
 
-export type QualificationResultState = {
+export interface RoundResults {
+  competitionId: string;
+  roundId: string;
+  group: {
+    id: string;
+    name: string;
+    status: Status;
+  };
+  round: {
+    id: string;
+    number: number;
+  };
+  results: {
+    id: string;
+    registrationId: string;
+    competitorId: string;
+    competitorName: string;
+    shot: Shot;
+  }[];
+}
+
+export interface Result {
   id: string;
   registrationId: string;
   competitorId: string;
-  shot: Shot | null;
-};
+  competitorName: string;
+  shot: Shot;
+}

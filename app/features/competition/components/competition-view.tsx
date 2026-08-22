@@ -1,35 +1,50 @@
+import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import type { CompetitionState } from "../types/competition";
-import { CompetitionHeader } from "./competition-header";
+import { useGroupRegistrations, useGroups } from "../hooks/use-competition";
+import type { Competition } from "../types/competition";
 import { CompetitionList } from "./competition-list";
 
 interface CompetitionViewProps {
-  competition: CompetitionState;
+  competition: Competition;
 }
 
 export function CompetitionView({ competition }: CompetitionViewProps) {
+  const { data: groups = [] } = useGroups(competition.id);
+  const [activedGroupId, setActivedGroupId] = useState(null);
+
+  const { data: groupRegistrations = [] } = useGroupRegistrations(
+    competition.id,
+    String(activedGroupId),
+  );
+
+  const group = groups.find((group) => group.id === activedGroupId);
+
   return (
-    <Tabs className="px-8">
+    <Tabs
+      className="px-8"
+      defaultValue={activedGroupId}
+      onValueChange={(value) => setActivedGroupId(value)}
+    >
       <TabsList>
-        {competition.groups.map((group) => (
+        {groups.map((group) => (
           <TabsTrigger value={group.id} key={group.id}>
             {group.name}
           </TabsTrigger>
         ))}
       </TabsList>
-      {competition.groups.map((group) => (
-        <TabsContent value={group.id} key={group.id}>
-          <CompetitionHeader group={group} />
+      <TabsContent value={activedGroupId}>
+        {/* <CompetitionHeader group={group} /> */}
 
-          <CompetitionList group={group} />
+        {!!group && (
+          <CompetitionList group={group} registrations={groupRegistrations} />
+        )}
 
-          {/* <CompetitionFooter
-            competition={competition}
-            group={group}
-            category={category}
-          /> */}
-        </TabsContent>
-      ))}
+        {/* <CompetitionFooter
+          competition={competition}
+          group={group}
+          category={category}
+        /> */}
+      </TabsContent>
     </Tabs>
   );
 }

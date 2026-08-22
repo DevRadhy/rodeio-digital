@@ -5,12 +5,12 @@ import {
   ItemTitle,
 } from "@/components/ui/item";
 import type { Competitor } from "@/types/competitor";
-import type { QualificationResultState, Shot } from "../types/competition";
+import type { Result, Shot } from "../types/competition";
 import { ShotButtons } from "./shot-buttons";
 
 interface CompetitionCompetitorProps {
   competitor: Competitor;
-  result?: QualificationResultState;
+  result?: Result;
   handleRegisterShot(competitorId: string, shot: Shot): void;
 }
 

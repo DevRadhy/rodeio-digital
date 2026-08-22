@@ -1,9 +1,9 @@
 import { api } from "@/providers/api";
-import type { CompetitionState } from "../types/competition";
+import type { Competition } from "../types/competition";
 
-export const findCompetition = async (
+export const getCompetition = async (
   competitionId: string,
-): Promise<CompetitionState | undefined> => {
+): Promise<Competition | undefined> => {
   try {
     const { data } = await api.get(`/competition/${competitionId}`);
 

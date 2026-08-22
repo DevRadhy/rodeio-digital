@@ -2,27 +2,28 @@ import { useMutation } from "@tanstack/react-query";
 import { useParams } from "react-router";
 import { registerShot } from "@/features/competition/api/registerShot";
 import { CompetitionCompetitor } from "@/features/competition/components/competition-competitor";
+import { useRoundGroupResults } from "@/features/competition/hooks/use-competition";
 import type {
-  CompetitionRoundRegistrationState,
-  QualificationGroupState,
-  QualificationResultState,
+  Group,
+  GroupRegistration,
   Shot,
 } from "@/features/competition/types/competition";
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
 import { ItemGroup } from "../../ui/item";
 
 interface RegistrationCardProps {
-  registration: CompetitionRoundRegistrationState;
-  results?: QualificationResultState[];
-  group: QualificationGroupState;
+  registration: GroupRegistration;
+  group: Group;
 }
 
 export function RegistrationCard({
   registration,
-  results,
   group,
 }: RegistrationCardProps) {
-  const { competitionId } = useParams();
+  const { data: roundGroupResults } = useRoundGroupResults(
+    group.competitionId,
+    group.currentRound,
+  );
 
   const setShot = useMutation({
     mutationFn: registerShot,
@@ -30,9 +31,9 @@ export function RegistrationCard({
 
   const handleSetShot = (competitorId: string, shot: Shot) => {
     setShot.mutate({
-      competitionId: String(competitionId),
+      competitionId: group.competitionId,
       groupId: group.id,
-      roundId: String(group.currentRound?.id),
+      roundId: group.currentRound,
       registrationId: registration.id,
       competitorId,
       shot,
@@ -59,7 +60,7 @@ export function RegistrationCard({
             <CompetitionCompetitor
               key={competitor.id}
               competitor={competitor}
-              result={results?.find(
+              result={roundGroupResults?.results.find(
                 (result) => result.competitorId === competitor.id,
               )}
               handleRegisterShot={handleSetShot}

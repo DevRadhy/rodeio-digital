@@ -1,21 +1,22 @@
 import { RegistrationCard } from "@/components/shared/registrations/registration-card";
-import type { QualificationGroupState } from "../types/competition";
+import type { Group, GroupRegistration } from "../types/competition";
 
 interface CompetitionListProps {
-  group: QualificationGroupState;
+  group: Group;
+  registrations: GroupRegistration[];
 }
 
-export function CompetitionList({ group }: CompetitionListProps) {
+export function CompetitionList({
+  group,
+  registrations,
+}: CompetitionListProps) {
   return (
     <div className="flex flex-col justify-center gap-4 py-8">
-      {group.currentRound?.registrations.map((registration) => (
+      {registrations.map((registration) => (
         <RegistrationCard
           key={registration.id}
           group={group}
           registration={registration}
-          results={group.currentRound?.results.filter(
-            (result) => result.registrationId === registration.id,
-          )}
         />
       ))}
     </div>

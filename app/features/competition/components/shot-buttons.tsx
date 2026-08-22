@@ -4,14 +4,14 @@ import type { Shot } from "../types/competition";
 
 interface ShotButtonProps {
   value: Shot | null;
-  setShot: (value: Shot) => void;
   disabled?: boolean;
+  setShot: (value: Shot) => void;
 }
 
 export function ShotButtons({
   value,
-  setShot,
   disabled = false,
+  setShot,
 }: ShotButtonProps) {
   const onSetShot = (shot: Shot) => {
     if (shot === value) return;
@@ -25,9 +25,9 @@ export function ShotButtons({
         variant={"outline"}
         disabled={disabled}
         onClick={() => onSetShot("positive")}
-        className={`${value === "positive" ? "bg-emerald-500 outline-emerald-400 text-emerald-100" : "outline-slate-400 text-slate-400 "}
+        className={`${value === "positive" ? "bg-emerald-400 outline-emerald-300 text-emerald-100" : "outline-slate-400 text-slate-400 "}
           rounded-sm font-bold w-12 h-10 px-3.5 flex justify-center items-center outline
-          hover:bg-emerald-400 hover:outline-emerald-300 hover:text-emerald-100
+          hover:bg-emerald-300 hover:outline-emerald-400 hover:text-emerald-100
         `}
       >
         <Check />
@@ -36,9 +36,9 @@ export function ShotButtons({
         variant={"outline"}
         disabled={disabled}
         onClick={() => onSetShot("negative")}
-        className={`${value === "negative" ? "bg-rose-500 outline-rose-400 text-rose-100" : "outline-slate-400 text-slate-400"} 
+        className={`${value === "negative" ? "bg-rose-400 outline-rose-300 text-rose-100" : "outline-slate-400 text-slate-400"} 
           rounded-sm font-bold w-12 h-10 px-3.5 flex justify-center items-center outline 
-          hover:bg-rose-400 hover:outline-rose-300 hover:text-rose-100
+          hover:bg-rose-300 hover:outline-rose-400 hover:text-rose-100
         `}
       >
         <X />

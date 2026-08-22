@@ -3,10 +3,10 @@ import { useNavigate } from "react-router";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatPhase } from "@/utils";
-import type { CompetitionState } from "../types/competition";
+import type { Competition } from "../types/competition";
 
 interface CompetitionHeadeSessionrProps {
-  competition: CompetitionState;
+  competition: Competition;
 }
 
 export function CompetitionSessionHeader({
@@ -27,7 +27,7 @@ export function CompetitionSessionHeader({
       </Button>
 
       <div className="flex items-center justify-between py-4">
-        <h1 className="text-3xl font-bold">{competition.category.name}</h1>
+        <h1 className="text-3xl font-bold">{competition.name}</h1>
         <Badge className={`${phase.bg} ${phase.color}`}>{phase.text}</Badge>
       </div>
     </div>
