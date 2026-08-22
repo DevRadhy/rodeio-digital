@@ -1,4 +1,4 @@
-import { Eclipse, Gavel, LayoutList, Users } from "lucide-react";
+import { Gavel, LayoutList, Users } from "lucide-react";
 import { useLocation, useNavigate } from "react-router";
 import {
   Sidebar,
@@ -11,6 +11,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+
+import LacoLogo from "/laco-logo.svg";
 
 const data = {
   navMain: [
@@ -42,7 +44,7 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton className="data-[slot=sidebar-menu-button]:p-1.5!">
-              <Eclipse className="size-5!" />
+              <img src={LacoLogo} alt="Rodeo Digital" className="size-6" />
               <span className="text-base font-semibold">Rodeo Digital</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -52,8 +54,8 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              {data.navMain.map((item, index) => (
-                <SidebarMenuItem key={`${item.title}-${index}`}>
+              {data.navMain.map((item) => (
+                <SidebarMenuItem key={`${item.title}-${item.href}`}>
                   <SidebarMenuButton
                     isActive={location.pathname.startsWith(item.href)}
                     tooltip={item.title}
