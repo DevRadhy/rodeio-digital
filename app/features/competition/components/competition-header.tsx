@@ -1,14 +1,14 @@
-import type { QualificationGroupState } from "../types/competition";
+import type { RoundResults } from "../types/competition";
 
 interface CompetitionHeaderProps {
-  group: QualificationGroupState;
+  results: RoundResults;
 }
 
-export function CompetitionHeader({ group }: CompetitionHeaderProps) {
+export function CompetitionHeader({ results }: CompetitionHeaderProps) {
   return (
     <div>
       <p className="text-2xl font-black uppercase">
-        Volta {group.currentRound?.number ?? 1}
+        Volta {results.round.number}
       </p>
       <p className="text-muted-foreground">
         Somente a volta atual fica liberada para laçamento. Isso evita erros de

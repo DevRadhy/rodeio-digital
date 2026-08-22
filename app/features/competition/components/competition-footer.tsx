@@ -1,39 +1,59 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChevronRight } from "lucide-react";
-import type { Category } from "@/features/categories/types/category";
-import { CompetitionService } from "@/services/competition-service";
-import { useCompetitionSessionStore } from "@/stores/competition";
-import type { Competition, CompetitionGroup } from "@/types/competition";
-import { Button } from "../../ui/button";
+import { Button } from "@/components/ui/button";
+import { setNextRound } from "../api/setNextRound";
+import type { Group } from "../types/competition";
 
 interface CompetitionFooterProps {
-  competition: Competition;
-  group: CompetitionGroup;
-  category: Category;
+  group: Group;
 }
 
-export function CompetitionFooter({
-  competition,
-  group,
-  category,
-}: CompetitionFooterProps) {
-  const updateCompetition = useCompetitionSessionStore(
-    (state) => state.updateCompetition,
-  );
+export function CompetitionFooter({ group }: CompetitionFooterProps) {
+  const queryClient = useQueryClient();
+
+  const setRound = useMutation({
+    mutationFn: setNextRound,
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: [
+          "round-group-results",
+          variables.competitionId,
+          variables.groupId,
+          variables.roundId,
+        ],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: [
+          "group-registrations",
+          variables.competitionId,
+          variables.roundId,
+        ],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["groups", variables.competitionId],
+      });
+    },
+  });
 
   const onNextRound = () => {
-    const results = CompetitionService.nextRound(competition, group, category);
-
-    updateCompetition(results);
+    setRound.mutate({
+      competitionId: group.competitionId,
+      groupId: group.id,
+      roundId: group.currentRound,
+    });
   };
 
-  const isFinished = group.status === "finished";
-  const isLastRound =
-    group.currentRound === category.qualification.qualifyingRounds;
-
   return (
-    <div>
-      <Button disabled={isFinished} variant={"default"} onClick={onNextRound}>
-        {isLastRound ? "Finalizar Pelotão" : `Próxima volta`} <ChevronRight />
+    <div className="flex w-full">
+      <Button
+        variant={"default"}
+        onClick={onNextRound}
+        className={"w-full"}
+        size={"icon-lg"}
+      >
+        {`Próxima volta`} <ChevronRight />
       </Button>
     </div>
   );

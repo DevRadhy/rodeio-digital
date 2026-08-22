@@ -1,23 +1,23 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useGroupRegistrations, useGroups } from "../hooks/use-competition";
+import { useGroups } from "../hooks/use-competition";
 import type { Competition } from "../types/competition";
-import { CompetitionList } from "./competition-list";
+import { CompetitionGroup } from "./competition-group";
 
 interface CompetitionViewProps {
   competition: Competition;
 }
 
 export function CompetitionView({ competition }: CompetitionViewProps) {
-  const { data: groups = [] } = useGroups(competition.id);
-  const [activedGroupId, setActivedGroupId] = useState(null);
+  const [activedGroupId, setActivedGroupId] = useState<string | null>(null);
 
-  const { data: groupRegistrations = [] } = useGroupRegistrations(
-    competition.id,
-    String(activedGroupId),
-  );
+  const groups = useGroups(competition.id);
 
-  const group = groups.find((group) => group.id === activedGroupId);
+  if (groups.isLoading) return;
+
+  if (!groups.data || groups.isError) return;
+
+  const group = groups.data.find((group) => group.id === activedGroupId);
 
   return (
     <Tabs
@@ -26,24 +26,14 @@ export function CompetitionView({ competition }: CompetitionViewProps) {
       onValueChange={(value) => setActivedGroupId(value)}
     >
       <TabsList>
-        {groups.map((group) => (
+        {groups.data.map((group) => (
           <TabsTrigger value={group.id} key={group.id}>
             {group.name}
           </TabsTrigger>
         ))}
       </TabsList>
       <TabsContent value={activedGroupId}>
-        {/* <CompetitionHeader group={group} /> */}
-
-        {!!group && (
-          <CompetitionList group={group} registrations={groupRegistrations} />
-        )}
-
-        {/* <CompetitionFooter
-          competition={competition}
-          group={group}
-          category={category}
-        /> */}
+        {!!group && <CompetitionGroup group={group} />}
       </TabsContent>
     </Tabs>
   );

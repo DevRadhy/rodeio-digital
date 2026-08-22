@@ -1,32 +1,45 @@
-import { useMutation } from "@tanstack/react-query";
-import { useParams } from "react-router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { registerShot } from "@/features/competition/api/registerShot";
 import { CompetitionCompetitor } from "@/features/competition/components/competition-competitor";
-import { useRoundGroupResults } from "@/features/competition/hooks/use-competition";
 import type {
   Group,
   GroupRegistration,
+  Result,
   Shot,
 } from "@/features/competition/types/competition";
-import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
-import { ItemGroup } from "../../ui/item";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../../../components/ui/card";
+import { ItemGroup } from "../../../components/ui/item";
 
 interface RegistrationCardProps {
   registration: GroupRegistration;
   group: Group;
+  results: Result[];
 }
 
 export function RegistrationCard({
   registration,
   group,
+  results,
 }: RegistrationCardProps) {
-  const { data: roundGroupResults } = useRoundGroupResults(
-    group.competitionId,
-    group.currentRound,
-  );
+  const queryClient = useQueryClient();
 
   const setShot = useMutation({
     mutationFn: registerShot,
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: [
+          "round-group-results",
+          variables.competitionId,
+          variables.groupId,
+          variables.roundId,
+        ],
+      });
+    },
   });
 
   const handleSetShot = (competitorId: string, shot: Shot) => {
@@ -60,7 +73,7 @@ export function RegistrationCard({
             <CompetitionCompetitor
               key={competitor.id}
               competitor={competitor}
-              result={roundGroupResults?.results.find(
+              result={results.find(
                 (result) => result.competitorId === competitor.id,
               )}
               handleRegisterShot={handleSetShot}
