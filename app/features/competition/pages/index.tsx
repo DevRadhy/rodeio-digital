@@ -4,7 +4,7 @@ import { CategoryCard } from "@/components/shared/categories/category-card";
 import { Button } from "@/components/ui/button";
 import { listCategories } from "@/features/categories/api/list-categories";
 import type { Category } from "@/features/categories/types/category";
-import { useCompetition } from "@/features/competition/hooks/use-competition";
+import { useStartCompetition } from "@/features/competition/hooks/use-start-competition";
 
 export function meta() {
   return [
@@ -18,7 +18,7 @@ export function meta() {
 
 export default function Competition() {
   const navigate = useNavigate();
-  const competition = useCompetition();
+  const competition = useStartCompetition();
 
   const { data: categories = [] } = useQuery({
     queryKey: ["categories"],

@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { startCompetition } from "../api/startCompetition";
 
-export function useCompetition() {
+export function useStartCompetition() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
