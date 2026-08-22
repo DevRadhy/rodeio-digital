@@ -4,6 +4,16 @@ import { CompetitionView } from "../components/competition-view";
 import { useCompetition } from "../hooks/use-competition";
 import { useCompetitionEvents } from "../hooks/use-competition-events";
 
+export function meta() {
+  return [
+    { title: "Competição" },
+    {
+      name: "Julge armadas, navegue entre pelotões.",
+      content: "Visualize competidores, rodadas e pelotões em andamento.",
+    },
+  ];
+}
+
 export default function CompetitionRun() {
   const { competitionId } = useParams();
 
