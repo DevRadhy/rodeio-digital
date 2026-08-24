@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useGroups } from "../hooks/use-competition";
 import type { Competition } from "../types/competition";
@@ -9,20 +9,24 @@ interface CompetitionViewProps {
 }
 
 export function CompetitionView({ competition }: CompetitionViewProps) {
+  const groups = useGroups(competition.id);
+
   const [activedGroupId, setActivedGroupId] = useState<string | null>(null);
 
-  const groups = useGroups(competition.id);
+  useEffect(() => {
+    if (!activedGroupId && groups.data?.length) {
+      setActivedGroupId(groups.data[0].id);
+    }
+  }, [groups.data, activedGroupId]);
 
   if (groups.isLoading) return;
 
   if (!groups.data || groups.isError) return;
 
-  const group = groups.data.find((group) => group.id === activedGroupId);
-
   return (
     <Tabs
       className="px-8"
-      defaultValue={activedGroupId}
+      value={activedGroupId}
       onValueChange={(value) => setActivedGroupId(value)}
     >
       <TabsList>
@@ -32,9 +36,11 @@ export function CompetitionView({ competition }: CompetitionViewProps) {
           </TabsTrigger>
         ))}
       </TabsList>
-      <TabsContent value={activedGroupId}>
-        {!!group && <CompetitionGroup group={group} />}
-      </TabsContent>
+      {groups.data.map((group) => (
+        <TabsContent value={group.id} key={group.id}>
+          <CompetitionGroup group={group} />
+        </TabsContent>
+      ))}
     </Tabs>
   );
 }
