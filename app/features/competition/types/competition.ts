@@ -1,3 +1,5 @@
+import type { CategoryDetail } from "./category";
+
 export type Status = "not_started" | "running" | "finished";
 export type Phase = "qualification" | "final";
 export type Shot = "positive" | "negative";
@@ -5,13 +7,9 @@ export type Shot = "positive" | "negative";
 export interface Competition {
   id: string;
   categoryId: string;
-  name: string;
   status: Status;
   phase: Phase;
-  startedAt: Date;
-  finishedAt: Date;
-  createdAt: Date;
-  updatedAt: Date;
+  category: CategoryDetail;
 }
 
 export interface Group {
