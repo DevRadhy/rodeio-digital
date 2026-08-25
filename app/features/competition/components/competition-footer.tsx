@@ -2,18 +2,16 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { setNextRound } from "../api/setNextRound";
-import type { Competition, Group, RoundResults } from "../types/competition";
+import type { Competition, Group } from "../types/competition";
 
 interface CompetitionFooterProps {
   group: Group;
   competition: Competition;
-  results: RoundResults;
 }
 
 export function CompetitionFooter({
   group,
   competition,
-  results,
 }: CompetitionFooterProps) {
   const queryClient = useQueryClient();
 
@@ -47,21 +45,25 @@ export function CompetitionFooter({
     setRound.mutate({
       competitionId: group.competitionId,
       groupId: group.id,
-      roundId: group.currentRound,
+      roundId: group.currentRound.id,
     });
   };
 
   return (
     <div className="flex w-full">
-      {results.round.number === competition.category.qualification.rounds &&
+      {group.currentRound.number ===
+        competition.category.qualification.rounds &&
       competition.phase === "qualification" ? (
         <Button
           variant={"default"}
           onClick={onNextRound}
           className={"w-full"}
           size={"icon-lg"}
+          disabled={group.status === "finished"}
         >
-          Finalizar Pelotão
+          {group.status === "finished"
+            ? "Pelotão Finalizado"
+            : "Finalizar Pelotão"}
         </Button>
       ) : (
         <Button
@@ -69,6 +71,7 @@ export function CompetitionFooter({
           onClick={onNextRound}
           className={"w-full"}
           size={"icon-lg"}
+          disabled={group.currentRound.status !== "running"}
         >
           Próxima volta <ChevronRight />
         </Button>
