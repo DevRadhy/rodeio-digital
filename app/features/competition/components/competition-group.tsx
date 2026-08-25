@@ -1,4 +1,3 @@
-import { useRoundGroupResults } from "../hooks/use-competition";
 import type { Competition, Group } from "../types/competition";
 import { CompetitionFooter } from "./competition-footer";
 import { CompetitionHeader } from "./competition-header";
@@ -13,27 +12,13 @@ export function CompetitionGroup({
   group,
   competition,
 }: CompetitionGroupProps) {
-  const results = useRoundGroupResults(
-    group.competitionId,
-    group.id,
-    group.currentRound,
-  );
-
-  if (results.isLoading) return;
-
-  if (!results.data || results.isError) return;
-
   return (
     <>
-      <CompetitionHeader results={results.data} competition={competition} />
+      <CompetitionHeader group={group} competition={competition} />
 
-      <CompetitionList group={group} results={results.data} />
+      <CompetitionList group={group} />
 
-      <CompetitionFooter
-        group={group}
-        competition={competition}
-        results={results.data}
-      />
+      <CompetitionFooter group={group} competition={competition} />
     </>
   );
 }

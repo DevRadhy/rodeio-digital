@@ -1,5 +1,4 @@
-import type { CompetitionResult, Phase, Status } from "@/types/competition";
-import type { Registration } from "@/types/registration";
+import type { Phase, Status } from "@/features/competition/types/competition";
 
 const A_IN_CHARCODE = 65;
 
@@ -17,23 +16,6 @@ export const formatCurrency = (value: number) => {
   }).format(value);
 };
 
-export const getRegistrationChuncks = (
-  registrations: Registration[],
-  length: number,
-) => {
-  const chunks = [];
-
-  for (let i = 0; i < registrations.length; i += length) {
-    chunks.push(registrations.slice(i, i + length));
-  }
-
-  return chunks;
-};
-
-export const everyPositive = (result: CompetitionResult) => {
-  return result.competitors.every((competitor) => competitor.shot);
-};
-
 export const getGroupName = (index: number) => {
   return String.fromCharCode(A_IN_CHARCODE + index);
 };
@@ -44,11 +26,6 @@ export const formatStatus = (status: Status) => {
       return {
         text: "Em Andamento",
         color: "bg-emerald-500",
-      };
-    case "paused":
-      return {
-        text: "Em Pausa",
-        color: "bg-amber-500",
       };
     case "finished":
       return {
@@ -81,13 +58,6 @@ export const formatPhase = (value: Phase) => {
       return {
         text: "Final",
         bg: "bg-emerald-500",
-        color: "text-muted",
-      };
-    }
-    case "closed": {
-      return {
-        text: "Encerrada",
-        bg: "bg-rose-500",
         color: "text-muted",
       };
     }

@@ -1,14 +1,25 @@
 import { RegistrationCard } from "@/features/competition/components/competition-registration-card";
-import { useGroupRegistrations } from "../hooks/use-competition";
-import type { Group, RoundResults } from "../types/competition";
+import {
+  useGroupRegistrations,
+  useRoundGroupResults,
+} from "../hooks/use-competition";
+import type { Group } from "../types/competition";
 
 interface CompetitionListProps {
   group: Group;
-  results: RoundResults;
 }
 
-export function CompetitionList({ group, results }: CompetitionListProps) {
+export function CompetitionList({ group }: CompetitionListProps) {
   const registrations = useGroupRegistrations(group.competitionId, group.id);
+  const results = useRoundGroupResults(
+    group.competitionId,
+    group.id,
+    group.currentRound.id,
+  );
+
+  if (results.isLoading) return;
+
+  if (results.isError) return;
 
   if (registrations.isLoading) return;
 
@@ -21,7 +32,7 @@ export function CompetitionList({ group, results }: CompetitionListProps) {
           key={registration.id}
           group={group}
           registration={registration}
-          results={results.results}
+          results={results.data?.results}
         />
       ))}
     </div>

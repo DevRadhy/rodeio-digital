@@ -1,18 +1,18 @@
-import type { Competition, RoundResults } from "../types/competition";
+import type { Competition, Group } from "../types/competition";
 
 interface CompetitionHeaderProps {
-  results: RoundResults;
+  group: Group;
   competition: Competition;
 }
 
 export function CompetitionHeader({
-  results,
+  group,
   competition,
 }: CompetitionHeaderProps) {
   return (
     <div>
       <p className="text-2xl font-black uppercase">
-        Volta {results.round.number}
+        Volta {group.currentRound.number}
         {competition.phase === "qualification" &&
           ` de ${competition.category.qualification.rounds}`}
       </p>

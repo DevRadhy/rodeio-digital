@@ -18,7 +18,7 @@ import { ItemGroup } from "../../../components/ui/item";
 interface RegistrationCardProps {
   registration: GroupRegistration;
   group: Group;
-  results: Result[];
+  results?: Result[];
 }
 
 export function RegistrationCard({
@@ -46,7 +46,7 @@ export function RegistrationCard({
     setShot.mutate({
       competitionId: group.competitionId,
       groupId: group.id,
-      roundId: group.currentRound,
+      roundId: group.currentRound.id,
       registrationId: registration.id,
       competitorId,
       shot,
@@ -72,8 +72,9 @@ export function RegistrationCard({
           {registration.competitors.map((competitor) => (
             <CompetitionCompetitor
               key={competitor.id}
+              group={group}
               competitor={competitor}
-              result={results.find(
+              result={results?.find(
                 (result) => result.competitorId === competitor.id,
               )}
               handleRegisterShot={handleSetShot}
