@@ -38,7 +38,7 @@ export function CompetitionView({ competition }: CompetitionViewProps) {
       </TabsList>
       {groups.data.map((group) => (
         <TabsContent value={group.id} key={group.id}>
-          <CompetitionGroup group={group} />
+          <CompetitionGroup group={group} competition={competition} />
         </TabsContent>
       ))}
     </Tabs>
