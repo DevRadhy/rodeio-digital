@@ -2,13 +2,19 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { setNextRound } from "../api/setNextRound";
-import type { Group } from "../types/competition";
+import type { Competition, Group, RoundResults } from "../types/competition";
 
 interface CompetitionFooterProps {
   group: Group;
+  competition: Competition;
+  results: RoundResults;
 }
 
-export function CompetitionFooter({ group }: CompetitionFooterProps) {
+export function CompetitionFooter({
+  group,
+  competition,
+  results,
+}: CompetitionFooterProps) {
   const queryClient = useQueryClient();
 
   const setRound = useMutation({
@@ -27,7 +33,7 @@ export function CompetitionFooter({ group }: CompetitionFooterProps) {
         queryKey: [
           "group-registrations",
           variables.competitionId,
-          variables.roundId,
+          variables.groupId,
         ],
       });
 
@@ -47,14 +53,26 @@ export function CompetitionFooter({ group }: CompetitionFooterProps) {
 
   return (
     <div className="flex w-full">
-      <Button
-        variant={"default"}
-        onClick={onNextRound}
-        className={"w-full"}
-        size={"icon-lg"}
-      >
-        {`Próxima volta`} <ChevronRight />
-      </Button>
+      {results.round.number === competition.category.qualification.rounds &&
+      competition.phase === "qualification" ? (
+        <Button
+          variant={"default"}
+          onClick={onNextRound}
+          className={"w-full"}
+          size={"icon-lg"}
+        >
+          Finalizar Pelotão
+        </Button>
+      ) : (
+        <Button
+          variant={"default"}
+          onClick={onNextRound}
+          className={"w-full"}
+          size={"icon-lg"}
+        >
+          Próxima volta <ChevronRight />
+        </Button>
+      )}
     </div>
   );
 }
