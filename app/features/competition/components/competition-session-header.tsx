@@ -27,7 +27,7 @@ export function CompetitionSessionHeader({
       </Button>
 
       <div className="flex items-center justify-between py-4">
-        <h1 className="text-3xl font-bold">{competition.name}</h1>
+        <h1 className="text-3xl font-bold">{competition.category.name}</h1>
         <Badge className={`${phase.bg} ${phase.color}`}>{phase.text}</Badge>
       </div>
     </div>
