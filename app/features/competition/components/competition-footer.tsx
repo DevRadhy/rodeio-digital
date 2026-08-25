@@ -71,7 +71,7 @@ export function CompetitionFooter({
           onClick={onNextRound}
           className={"w-full"}
           size={"icon-lg"}
-          disabled={group.currentRound.status !== "running"}
+          disabled={group.currentRound.status === "finished"}
         >
           Próxima volta <ChevronRight />
         </Button>
