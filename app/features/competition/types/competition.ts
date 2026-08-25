@@ -17,7 +17,11 @@ export interface Group {
   competitionId: string;
   name: string;
   status: Status;
-  currentRound: string;
+  currentRound: {
+    id: string;
+    status: Status;
+    number: number;
+  };
 }
 
 export interface GroupRegistration {
