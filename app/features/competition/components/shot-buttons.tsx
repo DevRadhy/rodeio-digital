@@ -1,4 +1,4 @@
-import { Check, X } from "lucide-react";
+import { Circle, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Shot } from "../types/competition";
 
@@ -30,7 +30,7 @@ export function ShotButtons({
           hover:bg-emerald-300 hover:outline-emerald-400 hover:text-emerald-100
         `}
       >
-        <Check />
+        <X />
       </Button>
       <Button
         variant={"outline"}
@@ -41,7 +41,7 @@ export function ShotButtons({
           hover:bg-rose-300 hover:outline-rose-400 hover:text-rose-100
         `}
       >
-        <X />
+        <Circle />
       </Button>
     </div>
   );
