@@ -1,10 +1,9 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { useCompetitionStore } from "../stores/competition-store";
+import type { CompetitionShotRegisteredEvent } from "../types/competition-event";
 
 export function useCompetitionEvents(competitionId: string) {
-  const applyShotRegistered = useCompetitionStore(
-    (state) => state.applyShotRegistered,
-  );
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     const source = new EventSource(
@@ -12,9 +11,18 @@ export function useCompetitionEvents(competitionId: string) {
     );
 
     const handleShotRegistered = (event: MessageEvent) => {
-      const data = JSON.parse(event.data);
+      const data = JSON.parse(
+        event.data,
+      ) as CompetitionShotRegisteredEvent["payload"];
 
-      applyShotRegistered(data);
+      queryClient.invalidateQueries({
+        queryKey: [
+          "round-group-results",
+          data.competitionId,
+          data.group.id,
+          data.round.id,
+        ],
+      });
     };
 
     source.addEventListener(
@@ -25,5 +33,5 @@ export function useCompetitionEvents(competitionId: string) {
     return () => {
       source.close();
     };
-  }, [competitionId, applyShotRegistered]);
+  }, [competitionId, queryClient]);
 }
