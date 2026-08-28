@@ -7,6 +7,7 @@ import {
   useFieldArray,
   useForm,
 } from "react-hook-form";
+import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { v4 } from "uuid";
 import type { Category } from "@/features/categories/types/category";
@@ -22,6 +23,7 @@ interface RegistrationProps {
 
 export function useRegistration({ category }: RegistrationProps) {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const form = useForm<CreateRegistrationInput>({
     resolver: zodResolver(RegistrationSchema),
@@ -67,6 +69,10 @@ export function useRegistration({ category }: RegistrationProps) {
 
   const onSubmit: SubmitHandler<CreateRegistrationInput> = (data) => {
     createMutation.mutate(data);
+
+    toast.success("Inscrição realizada com sucesso");
+
+    navigate("/registrations");
   };
 
   const onError = (validationError: FieldErrors<CreateRegistrationInput>) => {

@@ -1,11 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
-import { useState } from "react";
+import { useNavigate } from "react-router";
 import { CategoryCard } from "@/components/shared/categories/category-card";
 import { Button } from "@/components/ui/button";
 import { listCategories } from "@/features/categories/api/list-categories";
-import type { Category } from "@/features/categories/types/category";
-import { RegistrationDialog } from "@/features/registration/components/registration-dialog";
 
 export function meta() {
   return [
@@ -18,14 +16,16 @@ export function meta() {
 }
 
 export default function Registration() {
-  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
-    null,
-  );
-
   const { data: categories = [] } = useQuery({
     queryKey: ["categories"],
     queryFn: listCategories,
   });
+
+  const navigate = useNavigate();
+
+  const handleOpenRegistration = (categoryId: string) => {
+    navigate(`/registrations/${categoryId}`);
+  };
 
   return (
     <div className="@container">
@@ -34,7 +34,7 @@ export default function Registration() {
           <CategoryCard key={category.id} category={category}>
             <Button
               variant={"secondary"}
-              onClick={() => setSelectedCategory(category)}
+              onClick={() => handleOpenRegistration(category.id)}
               className={"w-full"}
             >
               <Plus /> Adicionar Inscrição
@@ -42,14 +42,6 @@ export default function Registration() {
           </CategoryCard>
         ))}
       </div>
-
-      <RegistrationDialog
-        category={selectedCategory}
-        open={!!selectedCategory}
-        onOpenChange={(open) => {
-          if (!open) setSelectedCategory(null);
-        }}
-      />
     </div>
   );
 }

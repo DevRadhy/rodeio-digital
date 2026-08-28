@@ -5,7 +5,7 @@ export const findCategoryById = async (
   categoryId: string,
 ): Promise<Category | null> => {
   try {
-    const { data } = await api.get(`/categories/${categoryId}`);
+    const { data } = await api.get(`/categories/${categoryId}/details`);
 
     return data;
   } catch (_error) {
