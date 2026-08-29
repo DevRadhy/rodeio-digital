@@ -10,12 +10,12 @@ export const RegistrationSchema = z.object({
     .optional(),
   competitors: z.array(
     z.object({
-      id: z.string(),
+      id: z.string().nullable(),
       name: z
         .string("Você precisa informar o nome do competidor.")
         .min(2, "O nome do competidor precisa ter pelo menos 2 caracteres.")
         .max(32, "O nome do compeitodor é muito longo."),
-      cpf: z.string().min(9).max(9).optional(),
+      cpf: z.string().min(11).nullable(),
     }),
   ),
 });

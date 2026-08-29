@@ -9,7 +9,6 @@ import {
 } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
-import { v4 } from "uuid";
 import type { Category } from "@/features/categories/types/category";
 import {
   type CreateRegistrationInput,
@@ -60,8 +59,9 @@ export function useRegistration({ category }: RegistrationProps) {
       competitors: Array.from(
         { length: category.competitorsPerRegistration },
         () => ({
-          id: v4(),
+          id: null,
           name: "",
+          cpf: "",
         }),
       ),
     });
