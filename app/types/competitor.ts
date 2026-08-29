@@ -8,4 +8,5 @@ export interface CompetitorResult {
 export interface Competitor {
   id: string;
   name: string;
+  cpf?: string;
 }
