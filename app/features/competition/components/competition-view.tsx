@@ -14,7 +14,13 @@ export function CompetitionView({ competition }: CompetitionViewProps) {
   const [activedGroupId, setActivedGroupId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!activedGroupId && groups.data?.length) {
+    const activeGroupInGroups = groups.data?.some(
+      (group) => group.id === activedGroupId,
+    );
+
+    if (!groups.data?.length) return;
+
+    if (!activedGroupId || !activeGroupInGroups) {
       setActivedGroupId(groups.data[0].id);
     }
   }, [groups.data, activedGroupId]);

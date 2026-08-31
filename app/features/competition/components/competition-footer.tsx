@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { finishQualificaiton } from "../api/finishQualification";
 import { setNextRound } from "../api/setNextRound";
 import type { Competition, Group } from "../types/competition";
 
@@ -41,6 +42,32 @@ export function CompetitionFooter({
     },
   });
 
+  const finishQualificaiotn = useMutation({
+    mutationFn: finishQualificaiton,
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: [
+          "round-group-results",
+          variables.competitionId,
+          group.id,
+          group.currentRound.id,
+        ],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["group-registrations", variables.competitionId, group.id],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["groups", variables.competitionId],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["competition", variables.competitionId],
+      });
+    },
+  });
+
   const onNextRound = () => {
     setRound.mutate({
       competitionId: group.competitionId,
@@ -49,8 +76,12 @@ export function CompetitionFooter({
     });
   };
 
+  const onfinishQualificaiton = () => {
+    finishQualificaiotn.mutate({ competitionId: competition.id });
+  };
+
   return (
-    <div className="flex w-full">
+    <div className="w-full gap-4 flex flex-col">
       {group.currentRound.number ===
         competition.category.qualification.rounds &&
       competition.phase === "qualification" ? (
@@ -74,6 +105,16 @@ export function CompetitionFooter({
           disabled={group.currentRound.status === "finished"}
         >
           Próxima volta <ChevronRight />
+        </Button>
+      )}
+      {competition.phase === "qualification" && group.status === "finished" && (
+        <Button
+          variant={"default"}
+          onClick={onfinishQualificaiton}
+          className={"w-full"}
+          size={"icon-lg"}
+        >
+          Iniciar Finais
         </Button>
       )}
     </div>
