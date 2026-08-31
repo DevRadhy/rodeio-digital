@@ -15,7 +15,7 @@ export const RegistrationSchema = z.object({
         .string("Você precisa informar o nome do competidor.")
         .min(2, "O nome do competidor precisa ter pelo menos 2 caracteres.")
         .max(32, "O nome do compeitodor é muito longo."),
-      cpf: z.string().min(11).nullable(),
+      cpf: z.string().optional().nullable(),
     }),
   ),
 });
