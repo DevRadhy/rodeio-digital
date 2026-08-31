@@ -32,7 +32,9 @@ export function CompetitionList({ group }: CompetitionListProps) {
           key={registration.id}
           group={group}
           registration={registration}
-          results={results.data?.results}
+          results={results.data?.results.filter(
+            (results) => results.registrationId === registration.id,
+          )}
         />
       ))}
     </div>
