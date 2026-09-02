@@ -11,7 +11,9 @@ interface FormRegistrationProps {
 }
 
 export function FormRegistration({ category }: FormRegistrationProps) {
-  const { form, onSubmit, onError, fields } = useRegistration({ category });
+  const { form, onSubmit, onError, fields, isPending } = useRegistration({
+    category,
+  });
 
   return (
     <form id="form" onSubmit={form.handleSubmit(onSubmit, onError)}>
@@ -48,8 +50,8 @@ export function FormRegistration({ category }: FormRegistrationProps) {
       </FormProvider>
 
       <div className="flex justify-end">
-        <Button type="submit" form="form" size={"lg"}>
-          Salvar Inscrição
+        <Button type="submit" form="form" size={"lg"} disabled={isPending}>
+          {isPending ? "Salvando..." : "Salvar Inscrição"}
         </Button>
       </div>
     </form>

@@ -1,3 +1,5 @@
+import { isAxiosError } from "axios";
+import { groupKeys } from "@/features/competition/api/group-queries";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
@@ -39,13 +41,39 @@ export function useRegistration({ category }: RegistrationProps) {
 
   const createMutation = useMutation({
     mutationFn: createRegistration,
-    onSuccess: (data, _variables, _onMutateResult, context) => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["registrations"] });
-
-      context.client.setQueryData(["registrations"], (old: Category[]) => [
-        ...old,
-        data,
-      ]);
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
+      if (data.competitionId && data.groupId) {
+        queryClient.invalidateQueries({
+          queryKey: ["groups", data.competitionId],
+        });
+        queryClient.invalidateQueries({
+          queryKey: groupKeys.group(data.competitionId, data.groupId),
+        });
+        queryClient.invalidateQueries({
+          queryKey: groupKeys.rounds(data.competitionId, data.groupId),
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["group-registrations", data.competitionId, data.groupId],
+        });
+      }
+      toast.success("Inscrição realizada com sucesso");
+      navigate(
+        data.competitionId
+          ? `/competition/${data.competitionId}`
+          : "/registrations",
+      );
+    },
+    onError: (error) => {
+      const message = isAxiosError(error)
+        ? error.response?.data?.message
+        : undefined;
+      toast.error(
+        typeof message === "string"
+          ? message
+          : "Não foi possível realizar a inscrição. Confira os dados e tente novamente.",
+      );
     },
   });
 
@@ -69,10 +97,6 @@ export function useRegistration({ category }: RegistrationProps) {
 
   const onSubmit: SubmitHandler<CreateRegistrationInput> = (data) => {
     createMutation.mutate(data);
-
-    toast.success("Inscrição realizada com sucesso");
-
-    navigate("/registrations");
   };
 
   const onError = (validationError: FieldErrors<CreateRegistrationInput>) => {
@@ -91,6 +115,7 @@ export function useRegistration({ category }: RegistrationProps) {
 
   return {
     form,
+    isPending: createMutation.isPending,
     onSubmit,
     onError,
     fields,

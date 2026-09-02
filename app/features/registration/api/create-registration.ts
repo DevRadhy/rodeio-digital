@@ -4,12 +4,7 @@ import type { Registration } from "../types/registration";
 
 export const createRegistration = async (
   registrations: CreateRegistrationInput,
-): Promise<Registration | null> => {
-  try {
-    const { data } = await api.post("/registrations", registrations);
-
-    return data;
-  } catch (_error) {
-    return null;
-  }
+): Promise<Registration & { competitionId?: string; groupId?: string }> => {
+  const { data } = await api.post("/registrations", registrations);
+  return data;
 };

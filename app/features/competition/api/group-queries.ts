@@ -67,6 +67,8 @@ export function roundOptions(
       return data;
     },
     enabled: Boolean(competitionId && groupId && number !== null),
+    refetchInterval: (query) =>
+      query.state.data?.status === "finished" ? false : 15_000,
     staleTime: 30_000,
     gcTime: 5 * 60_000,
   });

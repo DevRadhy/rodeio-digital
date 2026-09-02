@@ -28,6 +28,28 @@ export function useCompetitionEvents(competitionId: string) {
       });
     };
 
+    const handleRegistrationAdded = (event: MessageEvent) => {
+      const data = JSON.parse(event.data) as {
+        competitionId: string;
+        groupId: string;
+      };
+      queryClient.invalidateQueries({
+        queryKey: ["groups", data.competitionId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: groupKeys.group(data.competitionId, data.groupId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: groupKeys.rounds(data.competitionId, data.groupId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["group-registrations", data.competitionId, data.groupId],
+      });
+    };
+    source.addEventListener(
+      "competition.registration.added",
+      handleRegistrationAdded,
+    );
     source.addEventListener(
       "competition.shot.registered",
       handleShotRegistered,

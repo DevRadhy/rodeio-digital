@@ -26,6 +26,17 @@ export function CompetitionSessionHeader({
         <ChevronLeft /> Modalidades
       </Button>
 
+      {competition.phase === "qualification" &&
+        competition.status === "running" && (
+          <Button
+            variant="outline"
+            onClick={() =>
+              navigation(`/registrations/${competition.categoryId}`)
+            }
+          >
+            Adicionar inscrição
+          </Button>
+        )}
       <div className="flex items-center justify-between py-4">
         <h1 className="text-3xl font-bold">{competition.category.name}</h1>
         <Badge className={`${phase.bg} ${phase.color}`}>{phase.text}</Badge>

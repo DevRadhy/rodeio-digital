@@ -72,10 +72,10 @@ export function ComboboxCompetitors<T extends FieldValues>({
               field.onChange({
                 id: next.id,
                 name: next.name,
-                cpf: next.cpf,
+                cpf: next.cpf ?? "",
               });
 
-              setValue(`${name}.cpf`, next.cpf as any, {
+              setValue(`${name}.cpf`, (next.cpf ?? "") as any, {
                 shouldDirty: true,
                 shouldValidate: true,
               });

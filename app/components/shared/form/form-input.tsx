@@ -39,6 +39,7 @@ export default function FormInput<T extends FieldValues>({
           <FieldLabel htmlFor={field.name}>{label}</FieldLabel>
           <Input
             {...field}
+            value={field.value ?? ""}
             id={field.name}
             aria-invalid={fieldState.invalid}
             autoComplete="off"
