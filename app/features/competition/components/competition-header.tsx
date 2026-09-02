@@ -17,7 +17,7 @@ export function CompetitionHeader({
           ` de ${competition.category.qualification.rounds}`}
       </p>
       <p className="text-muted-foreground">
-        Somente a volta atual fica liberada para laçamento. Isso evita erros de
+        Somente a volta atual fica liberada para lançamento. Isso evita erros de
         lançamento.
       </p>
     </div>

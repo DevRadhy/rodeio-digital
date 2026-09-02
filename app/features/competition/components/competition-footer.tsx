@@ -1,3 +1,5 @@
+import { toast } from "sonner";
+import { groupKeys } from "../api/group-queries";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -18,7 +20,20 @@ export function CompetitionFooter({
 
   const setRound = useMutation({
     mutationFn: setNextRound,
+    onError: () =>
+      toast.error(
+        "Não foi possível finalizar a volta. Confira se todos foram julgados.",
+      ),
     onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ["competition", variables.competitionId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: groupKeys.group(variables.competitionId, group.id),
+      });
+      queryClient.invalidateQueries({
+        queryKey: groupKeys.rounds(variables.competitionId, group.id),
+      });
       queryClient.invalidateQueries({
         queryKey: [
           "round-group-results",
@@ -44,7 +59,20 @@ export function CompetitionFooter({
 
   const finishQualificaiotn = useMutation({
     mutationFn: finishQualificaiton,
+    onError: () =>
+      toast.error(
+        "Não foi possível iniciar as finais. Todos os pelotões devem estar finalizados e deve haver classificados.",
+      ),
     onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ["competition", variables.competitionId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: groupKeys.group(variables.competitionId, group.id),
+      });
+      queryClient.invalidateQueries({
+        queryKey: groupKeys.rounds(variables.competitionId, group.id),
+      });
       queryClient.invalidateQueries({
         queryKey: [
           "round-group-results",
@@ -90,7 +118,11 @@ export function CompetitionFooter({
           onClick={onNextRound}
           className={"w-full"}
           size={"icon-lg"}
-          disabled={group.status === "finished"}
+          disabled={
+            setRound.isPending ||
+            competition.status === "finished" ||
+            group.status === "finished"
+          }
         >
           {group.status === "finished"
             ? "Pelotão Finalizado"
@@ -102,15 +134,27 @@ export function CompetitionFooter({
           onClick={onNextRound}
           className={"w-full"}
           size={"icon-lg"}
-          disabled={group.currentRound.status === "finished"}
+          disabled={
+            setRound.isPending ||
+            competition.status === "finished" ||
+            group.status === "finished" ||
+            group.currentRound.status === "finished"
+          }
         >
-          Próxima volta <ChevronRight />
+          {group.status === "finished" ? (
+            "Final encerrada"
+          ) : (
+            <>
+              Próxima volta <ChevronRight />
+            </>
+          )}
         </Button>
       )}
       {competition.phase === "qualification" && group.status === "finished" && (
         <Button
           variant={"default"}
           onClick={onfinishQualificaiton}
+          disabled={finishQualificaiotn.isPending}
           className={"w-full"}
           size={"icon-lg"}
         >

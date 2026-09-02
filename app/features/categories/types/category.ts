@@ -6,18 +6,19 @@ export interface Final {
   qualificationScores: number[];
 }
 
+export type CategoryType = "normal" | "elimination" | "summation" | "duel";
+
 export interface Category {
+  categoryType: CategoryType;
   id: string;
   name: string;
   competitorsPerRegistration: number;
   qualifyingRounds: number;
-  duel: boolean;
   session: CompetitionSession | null;
 }
 
 export interface Qualification {
   qualifyingRounds: number;
-  elimination: boolean;
 }
 
 export interface CompetitionSession {

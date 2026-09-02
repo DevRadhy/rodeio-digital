@@ -27,8 +27,8 @@ export function FormCategoryFinal({
 }: FormCategoryFinalProps) {
   const { control } = useFormContext();
 
-  const duel = useWatch({
-    name: "duel",
+  const categoryType = useWatch({
+    name: "categoryType",
     control,
   });
 
@@ -40,13 +40,19 @@ export function FormCategoryFinal({
             <FormInput
               control={control}
               name={`finals.${index}.name`}
-              label="Nome da Força"
+              label={
+                categoryType === "duel" ? "Nome da Força" : "Nome da Final"
+              }
               description="Nome do grupo de classificação."
               type="text"
               placeholder={`padrão Força ${getGroupName(index)}`}
             />
 
-            <FormQualifyingShots name={`finals.${index}.qualificationScores`} />
+            {(categoryType === "normal" || categoryType === "duel") && (
+              <FormQualifyingShots
+                name={`finals.${index}.qualificationScores`}
+              />
+            )}
           </CardContent>
           <CardFooter>
             {fields.length > 1 && (
@@ -56,26 +62,27 @@ export function FormCategoryFinal({
                 className={"w-full"}
                 onClick={() => remove(index)}
               >
-                <Trash2 />
+                <Trash2 /> Remover força
               </Button>
             )}
           </CardFooter>
         </Card>
       ))}
 
-      <Button
-        type="button"
-        variant={"outline"}
-        disabled={!duel}
-        onClick={() =>
-          append({
-            name: getGroupName(fields.length),
-            qualificationScores: [],
-          })
-        }
-      >
-        <Plus /> Adicionar Força
-      </Button>
+      {categoryType === "duel" && (
+        <Button
+          type="button"
+          variant={"outline"}
+          onClick={() =>
+            append({
+              name: getGroupName(fields.length),
+              qualificationScores: [],
+            })
+          }
+        >
+          <Plus /> Adicionar Força
+        </Button>
+      )}
     </FieldGroup>
   );
 }

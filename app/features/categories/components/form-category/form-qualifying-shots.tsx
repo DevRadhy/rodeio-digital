@@ -89,7 +89,7 @@ export function FormQualifyingShots<T extends FieldValues>({
           name={name}
           control={control}
           render={({ field, fieldState }) => (
-            <Field data-invalid={groupRounds.invalid}>
+            <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor={name}>Armadas de Classificatória</FieldLabel>
               <ButtonGroup>
                 <Input
@@ -126,6 +126,8 @@ export function FormQualifyingShots<T extends FieldValues>({
         {groupRounds.map((round: number, index: number) => (
           <Button
             key={round}
+            type="button"
+            aria-label={`Remover corte ${round}`}
             onClick={() => removeValue(index)}
             variant={"secondary"}
           >

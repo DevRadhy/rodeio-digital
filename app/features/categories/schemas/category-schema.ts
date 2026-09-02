@@ -6,13 +6,12 @@ const finalSchema = z.object({
     .min(1, "Informe o nome do grupo")
     .max(32, "O nome deve ter no máximo 32 caracteres"),
 
-  qualificationScores: z
-    .array(z.number().int().positive())
-    .min(1, "Informe a quantidade de armadas"),
+  qualificationScores: z.array(z.number().int().positive()),
 });
 
 export const CategorySchema = z
   .object({
+    categoryType: z.enum(["normal", "elimination", "summation", "duel"]),
     name: z
       .string()
       .min(3, "O nome deve ter pelo menos 3 caracteres")
@@ -31,16 +30,36 @@ export const CategorySchema = z
         .number("Informe o tamanho do pelotão")
         .int()
         .min(5, "O pelotão deve conter pelo menos 5 inscrições"),
-      elimination: z.boolean(),
     }),
-    duel: z.boolean(),
     finals: z.array(finalSchema),
   })
   .superRefine((data, ctx) => {
+    const usesCuts =
+      data.categoryType === "normal" || data.categoryType === "duel";
+    if (
+      data.finals.length === 0 ||
+      (data.categoryType !== "duel" && data.finals.length !== 1)
+    ) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Configure os grupos da final",
+        path: ["finals"],
+      });
+    }
+    if (
+      usesCuts &&
+      data.finals.some((group) => group.qualificationScores.length === 0)
+    ) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Informe o corte da final",
+        path: ["finals"],
+      });
+    }
     const usedShots = new Map<number, number>();
 
     data.finals.forEach((group, groupIndex) => {
-      if (group.qualificationScores.length === 0) {
+      if (usesCuts && group.qualificationScores.length === 0) {
         ctx.addIssue({
           code: "custom",
           message: `O grupo ${group.name} deve possuir armadas de classificatória`,

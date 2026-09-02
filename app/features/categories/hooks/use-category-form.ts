@@ -7,7 +7,6 @@ import {
   CategorySchema,
   type CreateCategoryInput,
 } from "@/features/categories/schemas/category-schema";
-import type { Category } from "@/features/categories/types/category";
 import { createCategory } from "../api/create-category";
 
 const DEFAULT_FINAL_GROUP = () => ({
@@ -27,12 +26,12 @@ export function useCategoryForm({ onOpenChange }: CategoryFormProps) {
     resolver: zodResolver(CategorySchema),
     defaultValues: {
       name: "",
+      categoryType: "normal",
       competitorsPerRegistration: 1,
       qualification: {
         rounds: 1,
-        elimination: true,
+        pelotonSize: 10,
       },
-      duel: false,
       finals: [DEFAULT_FINAL_GROUP()],
     },
   });
@@ -46,16 +45,14 @@ export function useCategoryForm({ onOpenChange }: CategoryFormProps) {
 
   const createMutation = useMutation({
     mutationFn: createCategory,
-    onSuccess: (data, _variables, _onMutateResult, context) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["categories"] });
-
-      context.client.setQueryData(["categories"], (old: Category[]) => [
-        ...old,
-        data,
-      ]);
-
       onClose();
     },
+    onError: () =>
+      toast.error(
+        "Não foi possível cadastrar a modalidade. Confira os dados e tente novamente.",
+      ),
   });
 
   const onSubmit = (data: CreateCategoryInput) => {
@@ -107,7 +104,15 @@ export function useCategoryForm({ onOpenChange }: CategoryFormProps) {
     }
   };
 
+  const onCategoryTypeChange = (type: CreateCategoryInput["categoryType"]) => {
+    form.setValue("categoryType", type);
+    onDuelChange(type === "duel");
+    if (type === "elimination" || type === "summation")
+      replace([{ name: "Final", qualificationScores: [] }]);
+  };
+
   return {
+    onCategoryTypeChange,
     form,
     fields,
     append,

@@ -1,39 +1,20 @@
 import { RegistrationCard } from "@/features/competition/components/competition-registration-card";
-import {
-  useGroupRegistrations,
-  useRoundGroupResults,
-} from "../hooks/use-competition";
-import type { Group } from "../types/competition";
-
-interface CompetitionListProps {
+import type { Group, GroupRegistration, Result } from "../types/competition";
+interface Props {
   group: Group;
+  registrations: GroupRegistration[];
+  results: Result[];
 }
-
-export function CompetitionList({ group }: CompetitionListProps) {
-  const registrations = useGroupRegistrations(group.competitionId, group.id);
-  const results = useRoundGroupResults(
-    group.competitionId,
-    group.id,
-    group.currentRound.id,
-  );
-
-  if (results.isLoading) return;
-
-  if (results.isError) return;
-
-  if (registrations.isLoading) return;
-
-  if (!registrations.data || registrations.isError) return;
-
+export function CompetitionList({ group, registrations, results }: Props) {
   return (
     <div className="flex flex-col justify-center gap-4 py-8">
-      {registrations.data.map((registration) => (
+      {registrations.map((registration) => (
         <RegistrationCard
           key={registration.id}
           group={group}
           registration={registration}
-          results={results.data?.results.filter(
-            (results) => results.registrationId === registration.id,
+          results={results.filter(
+            (result) => result.registrationId === registration.id,
           )}
         />
       ))}

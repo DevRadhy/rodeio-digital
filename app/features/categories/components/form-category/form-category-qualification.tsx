@@ -1,15 +1,8 @@
 import { useFormContext } from "react-hook-form";
 import FormInput from "@/components/shared/form/form-input";
-import FormSwitch from "@/components/shared/form/form-switch";
 import { FieldGroup } from "@/components/ui/field";
 
-interface FormCategoryQualificationProps {
-  onDuelChange: (checked: boolean) => void;
-}
-
-export function FormCategoryQualification({
-  onDuelChange,
-}: FormCategoryQualificationProps) {
+export function FormCategoryQualification() {
   const { control } = useFormContext();
 
   return (
@@ -32,19 +25,6 @@ export function FormCategoryQualification({
           type="number"
         />
       </div>
-
-      <FormSwitch
-        control={control}
-        name="duel"
-        label="Duelo"
-        onCheckedChange={onDuelChange}
-      />
-
-      <FormSwitch
-        control={control}
-        name="qualification.elimination"
-        label="Eliminatória"
-      />
     </FieldGroup>
   );
 }

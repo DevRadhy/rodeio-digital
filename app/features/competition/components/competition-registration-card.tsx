@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { registerShot } from "@/features/competition/api/registerShot";
+import { groupKeys } from "@/features/competition/api/group-queries";
 import { CompetitionCompetitor } from "@/features/competition/components/competition-competitor";
 import type {
   Group,
@@ -32,12 +33,7 @@ export function RegistrationCard({
     mutationFn: registerShot,
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
-        queryKey: [
-          "round-group-results",
-          variables.competitionId,
-          variables.groupId,
-          variables.roundId,
-        ],
+        queryKey: groupKeys.rounds(variables.competitionId, variables.groupId),
       });
     },
   });

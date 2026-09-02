@@ -14,11 +14,16 @@ export function CategoryBadges({ category }: CategoryBadgesProps) {
 
       {<Badge variant={"secondary"}>{category.qualifyingRounds} voltas</Badge>}
 
-      {/* {category.qualification.elimination && (
-        <Badge variant={"destructive"}>eliminatória</Badge>
-      )} */}
-
-      {category.duel && <Badge variant={"default"}>Duelo</Badge>}
+      <Badge variant="default">
+        {
+          {
+            normal: "Normal",
+            elimination: "Eliminatória",
+            summation: "Somatória",
+            duel: "Duelo por Forças",
+          }[category.categoryType]
+        }
+      </Badge>
     </>
   );
 }

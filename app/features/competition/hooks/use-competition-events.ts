@@ -1,5 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
+import { groupKeys } from "../api/group-queries";
 import type { CompetitionShotRegisteredEvent } from "../types/competition-event";
 
 export function useCompetitionEvents(competitionId: string) {
@@ -16,12 +17,14 @@ export function useCompetitionEvents(competitionId: string) {
       ) as CompetitionShotRegisteredEvent["payload"];
 
       queryClient.invalidateQueries({
-        queryKey: [
-          "round-group-results",
+        queryKey: groupKeys.round(
           data.competitionId,
           data.group.id,
-          data.round.id,
-        ],
+          data.round.number,
+        ),
+      });
+      queryClient.invalidateQueries({
+        queryKey: groupKeys.group(data.competitionId, data.group.id),
       });
     };
 

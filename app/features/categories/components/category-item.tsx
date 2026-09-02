@@ -20,7 +20,7 @@ export function CategoryItem({ category, onDelete }: CategoryItemProps) {
   return (
     <Item variant={"outline"}>
       <ItemMedia variant={"icon"}>
-        {category.duel ? <Swords /> : <Users />}
+        {category.categoryType === "duel" ? <Swords /> : <Users />}
       </ItemMedia>
       <ItemContent>
         <ItemTitle>{category.name}</ItemTitle>

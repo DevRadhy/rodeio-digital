@@ -1,7 +1,7 @@
+import type { CategoryType } from "@/features/categories/types/category";
 interface Qualification {
   rounds: number;
   pelotonSize: number;
-  elimination: boolean;
 }
 
 interface FinalGroups {
@@ -11,9 +11,9 @@ interface FinalGroups {
 }
 
 export interface CategoryDetail {
+  categoryType: CategoryType;
   id: string;
   name: string;
-  duel: boolean;
   competitorsPerRegistration: number;
   qualification: Qualification;
   finals: FinalGroups[];

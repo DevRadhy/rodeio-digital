@@ -29,7 +29,7 @@ export function CategoryDialog({ open, onOpenChange }: CategoryDialogProps) {
     onSubmit,
     onError,
     onClose,
-    onDuelChange,
+    onCategoryTypeChange,
   } = useCategoryForm({ onOpenChange });
 
   return (
@@ -40,12 +40,14 @@ export function CategoryDialog({ open, onOpenChange }: CategoryDialogProps) {
             <DialogTitle>Modalidade</DialogTitle>
             <DialogDescription>Registre uma modalidade.</DialogDescription>
           </DialogHeader>
-          <div className="-mx-4 no-scrollbar max-h-[50vh] overflow-y-auto px-4 max-w-lg">
+          <div className="-mx-4 max-h-[60vh] overflow-y-auto px-4 max-w-lg">
             <FormProvider {...form}>
               <FieldGroup>
-                <FormCategoryGeneral />
+                <FormCategoryGeneral
+                  onCategoryTypeChange={onCategoryTypeChange}
+                />
 
-                <FormCategoryQualification onDuelChange={onDuelChange} />
+                <FormCategoryQualification />
 
                 <FormCategoryFinal
                   fields={fields}
