@@ -1,3 +1,4 @@
+import { FormErrors } from "@/components/shared/form/form-errors";
 import { FormProvider } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +24,7 @@ interface CategoryDialogProps {
 export function CategoryDialog({ open, onOpenChange }: CategoryDialogProps) {
   const {
     form,
+    isPending,
     fields,
     append,
     remove,
@@ -34,7 +36,11 @@ export function CategoryDialog({ open, onOpenChange }: CategoryDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <form id="form" onSubmit={form.handleSubmit(onSubmit, onError)}>
+      <form
+        id="category-form"
+        noValidate
+        onSubmit={form.handleSubmit(onSubmit, onError)}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Modalidade</DialogTitle>
@@ -43,6 +49,7 @@ export function CategoryDialog({ open, onOpenChange }: CategoryDialogProps) {
           <div className="-mx-4 max-h-[60vh] overflow-y-auto px-4 max-w-lg">
             <FormProvider {...form}>
               <FieldGroup>
+                <FormErrors errors={form.formState.errors} />
                 <FormCategoryGeneral
                   onCategoryTypeChange={onCategoryTypeChange}
                 />
@@ -60,13 +67,18 @@ export function CategoryDialog({ open, onOpenChange }: CategoryDialogProps) {
           <DialogFooter>
             <DialogClose
               render={
-                <Button variant={"outline"} onClick={onClose}>
+                <Button
+                  type="button"
+                  variant={"outline"}
+                  onClick={onClose}
+                  disabled={isPending}
+                >
                   Cancelar
                 </Button>
               }
             />
-            <Button type="submit" form="form">
-              Salvar
+            <Button type="submit" form="category-form" disabled={isPending}>
+              {isPending ? "Salvando..." : "Salvar"}
             </Button>
           </DialogFooter>
         </DialogContent>

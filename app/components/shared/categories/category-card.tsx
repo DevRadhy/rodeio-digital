@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { Category } from "@/features/categories/types/category";
-import { Badge } from "../../ui/badge";
+import { CompetitionBadges } from "../competition-badges";
 import {
   Card,
   CardAction,
@@ -22,12 +22,12 @@ export function CategoryCard({ category, children }: CategoryCardProps) {
       <CardHeader>
         <CardTitle>{category.name}</CardTitle>
         <CardAction>
-          <Badge
-            variant={"secondary"}
-            className={`bg-muted text-primary font-semibold`}
-          >
-            Aguardando
-          </Badge>
+          <div className="flex flex-wrap justify-end gap-2">
+            <CompetitionBadges
+              status={category.session?.status}
+              phase={category.session?.phase}
+            />
+          </div>
         </CardAction>
       </CardHeader>
       <CardContent className="flex flex-wrap items-center flex-1 gap-2">

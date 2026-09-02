@@ -1,3 +1,4 @@
+import { PageHeader } from "@/components/shared/page-header";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import { useState } from "react";
@@ -46,6 +47,10 @@ export default function Categories() {
 
   return (
     <>
+      <PageHeader
+        title="Modalidades"
+        description="Configure as regras das modalidades do evento."
+      />
       {categories.length ? (
         <>
           <div className="flex justify-end">

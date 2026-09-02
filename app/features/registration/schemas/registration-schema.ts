@@ -7,6 +7,7 @@ export const RegistrationSchema = z.object({
     .string()
     .min(2, "O nome da inscrição deve ter pelo menos 2 caracteres.")
     .max(32, "O nome da inscrição é muito longo.")
+    .or(z.literal(""))
     .optional(),
   competitors: z.array(
     z.object({
@@ -14,7 +15,7 @@ export const RegistrationSchema = z.object({
       name: z
         .string("Você precisa informar o nome do competidor.")
         .min(2, "O nome do competidor precisa ter pelo menos 2 caracteres.")
-        .max(32, "O nome do compeitodor é muito longo."),
+        .max(32, "O nome do competidor é muito longo."),
       cpf: z.string().optional().nullable(),
     }),
   ),

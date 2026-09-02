@@ -1,4 +1,4 @@
-import { isAxiosError } from "axios";
+import { formErrorMessages, requestErrorMessage } from "@/lib/form-errors";
 import { groupKeys } from "@/features/competition/api/group-queries";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -66,14 +66,12 @@ export function useRegistration({ category }: RegistrationProps) {
       );
     },
     onError: (error) => {
-      const message = isAxiosError(error)
-        ? error.response?.data?.message
-        : undefined;
-      toast.error(
-        typeof message === "string"
-          ? message
-          : "Não foi possível realizar a inscrição. Confira os dados e tente novamente.",
+      const message = requestErrorMessage(
+        error,
+        "Não foi possível realizar a inscrição. Confira os dados e tente novamente.",
       );
+      form.setError("root.server", { message });
+      toast.error(message);
     },
   });
 
@@ -93,24 +91,18 @@ export function useRegistration({ category }: RegistrationProps) {
         }),
       ),
     });
-  }, [category]);
+  }, [category?.id]);
 
   const onSubmit: SubmitHandler<CreateRegistrationInput> = (data) => {
+    if (createMutation.isPending) return;
+    form.clearErrors("root");
     createMutation.mutate(data);
   };
 
   const onError = (validationError: FieldErrors<CreateRegistrationInput>) => {
-    const { categoryId, competitors } = validationError;
-
-    console.log(validationError);
-
-    if (categoryId) {
-      return toast.error(categoryId.message);
-    }
-
-    if (competitors) {
-      return toast.error("");
-    }
+    toast.error(
+      formErrorMessages(validationError)[0] ?? "Confira os campos indicados.",
+    );
   };
 
   return {

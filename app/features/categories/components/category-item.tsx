@@ -1,3 +1,4 @@
+import { CompetitionBadges } from "@/components/shared/competition-badges";
 import { Swords, Users } from "lucide-react";
 import { CategoryBadges } from "@/components/shared/categories/category-badges";
 import {
@@ -26,6 +27,10 @@ export function CategoryItem({ category, onDelete }: CategoryItemProps) {
         <ItemTitle>{category.name}</ItemTitle>
         <ItemDescription className="flex flex-wrap items-center flex-1 gap-2">
           <CategoryBadges category={category} />
+          <CompetitionBadges
+            status={category.session?.status}
+            phase={category.session?.phase}
+          />
         </ItemDescription>
       </ItemContent>
       <ItemActions>

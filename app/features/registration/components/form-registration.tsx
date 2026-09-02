@@ -1,3 +1,4 @@
+import { FormErrors } from "@/components/shared/form/form-errors";
 import { FormProvider } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { FieldGroup } from "@/components/ui/field";
@@ -16,9 +17,14 @@ export function FormRegistration({ category }: FormRegistrationProps) {
   });
 
   return (
-    <form id="form" onSubmit={form.handleSubmit(onSubmit, onError)}>
+    <form
+      id="registration-form"
+      noValidate
+      onSubmit={form.handleSubmit(onSubmit, onError)}
+    >
       <FormProvider {...form}>
         <FieldGroup>
+          <FormErrors errors={form.formState.errors} />
           <FormInput
             control={form.control}
             name={`name`}
@@ -28,7 +34,7 @@ export function FormRegistration({ category }: FormRegistrationProps) {
             placeholder={"Digite o nome da entidade."}
           />
           {fields.map((field, index) => (
-            <div key={field.id} className="flex gap-2">
+            <div key={field.id} className="flex flex-col gap-4 sm:flex-row">
               <ComboboxCompetitors
                 control={form.control}
                 name={`competitors.${index}`}
@@ -50,7 +56,12 @@ export function FormRegistration({ category }: FormRegistrationProps) {
       </FormProvider>
 
       <div className="flex justify-end">
-        <Button type="submit" form="form" size={"lg"} disabled={isPending}>
+        <Button
+          type="submit"
+          form="registration-form"
+          size={"lg"}
+          disabled={isPending}
+        >
           {isPending ? "Salvando..." : "Salvar Inscrição"}
         </Button>
       </div>

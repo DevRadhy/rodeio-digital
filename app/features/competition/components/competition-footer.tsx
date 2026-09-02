@@ -25,6 +25,7 @@ export function CompetitionFooter({
         "Não foi possível finalizar a volta. Confira se todos foram julgados.",
       ),
     onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
       queryClient.invalidateQueries({
         queryKey: ["competition", variables.competitionId],
       });
@@ -64,6 +65,7 @@ export function CompetitionFooter({
         "Não foi possível iniciar as finais. Todos os pelotões devem estar finalizados e deve haver classificados.",
       ),
     onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
       queryClient.invalidateQueries({
         queryKey: ["competition", variables.competitionId],
       });

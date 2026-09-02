@@ -1,3 +1,4 @@
+import { FormErrors } from "@/components/shared/form/form-errors";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -25,13 +26,24 @@ export function RegistrationDialog({
   open,
   onOpenChange,
 }: RegistrationDialogProps) {
-  const { form, onSubmit, onError, fields } = useRegistration({ category });
+  const { form, onSubmit, onError, fields, isPending } = useRegistration({
+    category,
+  });
 
   if (!category) return;
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <form id="form" onSubmit={form.handleSubmit(onSubmit, onError)}>
+    <Dialog
+      open={open}
+      onOpenChange={(open) => {
+        if (!isPending) onOpenChange(open);
+      }}
+    >
+      <form
+        id="registration-dialog-form"
+        noValidate
+        onSubmit={form.handleSubmit(onSubmit, onError)}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{category.name}</DialogTitle>
@@ -39,6 +51,7 @@ export function RegistrationDialog({
           </DialogHeader>
           <div className="-mx-4 no-scrollbar max-h-[50vh] overflow-y-auto px-4 max-w-lg">
             <FieldGroup>
+              <FormErrors errors={form.formState.errors} />
               {category.competitorsPerRegistration >= 4 && (
                 <FormInput
                   control={form.control}
@@ -65,13 +78,22 @@ export function RegistrationDialog({
           <DialogFooter>
             <DialogClose
               render={
-                <Button variant={"outline"} onClick={() => onOpenChange(false)}>
+                <Button
+                  type="button"
+                  disabled={isPending}
+                  variant={"outline"}
+                  onClick={() => onOpenChange(false)}
+                >
                   Cancelar
                 </Button>
               }
             />
-            <Button type="submit" form="form">
-              Salvar
+            <Button
+              type="submit"
+              form="registration-dialog-form"
+              disabled={isPending}
+            >
+              {isPending ? "Salvando..." : "Salvar"}
             </Button>
           </DialogFooter>
         </DialogContent>

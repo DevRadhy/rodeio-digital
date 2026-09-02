@@ -1,3 +1,4 @@
+import { formErrorMessages } from "@/lib/form-errors";
 /** biome-ignore-all lint/suspicious/noExplicitAny: react-hook-form setValue */
 
 import { useEffect, useState } from "react";
@@ -59,7 +60,7 @@ export function ComboboxCompetitors<T extends FieldValues>({
       control={control}
       name={name}
       render={({ field, fieldState }) => (
-        <Field>
+        <Field data-invalid={fieldState.invalid}>
           <FieldLabel htmlFor={name}>{label}</FieldLabel>
 
           <Combobox
@@ -95,6 +96,9 @@ export function ComboboxCompetitors<T extends FieldValues>({
             }}
           >
             <ComboboxInput
+              id={name}
+              onBlur={field.onBlur}
+              ref={field.ref}
               placeholder="Buscar competidor..."
               aria-invalid={!!fieldState.error}
             />
@@ -125,7 +129,11 @@ export function ComboboxCompetitors<T extends FieldValues>({
           </Combobox>
 
           <FieldDescription>{description}</FieldDescription>
-          {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+          {fieldState.invalid && (
+            <FieldError>
+              {formErrorMessages(fieldState.error).join(" ")}
+            </FieldError>
+          )}
         </Field>
       )}
     />

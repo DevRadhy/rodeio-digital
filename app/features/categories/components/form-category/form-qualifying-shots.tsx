@@ -41,7 +41,10 @@ export function FormQualifyingShots<T extends FieldValues>({
   const addValue = () => {
     const value = Number(round);
 
-    if (!Number.isFinite(value)) return;
+    if (!Number.isInteger(value)) {
+      setError(name, { message: "Informe um número inteiro de armadas." });
+      return;
+    }
 
     if (value < 1 || value > competitorsPerRegistration * rounds) {
       setError(name, {

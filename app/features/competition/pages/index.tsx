@@ -1,3 +1,4 @@
+import { PageHeader } from "@/components/shared/page-header";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { CategoryCard } from "@/components/shared/categories/category-card";
@@ -35,12 +36,19 @@ export default function Competition() {
 
   return (
     <div className="@container">
+      <div className="mx-4">
+        <PageHeader
+          title="Competições"
+          description="Inicie uma competição ou acompanhe uma sessão existente."
+        />
+      </div>
       <div className="grid grid-cols-1 gap-4 m-4 @xl:grid-cols-2 @5xl:grid-cols-4">
         {categories.map((category) => (
           <CategoryCard key={category.id} category={category}>
             <Button
               variant={"secondary"}
               onClick={() => openCompetition(category)}
+              disabled={competition.isPending}
               className={"w-full"}
             >
               {category.session ? "Entrar" : "Iniciar Competição"}

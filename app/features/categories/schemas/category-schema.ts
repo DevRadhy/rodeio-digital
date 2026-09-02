@@ -12,25 +12,30 @@ const finalSchema = z.object({
 export const CategorySchema = z
   .object({
     finalBonusEnabled: z.boolean(),
-    finalBonusLives: z.number().int().min(0).max(2147483647),
+    finalBonusLives: z
+      .number("Informe a quantidade de vidas")
+      .int("Informe um número inteiro de vidas")
+      .min(0, "O bônus não pode ser negativo")
+      .max(2147483647, "Quantidade de vidas muito alta"),
     categoryType: z.enum(["normal", "elimination", "summation", "duel"]),
     name: z
       .string()
       .min(3, "O nome deve ter pelo menos 3 caracteres")
-      .max(32, "O nome deve ter pelo menos 32 caracteres"),
+      .max(32, "O nome deve ter no máximo 32 caracteres"),
     competitorsPerRegistration: z
       .number("Informe o número de competidores")
-      .positive()
+      .int("Informe um número inteiro de competidores")
+      .positive("Informe pelo menos um competidor")
       .min(1, "Informe pelo menos 1 competidor")
       .max(50, "Máximo de 50 competidores"),
     qualification: z.object({
       rounds: z
         .number("Informe o número de rodadas")
-        .int()
+        .int("Informe um número inteiro")
         .min(1, "Informe pelo menos uma rodada"),
       pelotonSize: z
         .number("Informe o tamanho do pelotão")
-        .int()
+        .int("Informe um número inteiro")
         .min(5, "O pelotão deve conter pelo menos 5 inscrições"),
     }),
     finals: z.array(finalSchema),

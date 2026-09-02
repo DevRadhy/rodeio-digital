@@ -1,3 +1,4 @@
+import { formErrorMessages, requestErrorMessage } from "@/lib/form-errors";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { type FieldErrors, useFieldArray, useForm } from "react-hook-form";
@@ -49,27 +50,33 @@ export function useCategoryForm({ onOpenChange }: CategoryFormProps) {
     mutationFn: createCategory,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["categories"] });
-      onClose();
+      onOpenChange(false);
+      reset();
     },
-    onError: () =>
-      toast.error(
+    onError: (error) => {
+      const message = requestErrorMessage(
+        error,
         "Não foi possível cadastrar a modalidade. Confira os dados e tente novamente.",
-      ),
+      );
+      form.setError("root.server", { message });
+      toast.error(message);
+    },
   });
 
   const onSubmit = (data: CreateCategoryInput) => {
+    if (createMutation.isPending) return;
+    form.clearErrors("root");
     createMutation.mutate(data);
   };
 
   const onError = (validationError: FieldErrors<CreateCategoryInput>) => {
-    const errors = Object.values(validationError);
-
-    console.log(validationError);
-
-    return toast.error(errors[0].message);
+    toast.error(
+      formErrorMessages(validationError)[0] ?? "Confira os campos indicados.",
+    );
   };
 
   const onClose = () => {
+    if (createMutation.isPending) return;
     onOpenChange(false);
     reset();
   };
@@ -115,6 +122,7 @@ export function useCategoryForm({ onOpenChange }: CategoryFormProps) {
 
   return {
     onCategoryTypeChange,
+    isPending: createMutation.isPending,
     form,
     fields,
     append,
