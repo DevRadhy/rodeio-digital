@@ -25,11 +25,19 @@ export interface Group {
 }
 
 export interface GroupRegistration {
+  positiveShots: number;
+  totalShots: number;
   bonus?: number;
   id: string;
   number: number;
   name: string | null;
-  competitors: Competitor[];
+  competitors: JudgedCompetitor[];
+}
+
+export interface JudgedCompetitor extends Competitor {
+  positiveShots: number;
+  totalShots: number;
+  recentResults: { id: string; roundNumber: number; shot: Shot }[];
 }
 
 export interface Competitor {
