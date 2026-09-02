@@ -56,19 +56,29 @@ export function RegistrationCard({
 
   return (
     <Card size="sm">
-      <CardHeader>
+      <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3">
         <CardTitle className="text-muted-foreground">
           {registrationsName}
         </CardTitle>
-        {registration.bonus !== undefined && (
-          <Badge variant="secondary">Bônus atual: {registration.bonus}</Badge>
-        )}
+        <div className="flex flex-wrap items-center gap-2">
+          <Badge
+            variant="secondary"
+            className="tabular-nums"
+            title="Positivas / armadas jogadas nesta fase, até a volta exibida"
+            aria-label={`Parcial da inscrição: ${registration.positiveShots} positivas em ${registration.totalShots} armadas jogadas`}
+          >
+            Parcial {registration.positiveShots}/{registration.totalShots}
+          </Badge>
+          {registration.bonus !== undefined && (
+            <Badge variant="outline">Bônus atual: {registration.bonus}</Badge>
+          )}
+        </div>
       </CardHeader>
       <CardContent className="flex items-center">
         <span className="pr-2 text-2xl font-bold text-muted-foreground">
           {registration.number}
         </span>
-        <ItemGroup className="gap-0">
+        <ItemGroup className="min-w-0 flex-1 gap-3">
           {registration.competitors.map((competitor) => (
             <CompetitionCompetitor
               key={competitor.id}
