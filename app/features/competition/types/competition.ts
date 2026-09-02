@@ -25,6 +25,7 @@ export interface Group {
 }
 
 export interface GroupRegistration {
+  bonus?: number;
   id: string;
   number: number;
   name: string | null;

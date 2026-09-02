@@ -1,3 +1,4 @@
+import { Badge } from "@/components/ui/badge";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { registerShot } from "@/features/competition/api/registerShot";
 import { groupKeys } from "@/features/competition/api/group-queries";
@@ -59,6 +60,9 @@ export function RegistrationCard({
         <CardTitle className="text-muted-foreground">
           {registrationsName}
         </CardTitle>
+        {registration.bonus !== undefined && (
+          <Badge variant="secondary">Bônus atual: {registration.bonus}</Badge>
+        )}
       </CardHeader>
       <CardContent className="flex items-center">
         <span className="pr-2 text-2xl font-bold text-muted-foreground">

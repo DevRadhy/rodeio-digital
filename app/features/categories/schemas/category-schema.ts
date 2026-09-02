@@ -11,6 +11,8 @@ const finalSchema = z.object({
 
 export const CategorySchema = z
   .object({
+    finalBonusEnabled: z.boolean(),
+    finalBonusLives: z.number().int().min(0).max(2147483647),
     categoryType: z.enum(["normal", "elimination", "summation", "duel"]),
     name: z
       .string()
@@ -34,6 +36,13 @@ export const CategorySchema = z
     finals: z.array(finalSchema),
   })
   .superRefine((data, ctx) => {
+    if (data.finalBonusEnabled && data.finalBonusLives < 1) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Informe pelo menos uma vida de bônus",
+        path: ["finalBonusLives"],
+      });
+    }
     const usesCuts =
       data.categoryType === "normal" || data.categoryType === "duel";
     if (

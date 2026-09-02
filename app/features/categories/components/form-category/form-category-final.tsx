@@ -1,3 +1,4 @@
+import FormSwitch from "@/components/shared/form/form-switch";
 import { Plus, Trash2 } from "lucide-react";
 import {
   type FieldArrayWithId,
@@ -25,7 +26,8 @@ export function FormCategoryFinal({
   remove,
   append,
 }: FormCategoryFinalProps) {
-  const { control } = useFormContext();
+  const { control, setValue } = useFormContext<CreateCategoryInput>();
+  const finalBonusEnabled = useWatch({ control, name: "finalBonusEnabled" });
 
   const categoryType = useWatch({
     name: "categoryType",
@@ -34,6 +36,29 @@ export function FormCategoryFinal({
 
   return (
     <FieldGroup>
+      <FormSwitch
+        control={control}
+        name="finalBonusEnabled"
+        label="Habilitar bônus de final"
+        onCheckedChange={(enabled) =>
+          setValue("finalBonusLives", enabled ? 1 : 0, {
+            shouldDirty: true,
+            shouldValidate: true,
+          })
+        }
+      />
+      {finalBonusEnabled && (
+        <FormInput
+          control={control}
+          name="finalBonusLives"
+          label="Vidas de bônus na final"
+          type="number"
+          min={1}
+          step={1}
+          description="Cada erro consome uma vida da inscrição. Com saldo zero, o próximo erro elimina. O saldo é atualizado ao encerrar a volta."
+        />
+      )}
+
       {fields.map((field, index) => (
         <Card key={field.id}>
           <CardContent>

@@ -10,6 +10,8 @@ export type CategoryType = "normal" | "elimination" | "summation" | "duel";
 
 export interface Category {
   categoryType: CategoryType;
+  finalBonusEnabled: boolean;
+  finalBonusLives: number;
   id: string;
   name: string;
   competitorsPerRegistration: number;

@@ -27,6 +27,8 @@ export function useCategoryForm({ onOpenChange }: CategoryFormProps) {
     defaultValues: {
       name: "",
       categoryType: "normal",
+      finalBonusEnabled: false,
+      finalBonusLives: 0,
       competitorsPerRegistration: 1,
       qualification: {
         rounds: 1,

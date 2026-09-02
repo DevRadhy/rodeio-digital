@@ -12,6 +12,8 @@ interface FinalGroups {
 
 export interface CategoryDetail {
   categoryType: CategoryType;
+  finalBonusEnabled: boolean;
+  finalBonusLives: number;
   id: string;
   name: string;
   competitorsPerRegistration: number;
