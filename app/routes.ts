@@ -7,6 +7,10 @@ import {
 } from "@react-router/dev/routes";
 
 export default [
+  route(
+    "/scoreboard/:competitionId",
+    "features/scoreboard/pages/scoreboard.tsx",
+  ),
   layout("./layouts/pages/layout.tsx", [
     route("/categories", "features/categories/pages/index.tsx"),
     ...prefix("/registrations", [

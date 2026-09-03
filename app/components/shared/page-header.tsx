@@ -33,7 +33,9 @@ export function PageHeader({
       )}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="min-w-0">
-          <h1 className="break-words text-3xl font-bold">{title}</h1>
+          <h1 className="break-words font-display text-[2.5rem] font-extrabold uppercase leading-tight sm:text-5xl">
+            {title}
+          </h1>
           {description && (
             <p className="mt-1 text-muted-foreground">{description}</p>
           )}

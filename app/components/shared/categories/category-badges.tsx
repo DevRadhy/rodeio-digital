@@ -9,10 +9,18 @@ export function CategoryBadges({ category }: CategoryBadgesProps) {
   return (
     <>
       <Badge variant={"secondary"}>
-        {category.competitorsPerRegistration} competidor(es)
+        <span className="font-mono tabular-nums">
+          {category.competitorsPerRegistration}
+        </span>{" "}
+        competidor(es)
       </Badge>
 
-      {<Badge variant={"secondary"}>{category.qualifyingRounds} voltas</Badge>}
+      <Badge variant="secondary">
+        <span className="font-mono tabular-nums">
+          {category.qualifyingRounds}
+        </span>{" "}
+        voltas
+      </Badge>
 
       <Badge variant="default">
         {

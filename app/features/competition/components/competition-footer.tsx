@@ -62,7 +62,7 @@ export function CompetitionFooter({
     mutationFn: finishQualificaiton,
     onError: () =>
       toast.error(
-        "Não foi possível iniciar as finais. Todos os pelotões devem estar finalizados e deve haver classificados.",
+        "Não foi possível iniciar as finais. Todos os pelotões devem estar finalizados. Confira a configuração das finais.",
       ),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["categories"] });

@@ -17,6 +17,8 @@ interface CompetitionCompetitorProps {
   group: Group;
   competitor: JudgedCompetitor;
   result?: Result;
+  allowCorrection?: boolean;
+  saving?: boolean;
   handleRegisterShot(competitorId: string, shot: Shot): void;
 }
 
@@ -24,6 +26,8 @@ export function CompetitionCompetitor({
   group,
   competitor,
   result,
+  allowCorrection,
+  saving,
   handleRegisterShot,
 }: CompetitionCompetitorProps) {
   return (
@@ -31,7 +35,7 @@ export function CompetitionCompetitor({
       <ItemContent className="min-w-0">
         <ItemTitle className="flex-wrap gap-x-3 text-base font-bold">
           <span className="wrap-break-word">{competitor.name}</span>
-          <span className="text-sm font-medium tabular-nums text-muted-foreground">
+          <span className="text-sm font-medium font-mono tabular-nums text-muted-foreground">
             {competitor.positiveShots}/{competitor.totalShots}
           </span>
         </ItemTitle>
@@ -52,13 +56,13 @@ export function CompetitionCompetitor({
                 {result.shot === "positive" ? (
                   <X
                     aria-hidden="true"
-                    className="size-3.5 text-emerald-600 dark:text-emerald-400"
+                    className="size-3.5 text-primary"
                     strokeWidth={3}
                   />
                 ) : (
                   <Circle
                     aria-hidden="true"
-                    className="size-3.5 text-red-600 dark:text-red-400"
+                    className="size-3.5 text-negative"
                     strokeWidth={2.5}
                   />
                 )}
@@ -71,12 +75,14 @@ export function CompetitionCompetitor({
           </p>
         )}
       </ItemContent>
-      <ItemActions>
+      <ItemActions className="flex-wrap">
         <ShotButtons
           value={result?.shot ?? null}
           disabled={
-            group.status === "finished" ||
-            group.currentRound.status === "finished"
+            saving ||
+            ((group.status === "finished" ||
+              group.currentRound.status === "finished") &&
+              !(allowCorrection && result))
           }
           setShot={(shot) => handleRegisterShot(competitor.id, shot)}
         />

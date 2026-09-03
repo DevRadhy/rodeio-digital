@@ -1,7 +1,8 @@
+import { isAxiosError } from "axios";
+import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { registerShot } from "@/features/competition/api/registerShot";
-import { groupKeys } from "@/features/competition/api/group-queries";
 import { CompetitionCompetitor } from "@/features/competition/components/competition-competitor";
 import type {
   Group,
@@ -21,22 +22,44 @@ interface RegistrationCardProps {
   registration: GroupRegistration;
   group: Group;
   results?: Result[];
+  isJudging?: boolean;
+  allowCorrection?: boolean;
 }
 
 export function RegistrationCard({
   registration,
   group,
   results,
+  isJudging = false,
+  allowCorrection,
 }: RegistrationCardProps) {
   const queryClient = useQueryClient();
 
   const setShot = useMutation({
     mutationFn: registerShot,
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: groupKeys.rounds(variables.competitionId, variables.groupId),
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all(
+        [
+          "qualification-review",
+          "scoreboard",
+          "competition",
+          "groups",
+          "competition-group",
+          "competition-round",
+        ].map((key) =>
+          queryClient.invalidateQueries({
+            queryKey: [key, variables.competitionId],
+          }),
+        ),
+      );
     },
+    onError: (error) =>
+      toast.error(
+        isAxiosError(error)
+          ? (error.response?.data?.message ??
+              "Não foi possível salvar o resultado.")
+          : "Não foi possível salvar o resultado.",
+      ),
   });
 
   const handleSetShot = (competitorId: string, shot: Shot) => {
@@ -55,15 +78,27 @@ export function RegistrationCard({
     .join(" / ");
 
   return (
-    <Card size="sm">
+    <Card
+      size="sm"
+      aria-current={isJudging ? "true" : undefined}
+      className={isJudging ? "ring-2 ring-success" : undefined}
+    >
       <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3">
-        <CardTitle className="text-muted-foreground">
+        <CardTitle className="font-sans text-base font-semibold normal-case text-foreground">
           {registrationsName}
         </CardTitle>
         <div className="flex flex-wrap items-center gap-2">
+          {isJudging && (
+            <Badge
+              variant="outline"
+              className="border-success bg-success/10 text-primary"
+            >
+              Em julgamento
+            </Badge>
+          )}
           <Badge
             variant="secondary"
-            className="tabular-nums"
+            className="font-mono tabular-nums"
             title="Positivas / armadas jogadas nesta fase, até a volta exibida"
             aria-label={`Parcial da inscrição: ${registration.positiveShots} positivas em ${registration.totalShots} armadas jogadas`}
           >
@@ -75,7 +110,7 @@ export function RegistrationCard({
         </div>
       </CardHeader>
       <CardContent className="flex items-center">
-        <span className="pr-2 text-2xl font-bold text-muted-foreground">
+        <span className="pr-2 font-mono text-2xl font-bold text-muted-foreground">
           {registration.number}
         </span>
         <ItemGroup className="min-w-0 flex-1 gap-3">
@@ -83,6 +118,8 @@ export function RegistrationCard({
             <CompetitionCompetitor
               key={competitor.id}
               group={group}
+              allowCorrection={allowCorrection}
+              saving={setShot.isPending}
               competitor={competitor}
               result={results?.find(
                 (result) => result.competitorId === competitor.id,

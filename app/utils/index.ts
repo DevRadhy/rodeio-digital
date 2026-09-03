@@ -25,12 +25,12 @@ export const formatStatus = (status: Status) => {
     case "running":
       return {
         text: "Em Andamento",
-        color: "bg-emerald-500",
+        color: "bg-primary",
       };
     case "finished":
       return {
         text: "Encerrada",
-        color: "bg-rose-500",
+        color: "bg-muted text-muted-foreground",
       };
     case "not_started": {
       return {
@@ -51,14 +51,14 @@ export const formatPhase = (value: Phase) => {
     case "qualification":
       return {
         text: "Classificatórias",
-        bg: "bg-amber-500",
-        color: "text-muted",
+        bg: "bg-rope",
+        color: "text-primary-foreground",
       };
     case "final": {
       return {
         text: "Final",
-        bg: "bg-emerald-500",
-        color: "text-muted",
+        bg: "bg-primary",
+        color: "text-primary-foreground",
       };
     }
     default: {

@@ -13,6 +13,8 @@ export interface Competition {
 }
 
 export interface Group {
+  activeRegistrationCount?: number;
+  totalRegistrationCount?: number;
   id: string;
   competitionId: string;
   name: string;
