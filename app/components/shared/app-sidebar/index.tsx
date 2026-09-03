@@ -44,8 +44,14 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton className="data-[slot=sidebar-menu-button]:p-1.5!">
-              <img src={LacoLogo} alt="Rodeo Digital" className="size-6" />
-              <span className="text-base font-semibold">Rodeo Digital</span>
+              <img
+                src={LacoLogo}
+                alt="Rodeo Digital"
+                className="size-6 brightness-0 invert"
+              />
+              <span className="font-display text-2xl font-extrabold uppercase">
+                Rodeo Digital
+              </span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

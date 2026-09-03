@@ -15,12 +15,11 @@ export function CompetitionBadges({
     },
     running: {
       label: "Em andamento",
-      style: "bg-blue-100 text-blue-900 dark:bg-blue-950 dark:text-blue-200",
+      style: "bg-success/15 text-primary",
     },
     finished: {
       label: "Encerrada",
-      style:
-        "bg-slate-200 text-slate-800 dark:bg-slate-800 dark:text-slate-200",
+      style: "bg-muted text-muted-foreground",
     },
   };
   const state = states[status];
@@ -39,8 +38,8 @@ export function CompetitionBadges({
           aria-label={`Fase: ${phase === "qualification" ? "Classificatória" : "Final"}`}
           className={
             phase === "qualification"
-              ? "border-amber-300 text-amber-800 dark:text-amber-200"
-              : "border-emerald-300 text-emerald-800 dark:text-emerald-200"
+              ? "border-rope/50 bg-rope/10 text-rope-ink"
+              : "border-primary/30 bg-primary/10 text-primary"
           }
         >
           {phase === "qualification" ? "Classificatória" : "Final"}

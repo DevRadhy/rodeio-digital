@@ -1,62 +1,49 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
-import { groupKeys } from "../api/group-queries";
-import type { CompetitionShotRegisteredEvent } from "../types/competition-event";
+import { useEffect, useState } from "react";
+import { api } from "@/providers/api";
 
 export function useCompetitionEvents(competitionId: string) {
   const queryClient = useQueryClient();
-
+  const [connection, setConnection] = useState<
+    "connecting" | "live" | "reconnecting"
+  >("connecting");
   useEffect(() => {
+    setConnection("connecting");
     const source = new EventSource(
-      `http://localhost:3333/competition/${competitionId}/events`,
+      `${(api.defaults.baseURL ?? "").replace(/\/$/, "")}/competition/${competitionId}/events`,
     );
-
-    const handleShotRegistered = (event: MessageEvent) => {
-      const data = JSON.parse(
-        event.data,
-      ) as CompetitionShotRegisteredEvent["payload"];
-
-      queryClient.invalidateQueries({
-        queryKey: groupKeys.round(
-          data.competitionId,
-          data.group.id,
-          data.round.number,
-        ),
-      });
-      queryClient.invalidateQueries({
-        queryKey: groupKeys.group(data.competitionId, data.group.id),
-      });
+    const refresh = () => {
+      void queryClient.invalidateQueries({ queryKey: ["categories"] });
+      for (const key of [
+        "qualification-review",
+        "scoreboard",
+        "competition",
+        "groups",
+        "competition-group",
+        "competition-round",
+        "group-registrations",
+      ]) {
+        void queryClient.invalidateQueries({ queryKey: [key, competitionId] });
+      }
     };
-
-    const handleRegistrationAdded = (event: MessageEvent) => {
-      const data = JSON.parse(event.data) as {
-        competitionId: string;
-        groupId: string;
-      };
-      queryClient.invalidateQueries({
-        queryKey: ["groups", data.competitionId],
-      });
-      queryClient.invalidateQueries({
-        queryKey: groupKeys.group(data.competitionId, data.groupId),
-      });
-      queryClient.invalidateQueries({
-        queryKey: groupKeys.rounds(data.competitionId, data.groupId),
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["group-registrations", data.competitionId, data.groupId],
-      });
+    // Refetch on every connection: SSE notifications are not a replayable event log.
+    source.onopen = () => {
+      setConnection("live");
+      refresh();
     };
-    source.addEventListener(
-      "competition.registration.added",
-      handleRegistrationAdded,
-    );
-    source.addEventListener(
+    source.onerror = () => setConnection("reconnecting");
+    for (const name of [
+      "competition.management.changed",
       "competition.shot.registered",
-      handleShotRegistered,
-    );
-
-    return () => {
-      source.close();
-    };
+      "competition.registration.added",
+      "competition.round.finished",
+      "competition.qualification.finished",
+      "competition.final.started",
+      "competition.scoreboard.focus.changed",
+    ]) {
+      source.addEventListener(name, refresh);
+    }
+    return () => source.close();
   }, [competitionId, queryClient]);
+  return connection;
 }

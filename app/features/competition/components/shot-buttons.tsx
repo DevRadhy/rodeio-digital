@@ -27,10 +27,7 @@ export function ShotButtons({
         onClick={() => onSetShot("positive")}
         aria-label="Marcar acerto"
         aria-pressed={value === "positive"}
-        className={`${value === "positive" ? "bg-emerald-400 outline-emerald-300 text-emerald-100" : "outline-slate-400 text-slate-400 "}
-          rounded-sm font-bold w-12 h-10 px-3.5 flex justify-center items-center outline
-          hover:bg-emerald-300 hover:outline-emerald-400 hover:text-emerald-100
-        `}
+        className={`h-10 w-12 rounded-lg px-3.5 transition-colors ${value === "positive" ? "border-primary bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground" : "border-border bg-card text-muted-foreground hover:border-primary hover:bg-primary/10 hover:text-primary"}`}
       >
         <X />
       </Button>
@@ -40,10 +37,7 @@ export function ShotButtons({
         onClick={() => onSetShot("negative")}
         aria-label="Marcar erro"
         aria-pressed={value === "negative"}
-        className={`${value === "negative" ? "bg-rose-400 outline-rose-300 text-rose-100" : "outline-slate-400 text-slate-400"} 
-          rounded-sm font-bold w-12 h-10 px-3.5 flex justify-center items-center outline 
-          hover:bg-rose-300 hover:outline-rose-400 hover:text-rose-100
-        `}
+        className={`h-10 w-12 rounded-lg px-3.5 transition-colors ${value === "negative" ? "border-negative bg-negative text-negative-foreground hover:bg-negative/90 hover:text-negative-foreground" : "border-border bg-card text-muted-foreground hover:border-negative hover:bg-negative/10 hover:text-negative"}`}
       >
         <Circle />
       </Button>
