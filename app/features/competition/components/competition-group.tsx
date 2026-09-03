@@ -25,6 +25,7 @@ export function CompetitionGroup({
   groupIndex,
   groupCount,
 }: CompetitionGroupProps) {
+  const [shortcutsEnabled, setShortcutsEnabled] = useState(true);
   const transmission = useScoreboardFocus(competition.id);
   const groupQuery = useQuery(groupOptions(competition.id, summary.id));
   const queryClient = useQueryClient();
@@ -169,13 +170,32 @@ export function CompetitionGroup({
       {group && roundQuery.data && (
         <>
           <CompetitionList
+            key={group.currentRound.id}
+            competitionRunning={competition.status === "running"}
+            shortcutsEnabled={shortcutsEnabled}
+            onShortcutsEnabledChange={setShortcutsEnabled}
             group={group}
             allowCorrection={competition.phase === "qualification"}
             registrations={roundQuery.data.registrations}
             results={roundQuery.data.results}
           />
           {roundQuery.data.number === groupQuery.data.roundNumber && (
-            <CompetitionFooter group={group} competition={competition} />
+            <CompetitionFooter
+              group={group}
+              competition={competition}
+              shortcutsEnabled={shortcutsEnabled}
+              hasPendingCompetitors={roundQuery.data.registrations.some(
+                (registration) =>
+                  registration.competitors.some(
+                    (competitor) =>
+                      !roundQuery.data.results.some(
+                        (result) =>
+                          result.registrationId === registration.id &&
+                          result.competitorId === competitor.id,
+                      ),
+                  ),
+              )}
+            />
           )}
         </>
       )}

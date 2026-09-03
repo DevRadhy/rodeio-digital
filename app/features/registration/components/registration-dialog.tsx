@@ -1,4 +1,6 @@
-import { FormErrors } from "@/components/shared/form/form-errors";
+import { RegistrationConfirmation } from "./registration-confirmation";
+import { FormProvider } from "react-hook-form";
+import { RegistrationFields } from "./registration-fields";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,10 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { FieldGroup } from "@/components/ui/field";
 import type { Category } from "@/features/categories/types/category";
-import { formatNumber } from "@/utils";
-import FormInput from "../../../components/shared/form/form-input";
 import { useRegistration } from "../hooks/use-registration";
 
 interface RegistrationDialogProps {
@@ -26,7 +25,16 @@ export function RegistrationDialog({
   open,
   onOpenChange,
 }: RegistrationDialogProps) {
-  const { form, onSubmit, onError, fields, isPending } = useRegistration({
+  const {
+    form,
+    onSubmit,
+    onError,
+    fields,
+    isPending,
+    createdRegistration,
+    onNewRegistration,
+    onComplete,
+  } = useRegistration({
     category,
   });
 
@@ -39,65 +47,60 @@ export function RegistrationDialog({
         if (!isPending) onOpenChange(open);
       }}
     >
-      <form
-        id="registration-dialog-form"
-        noValidate
-        onSubmit={form.handleSubmit(onSubmit, onError)}
-      >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{category.name}</DialogTitle>
-            <DialogDescription>Registre uma inscrição.</DialogDescription>
-          </DialogHeader>
-          <div className="-mx-4 no-scrollbar max-h-[50vh] overflow-y-auto px-4 max-w-lg">
-            <FieldGroup>
-              <FormErrors errors={form.formState.errors} />
-              {category.competitorsPerRegistration >= 4 && (
-                <FormInput
-                  control={form.control}
-                  name={`name`}
-                  label={`Nome`}
-                  description={`Dê um nome para inscrição.`}
-                  type="text"
-                  placeholder={"Digite o nome da entidade."}
+      <FormProvider {...form}>
+        <form
+          id="registration-dialog-form"
+          noValidate
+          onSubmit={form.handleSubmit(onSubmit, onError)}
+        >
+          <DialogContent className="sm:max-w-3xl">
+            <DialogHeader>
+              <DialogTitle>{category.name}</DialogTitle>
+              <DialogDescription>Registre uma inscrição.</DialogDescription>
+            </DialogHeader>
+            {createdRegistration ? (
+              <div className="max-h-[70vh] overflow-y-auto">
+                <RegistrationConfirmation
+                  registration={createdRegistration}
+                  categoryName={category.name}
+                  onNewRegistration={onNewRegistration}
+                  onComplete={() => {
+                    onOpenChange(false);
+                    onComplete();
+                  }}
                 />
-              )}
-              {fields.map((field, index) => (
-                <FormInput
-                  key={field.id}
-                  control={form.control}
-                  name={`competitors.${index}.name`}
-                  label={`Competidor ${category.competitorsPerRegistration > 1 ? formatNumber(index + 1) : ""}`}
-                  description={`Nome do competidor.`}
-                  type="text"
-                  placeholder={"Digite o nome do competidor."}
-                />
-              ))}
-            </FieldGroup>
-          </div>
-          <DialogFooter>
-            <DialogClose
-              render={
-                <Button
-                  type="button"
-                  disabled={isPending}
-                  variant={"outline"}
-                  onClick={() => onOpenChange(false)}
-                >
-                  Cancelar
-                </Button>
-              }
-            />
-            <Button
-              type="submit"
-              form="registration-dialog-form"
-              disabled={isPending}
-            >
-              {isPending ? "Salvando..." : "Salvar"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </form>
+              </div>
+            ) : (
+              <>
+                <div className="-mx-4 no-scrollbar max-h-[60vh] overflow-y-auto px-4">
+                  <RegistrationFields fields={fields} disabled={isPending} />
+                </div>
+                <DialogFooter>
+                  <DialogClose
+                    render={
+                      <Button
+                        type="button"
+                        disabled={isPending}
+                        variant={"outline"}
+                        onClick={() => onOpenChange(false)}
+                      >
+                        Cancelar
+                      </Button>
+                    }
+                  />
+                  <Button
+                    type="submit"
+                    form="registration-dialog-form"
+                    disabled={isPending}
+                  >
+                    {isPending ? "Salvando..." : "Salvar"}
+                  </Button>
+                </DialogFooter>
+              </>
+            )}
+          </DialogContent>
+        </form>
+      </FormProvider>
     </Dialog>
   );
 }

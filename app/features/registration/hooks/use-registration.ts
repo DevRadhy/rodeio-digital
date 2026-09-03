@@ -58,12 +58,7 @@ export function useRegistration({ category }: RegistrationProps) {
           queryKey: ["group-registrations", data.competitionId, data.groupId],
         });
       }
-      toast.success("Inscrição realizada com sucesso");
-      navigate(
-        data.competitionId
-          ? `/competition/${data.competitionId}`
-          : "/registrations",
-      );
+      toast.success(`Inscrição nº ${data.number} realizada com sucesso`);
     },
     onError: (error) => {
       const message = requestErrorMessage(
@@ -79,6 +74,7 @@ export function useRegistration({ category }: RegistrationProps) {
   useEffect(() => {
     if (!category) return;
 
+    createMutation.reset();
     form.reset({
       categoryId: category.id,
       number: 1,
@@ -94,9 +90,34 @@ export function useRegistration({ category }: RegistrationProps) {
   }, [category?.id]);
 
   const onSubmit: SubmitHandler<CreateRegistrationInput> = (data) => {
-    if (createMutation.isPending) return;
+    if (createMutation.isPending || createMutation.data) return;
     form.clearErrors("root");
-    createMutation.mutate(data);
+    createMutation.mutate({
+      ...data,
+      name: data.competitors.length >= 4 ? data.name : undefined,
+    });
+  };
+
+  const onNewRegistration = () => {
+    if (!category || createMutation.isPending) return;
+    createMutation.reset();
+    form.reset({
+      categoryId: category.id,
+      number: 1,
+      name: "",
+      competitors: Array.from(
+        { length: category.competitorsPerRegistration },
+        () => ({ id: null, name: "", cpf: "" }),
+      ),
+    });
+  };
+
+  const onComplete = () => {
+    navigate(
+      createMutation.data?.competitionId
+        ? `/competition/${createMutation.data.competitionId}`
+        : "/registrations",
+    );
   };
 
   const onError = (validationError: FieldErrors<CreateRegistrationInput>) => {
@@ -111,5 +132,8 @@ export function useRegistration({ category }: RegistrationProps) {
     onSubmit,
     onError,
     fields,
+    createdRegistration: createMutation.data,
+    onNewRegistration,
+    onComplete,
   };
 }
