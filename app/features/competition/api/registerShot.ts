@@ -1,5 +1,6 @@
 import { api } from "@/providers/api";
 import type { Shot } from "../types/competition";
+
 interface RegisterShotProps {
   competitionId: string;
   groupId: string;

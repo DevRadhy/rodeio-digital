@@ -1,18 +1,18 @@
-import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
+import { useState } from "react";
 import { toast } from "sonner";
-import { api } from "@/providers/api";
-import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
+  AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
   AlertDialogDescription,
   AlertDialogFooter,
-  AlertDialogCancel,
+  AlertDialogHeader,
+  AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { api } from "@/providers/api";
 
 export function ResetGroupBonuses({
   competitionId,

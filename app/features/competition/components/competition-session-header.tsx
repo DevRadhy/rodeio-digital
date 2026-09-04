@@ -1,9 +1,9 @@
-import { CompetitionManagement } from "./competition-management";
 import { Link, useNavigate } from "react-router";
-import { Button } from "@/components/ui/button";
-import { PageHeader } from "@/components/shared/page-header";
 import { CompetitionBadges } from "@/components/shared/competition-badges";
+import { PageHeader } from "@/components/shared/page-header";
+import { Button } from "@/components/ui/button";
 import type { Competition } from "../types/competition";
+import { CompetitionManagement } from "./competition-management";
 
 interface CompetitionHeadeSessionrProps {
   competition: Competition;

@@ -1,10 +1,10 @@
-import { QualificationReview } from "./qualification-review";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useEffect, useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useGroups } from "../hooks/use-competition";
 import type { Competition } from "../types/competition";
 import { CompetitionGroup } from "./competition-group";
+import { QualificationReview } from "./qualification-review";
 
 interface CompetitionViewProps {
   competition: Competition;
@@ -38,7 +38,7 @@ export function CompetitionView({ competition }: CompetitionViewProps) {
       onValueChange={(value) => setActivedGroupId(value)}
     >
       <QualificationReview competition={competition} />
-      <div
+      <fieldset
         className="mb-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3"
         aria-label="Resumo dos grupos"
       >
@@ -83,7 +83,7 @@ export function CompetitionView({ competition }: CompetitionViewProps) {
             </CardContent>
           </Card>
         ))}
-      </div>
+      </fieldset>
       <TabsList className="h-auto flex-wrap">
         {groups.data.map((group) => (
           <TabsTrigger value={group.id} key={group.id}>
@@ -98,6 +98,7 @@ export function CompetitionView({ competition }: CompetitionViewProps) {
             competition={competition}
             groupIndex={index + 1}
             groupCount={groups.data.length}
+            isActive={group.id === activedGroupId}
           />
         </TabsContent>
       ))}

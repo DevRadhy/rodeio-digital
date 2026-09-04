@@ -1,19 +1,19 @@
-import { useCallback, useEffect, useRef } from "react";
-import {
-  judgingActionFromKey,
-  isJudgingShortcutBlocked,
-} from "../lib/judging-shortcuts";
-import { toast } from "sonner";
-import { groupKeys } from "../api/group-queries";
 import {
   useIsMutating,
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
 import { ChevronRight } from "lucide-react";
+import { useCallback, useEffect, useRef } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { finishQualificaiton } from "../api/finishQualification";
+import { groupKeys } from "../api/group-queries";
 import { setNextRound } from "../api/setNextRound";
+import {
+  isJudgingShortcutBlocked,
+  judgingActionFromKey,
+} from "../lib/judging-shortcuts";
 import type { Competition, Group } from "../types/competition";
 
 interface CompetitionFooterProps {

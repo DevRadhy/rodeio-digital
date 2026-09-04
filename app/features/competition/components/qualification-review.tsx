@@ -1,18 +1,18 @@
-import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
+import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
 } from "@/components/ui/dialog";
-import { api } from "@/providers/api";
 import type { Scoreboard } from "@/features/scoreboard/types";
+import { api } from "@/providers/api";
 import type { Competition, Shot } from "../types/competition";
 import { CompetitionHeader } from "./competition-header";
 import { ShotButtons } from "./shot-buttons";
@@ -57,7 +57,9 @@ export function QualificationReview({
           { signal },
         )
       ).data,
-    refetchInterval: 15_000,
+    enabled: open || competition.phase === "final",
+    staleTime: 30_000,
+    refetchInterval: 60_000,
   });
   const conference =
     competition.phase === "final" && review.data && !review.data.finalStarted;
@@ -70,7 +72,8 @@ export function QualificationReview({
         })
       ).data,
     enabled: Boolean(conference),
-    refetchInterval: 15_000,
+    staleTime: 30_000,
+    refetchInterval: 60_000,
   });
   const mutation = useMutation({
     mutationFn: async (data: {

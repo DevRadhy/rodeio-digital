@@ -2,9 +2,9 @@ import { queryOptions } from "@tanstack/react-query";
 import { api } from "@/providers/api";
 import type {
   GroupRegistration,
+  Phase,
   Result,
   Status,
-  Phase,
 } from "../types/competition";
 
 export interface GroupDetails {
@@ -47,7 +47,7 @@ export function groupOptions(competitionId: string, groupId: string) {
     enabled: Boolean(competitionId && groupId),
     staleTime: 5_000,
     // Structural SSE events are not emitted by all existing mutations yet.
-    refetchInterval: 15_000,
+    refetchInterval: 60_000,
   });
 }
 
@@ -68,7 +68,7 @@ export function roundOptions(
     },
     enabled: Boolean(competitionId && groupId && number !== null),
     refetchInterval: (query) =>
-      query.state.data?.status === "finished" ? false : 15_000,
+      query.state.data?.status === "finished" ? false : 60_000,
     staleTime: 30_000,
     gcTime: 5 * 60_000,
   });

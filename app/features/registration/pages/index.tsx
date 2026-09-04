@@ -1,8 +1,8 @@
-import { PageHeader } from "@/components/shared/page-header";
 import { useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import { useNavigate } from "react-router";
 import { CategoryCard } from "@/components/shared/categories/category-card";
+import { PageHeader } from "@/components/shared/page-header";
 import { Button } from "@/components/ui/button";
 import { listCategories } from "@/features/categories/api/list-categories";
 

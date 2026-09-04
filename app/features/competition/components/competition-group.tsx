@@ -1,32 +1,39 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
-import { ResetGroupBonuses } from "./reset-group-bonuses";
-import { Radio } from "lucide-react";
-import { useScoreboardFocus } from "../hooks/use-scoreboard-focus";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { api } from "@/providers/api";
-import { groupKeys } from "../api/group-queries";
-import { useEffect, useMemo, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { groupKeys, groupOptions, roundOptions } from "../api/group-queries";
 import type { Competition, Group } from "../types/competition";
-import { groupOptions, roundOptions } from "../api/group-queries";
 import { CompetitionFooter } from "./competition-footer";
 import { CompetitionHeader } from "./competition-header";
 import { CompetitionList } from "./competition-list";
+import { ResetGroupBonuses } from "./reset-group-bonuses";
 
 interface CompetitionGroupProps {
   group: Group;
   competition: Competition;
   groupIndex: number;
   groupCount: number;
+  isActive: boolean;
 }
 export function CompetitionGroup({
   group: summary,
   competition,
   groupIndex,
   groupCount,
+  isActive,
 }: CompetitionGroupProps) {
   const [shortcutsEnabled, setShortcutsEnabled] = useState(true);
-  const transmission = useScoreboardFocus(competition.id);
+  const transmission = useMutation({
+    mutationFn: () =>
+      api.post(`/competition/${competition.id}/scoreboard/focus`, {
+        groupId: summary.id,
+      }),
+  });
+  useEffect(() => {
+    if (isActive && competition.status === "running") transmission.mutate();
+  }, [competition.status, isActive, transmission.mutate]);
   const groupQuery = useQuery(groupOptions(competition.id, summary.id));
   const queryClient = useQueryClient();
   const start = useMutation({
@@ -90,16 +97,6 @@ export function CompetitionGroup({
             groupName={groupQuery.data.name}
           />
         )}
-      {competition.status === "running" && (
-        <Button
-          variant="outline"
-          disabled={transmission.isPending}
-          onClick={() => transmission.mutate({ groupId: summary.id })}
-        >
-          <Radio />
-          Transmitir este pelotão
-        </Button>
-      )}
       {groupQuery.data.roundNumber === 0 &&
         groupQuery.data.status !== "finished" &&
         competition.status === "running" && (

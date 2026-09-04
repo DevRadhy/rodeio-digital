@@ -1,6 +1,4 @@
-import { RegistrationConfirmation } from "./registration-confirmation";
 import { FormProvider } from "react-hook-form";
-import { RegistrationFields } from "./registration-fields";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,6 +11,8 @@ import {
 } from "@/components/ui/dialog";
 import type { Category } from "@/features/categories/types/category";
 import { useRegistration } from "../hooks/use-registration";
+import { RegistrationConfirmation } from "./registration-confirmation";
+import { RegistrationFields } from "./registration-fields";
 
 interface RegistrationDialogProps {
   category: Category | null;

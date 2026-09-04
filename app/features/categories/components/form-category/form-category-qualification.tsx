@@ -7,7 +7,7 @@ export function FormCategoryQualification() {
 
   return (
     <FieldGroup>
-      <div className="flex gap-4">
+      <div className="grid gap-4 sm:grid-cols-2">
         <FormInput
           control={control}
           name="qualification.rounds"

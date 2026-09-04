@@ -15,7 +15,8 @@ export function useGroups(competitionId: string) {
   return useQuery({
     queryKey: ["groups", competitionId],
     queryFn: () => getCompetitionGroups(competitionId),
-    refetchInterval: 15_000,
+    staleTime: 15_000,
+    refetchInterval: 60_000,
   });
 }
 
