@@ -1,5 +1,5 @@
-import { useTheme } from "next-themes";
 import { SunMoon } from "lucide-react";
+import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";

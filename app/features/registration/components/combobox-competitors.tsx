@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
 import { Check, Search, UserRoundPlus } from "lucide-react";
+import { useEffect, useState } from "react";
 import {
+  type Control,
   Controller,
   useFormContext,
   useWatch,
-  type Control,
 } from "react-hook-form";
 import { Badge } from "@/components/ui/badge";
-import { InputGroupAddon } from "@/components/ui/input-group";
 import {
   Combobox,
   ComboboxContent,
@@ -22,6 +21,7 @@ import {
   FieldError,
   FieldLabel,
 } from "@/components/ui/field";
+import { InputGroupAddon } from "@/components/ui/input-group";
 import { formErrorMessages } from "@/lib/form-errors";
 import { useCompetitors } from "../hooks/use-competitors";
 import type { CreateRegistrationInput } from "../schemas/registration-schema";

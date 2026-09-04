@@ -1,13 +1,12 @@
-import { useCallback, useEffect, useRef, useState } from "react";
 import {
   useIsMutating,
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { RegistrationCard } from "./competition-registration-card";
 import { registerShot } from "../api/registerShot";
 import {
   isJudgingShortcutBlocked,
@@ -20,6 +19,8 @@ import type {
   Result,
   Shot,
 } from "../types/competition";
+import { RegistrationCard } from "./competition-registration-card";
+
 interface Props {
   group: Group;
   registrations: GroupRegistration[];

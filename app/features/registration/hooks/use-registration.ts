@@ -1,5 +1,3 @@
-import { formErrorMessages, requestErrorMessage } from "@/lib/form-errors";
-import { groupKeys } from "@/features/competition/api/group-queries";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
@@ -12,10 +10,12 @@ import {
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import type { Category } from "@/features/categories/types/category";
+import { groupKeys } from "@/features/competition/api/group-queries";
 import {
   type CreateRegistrationInput,
   RegistrationSchema,
 } from "@/features/registration/schemas/registration-schema";
+import { formErrorMessages, requestErrorMessage } from "@/lib/form-errors";
 import { createRegistration } from "../api/create-registration";
 
 interface RegistrationProps {

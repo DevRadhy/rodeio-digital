@@ -1,5 +1,5 @@
-import { PageHeader } from "@/components/shared/page-header";
 import { useLocation, useParams } from "react-router";
+import { PageHeader } from "@/components/shared/page-header";
 import { FormRegistration } from "../components/form-registration";
 import { useCategory } from "../hooks/use-category";
 

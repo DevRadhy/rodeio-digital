@@ -1,9 +1,10 @@
-import { PageHeader } from "@/components/shared/page-header";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import { useState } from "react";
+import { PageHeader } from "@/components/shared/page-header";
 import { Button } from "@/components/ui/button";
 import { ItemGroup } from "@/components/ui/item";
+import { useAuth } from "@/features/auth/auth-context";
 import { CategoryDialog } from "@/features/categories/components/category-dialog";
 import { CategoryItem } from "@/features/categories/components/category-item";
 import { deleteCategory } from "../api/delete-category";
@@ -21,6 +22,8 @@ export function meta() {
 }
 
 export default function Categories() {
+  const auth = useAuth();
+  const canConfigure = auth.user?.globalRole !== "USER";
   const [selectedId, setSelectedId] = useState(null);
   const [open, setOpen] = useState<boolean>(false);
 
@@ -53,27 +56,35 @@ export default function Categories() {
       />
       {categories.length ? (
         <>
-          <div className="flex justify-end">
-            <Button onClick={() => setOpen(true)}>
-              <Plus /> Adicionar Modalidade
-            </Button>
-          </div>
+          {canConfigure && (
+            <div className="flex justify-end">
+              <Button onClick={() => setOpen(true)}>
+                <Plus /> Adicionar Modalidade
+              </Button>
+            </div>
+          )}
 
           <ItemGroup className="flex flex-col gap-4 p-4">
             {categories.map((category) => (
               <CategoryItem
                 key={category.id}
                 category={category}
-                onDelete={() => deleteMutation.mutate(category.id)}
+                onDelete={
+                  canConfigure
+                    ? () => deleteMutation.mutate(category.id)
+                    : undefined
+                }
               />
             ))}
           </ItemGroup>
         </>
       ) : (
-        <EmptyCategories onAction={() => setOpen(true)} />
+        <EmptyCategories
+          onAction={canConfigure ? () => setOpen(true) : undefined}
+        />
       )}
 
-      <CategoryDialog open={open} onOpenChange={setOpen} />
+      {canConfigure && <CategoryDialog open={open} onOpenChange={setOpen} />}
     </>
   );
 }

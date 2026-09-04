@@ -1,5 +1,6 @@
-import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ThemeProvider } from "next-themes";
+import { useState } from "react";
 import {
   isRouteErrorResponse,
   Links,
@@ -8,9 +9,8 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
-
-import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/sonner";
+import { AuthProvider } from "@/features/auth/auth-context";
 import type { Route } from "./+types/root";
 import "./styles/globals.css";
 
@@ -55,8 +55,10 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <Outlet />
-        <Toaster />
+        <AuthProvider>
+          <Outlet />
+          <Toaster />
+        </AuthProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );

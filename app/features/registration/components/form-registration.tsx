@@ -1,8 +1,8 @@
-import { RegistrationConfirmation } from "./registration-confirmation";
 import { FormProvider } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import type { Category } from "@/features/categories/types/category";
 import { useRegistration } from "../hooks/use-registration";
+import { RegistrationConfirmation } from "./registration-confirmation";
 import { RegistrationFields } from "./registration-fields";
 
 interface FormRegistrationProps {

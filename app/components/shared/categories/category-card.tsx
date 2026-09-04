@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import type { Category } from "@/features/categories/types/category";
-import { CompetitionBadges } from "../competition-badges";
 import {
   Card,
   CardAction,
@@ -9,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../../ui/card";
+import { CompetitionBadges } from "../competition-badges";
 import { CategoryBadges } from "./category-badges";
 
 interface CategoryCardProps {

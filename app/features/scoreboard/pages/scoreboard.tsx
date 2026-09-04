@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Circle, Maximize, Radio, ShieldPlus, Trophy, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import { Navigate, useLocation, useNavigate, useParams } from "react-router";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { api } from "@/providers/api";
+import { useAuth } from "@/features/auth/auth-context";
 import { useCompetitionEvents } from "@/features/competition/hooks/use-competition-events";
+import { api } from "@/providers/api";
+import { useForceLightMode } from "../hooks/use-force-light-mode";
 import type { DisplayCompetitor, DisplayGroup, Scoreboard } from "../types";
 
 export function meta() {
@@ -21,7 +23,7 @@ function History({
   large?: boolean;
 }) {
   return (
-    <div
+    <fieldset
       className={`flex flex-wrap gap-2 ${large ? "w-fit rounded-xl bg-card p-2" : ""}`}
       aria-label={`Últimos resultados de ${competitor.name}`}
     >
@@ -52,7 +54,7 @@ function History({
           )}
         </span>
       ))}
-    </div>
+    </fieldset>
   );
 }
 function Bonus({ value }: { value: number | null }) {
@@ -187,10 +189,32 @@ function Standings({
 }
 
 export default function ScoreboardPage() {
+  useForceLightMode();
   const { competitionId = "" } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const auth = useAuth();
+  const gateMode = location.pathname.startsWith("/gate/");
+  const role = auth.event?.role;
   const connection = useCompetitionEvents(competitionId);
   const [tick, setTick] = useState(0);
   const [fullscreenError, setFullscreenError] = useState(false);
+  const liveCompetition = useQuery({
+    queryKey: ["live-display-competition", auth.event?.id],
+    queryFn: async ({ signal }) =>
+      (
+        await api.get<{ competitionId: string | null }>("/competition/live", {
+          signal,
+        })
+      ).data,
+    refetchInterval: 2_000,
+    refetchIntervalInBackground: true,
+  });
+  useEffect(() => {
+    const liveId = liveCompetition.data?.competitionId;
+    if (liveId && liveId !== competitionId)
+      navigate(`/scoreboard/${liveId}`, { replace: true });
+  }, [competitionId, liveCompetition.data?.competitionId, navigate]);
   useEffect(() => {
     const timer = setInterval(() => setTick((value) => value + 1), 12000);
     return () => clearInterval(timer);
@@ -209,9 +233,18 @@ export default function ScoreboardPage() {
   });
   const data = query.data;
   const live = connection === "live" && !query.isError;
+  if (
+    gateMode &&
+    role &&
+    role !== "DISPLAY_GATE" &&
+    auth.user?.globalRole === "USER"
+  )
+    return <Navigate to="/competition" replace />;
+  if (!gateMode && role === "DISPLAY_GATE")
+    return <Navigate to={`/gate/${competitionId}`} replace />;
   if (!data)
     return (
-      <main className="dark min-h-screen bg-background p-12 text-foreground">
+      <main className="light min-h-screen bg-background p-12 text-foreground">
         <h1 className="text-3xl font-bold">Placar da competição</h1>
         <p className="mt-4" role="status">
           {query.isError
@@ -228,7 +261,7 @@ export default function ScoreboardPage() {
   const { competition, group, current, next } = data;
   const finished = competition.status === "finished";
   return (
-    <main className="dark min-h-screen bg-background px-5 py-6 text-foreground sm:px-8 lg:px-10">
+    <main className="light min-h-screen bg-background px-5 py-6 text-foreground sm:px-8 lg:px-10">
       <header className="mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-border pb-5">
         <div>
           <p className="mb-1 text-xs font-semibold uppercase tracking-[0.25em] text-primary">
@@ -415,25 +448,27 @@ export default function ScoreboardPage() {
           )}
         </Card>
       </div>
-      <section
-        className="grid items-start gap-5 xl:grid-cols-2"
-        aria-label="Parciais por fase"
-      >
-        <Standings
-          duel={competition.category.categoryType === "duel"}
-          title="Parciais da classificação"
-          groups={data.standings.filter(
-            (group) => group.phase === "qualification",
-          )}
-          tick={tick}
-        />
-        <Standings
-          duel={competition.category.categoryType === "duel"}
-          title="Parciais da final"
-          groups={data.standings.filter((group) => group.phase === "final")}
-          tick={tick}
-        />
-      </section>
+      {!gateMode && (
+        <section
+          className="grid items-start gap-5 xl:grid-cols-2"
+          aria-label="Parciais por fase"
+        >
+          <Standings
+            duel={competition.category.categoryType === "duel"}
+            title="Parciais da classificação"
+            groups={data.standings.filter(
+              (group) => group.phase === "qualification",
+            )}
+            tick={tick}
+          />
+          <Standings
+            duel={competition.category.categoryType === "duel"}
+            title="Parciais da final"
+            groups={data.standings.filter((group) => group.phase === "final")}
+            tick={tick}
+          />
+        </section>
+      )}
       <footer className="mt-5 flex flex-wrap justify-between gap-2 text-xs text-muted-foreground">
         <span>
           <span className="text-primary">X positiva</span> ·{" "}
