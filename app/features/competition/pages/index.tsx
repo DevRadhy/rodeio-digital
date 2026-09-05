@@ -32,9 +32,7 @@ export default function Competition() {
     const role = auth.event?.role;
     if (!category.session) {
       if (
-        ["JUDGE", "ANNOUNCER", "DISPLAY_GATE", "DISPLAY_SCOREBOARD"].includes(
-          role ?? "",
-        )
+        ["ANNOUNCER", "DISPLAY_GATE", "DISPLAY_SCOREBOARD"].includes(role ?? "")
       )
         return;
       return competition.createCompetition(category.id);
@@ -63,12 +61,9 @@ export default function Competition() {
               disabled={
                 competition.isPending ||
                 (!category.session &&
-                  [
-                    "JUDGE",
-                    "ANNOUNCER",
-                    "DISPLAY_GATE",
-                    "DISPLAY_SCOREBOARD",
-                  ].includes(auth.event?.role ?? ""))
+                  ["ANNOUNCER", "DISPLAY_GATE", "DISPLAY_SCOREBOARD"].includes(
+                    auth.event?.role ?? "",
+                  ))
               }
               className={"w-full"}
             >
@@ -78,12 +73,9 @@ export default function Competition() {
                   )
                   ? "Acompanhar"
                   : "Entrar"
-                : [
-                      "JUDGE",
-                      "ANNOUNCER",
-                      "DISPLAY_GATE",
-                      "DISPLAY_SCOREBOARD",
-                    ].includes(auth.event?.role ?? "")
+                : ["ANNOUNCER", "DISPLAY_GATE", "DISPLAY_SCOREBOARD"].includes(
+                      auth.event?.role ?? "",
+                    )
                   ? "Aguardando início"
                   : "Iniciar competição"}
             </Button>

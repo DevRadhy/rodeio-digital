@@ -184,7 +184,7 @@ export default function DisplaysPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-3 sm:flex-row sm:items-center">
-            <code className="min-w-0 flex-1 break-all rounded-xl border bg-background p-3 text-xs">
+            <code className="min-w-0 flex-1 rounded-xl border bg-background p-3 text-center font-mono text-3xl font-bold tracking-[0.35em]">
               {activationCode}
             </code>
             <Button

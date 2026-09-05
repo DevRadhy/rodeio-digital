@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import {
   createContext,
   type ReactNode,
@@ -52,19 +53,35 @@ type Auth = {
 const Context = createContext<Auth | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const queryClient = useQueryClient();
   const [user, setUser] = useState<User | null>(null);
   const [events, setEvents] = useState<EventAccess[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [eventId, setEventId] = useState<string | null>(null);
+  const activateEvent = useCallback(
+    (id: string | null) => {
+      // The interceptor must point to the new tenant before mounted queries can
+      // refetch. Clearing the cache also discards responses from the old event.
+      setActiveEventId(id);
+      void queryClient.cancelQueries();
+      queryClient.clear();
+      setEventId(id);
+
+      if (id) {
+        localStorage.setItem("rodeo.event", id);
+      } else {
+        localStorage.removeItem("rodeo.event");
+      }
+    },
+    [queryClient],
+  );
   const clear = useCallback(() => {
     setAccessToken(null);
     setUser(null);
     setEvents([]);
-    setEventId(null);
-    setActiveEventId(null);
-    localStorage.removeItem("rodeo.event");
-  }, []);
+    activateEvent(null);
+  }, [activateEvent]);
   const loadProfile = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -81,12 +98,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setEvents(data.events);
       const saved = localStorage.getItem("rodeo.event");
       if (saved && data.events.some((event) => event.id === saved)) {
-        setEventId(saved);
-        setActiveEventId(saved);
+        activateEvent(saved);
       } else {
-        setEventId(null);
-        setActiveEventId(null);
-        localStorage.removeItem("rodeo.event");
+        activateEvent(null);
       }
     } catch (cause) {
       clear();
@@ -98,7 +112,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } finally {
       setLoading(false);
     }
-  }, [clear]);
+  }, [activateEvent, clear]);
   useEffect(() => {
     void loadProfile();
   }, [loadProfile]);
@@ -136,9 +150,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setEvents(profile.data.events);
         const first = profile.data.events[0];
         if (first) {
-          setEventId(first.id);
-          setActiveEventId(first.id);
-          localStorage.setItem("rodeo.event", first.id);
+          activateEvent(first.id);
         }
         setError(null);
         return profile.data.user.operationalRole ?? "DISPLAY_SCOREBOARD";
@@ -154,12 +166,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         void loadProfile();
       },
       selectEvent(id) {
-        setEventId(id);
-        setActiveEventId(id);
-        localStorage.setItem("rodeo.event", id);
+        if (id !== eventId) activateEvent(id);
       },
     }),
-    [clear, error, eventId, events, loadProfile, loading, user],
+    [activateEvent, clear, error, eventId, events, loadProfile, loading, user],
   );
   return <Context.Provider value={value}>{children}</Context.Provider>;
 }

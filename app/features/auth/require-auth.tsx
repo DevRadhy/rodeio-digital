@@ -66,5 +66,19 @@ export default function RequireAuth() {
     !location.pathname.startsWith("/system")
   )
     return <Navigate to="/events" replace />;
+  if (
+    auth.user.globalRole === "USER" &&
+    auth.event?.role === "REGISTRATION_MANAGER" &&
+    location.pathname !== "/events" &&
+    !location.pathname.startsWith("/registrations")
+  )
+    return <Navigate to="/registrations" replace />;
+  if (
+    auth.user.globalRole === "USER" &&
+    auth.event?.role === "JUDGE" &&
+    location.pathname !== "/events" &&
+    !location.pathname.startsWith("/competition")
+  )
+    return <Navigate to="/competition" replace />;
   return <Outlet />;
 }
