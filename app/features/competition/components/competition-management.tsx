@@ -131,10 +131,10 @@ export function CompetitionManagement({
                           {competitor.name} · {competitor.positiveShots}/
                           {competitor.totalShots}
                         </span>
-                        <div
-                          className="flex gap-1.5"
-                          aria-label={`Últimos resultados de ${competitor.name}`}
-                        >
+                        <fieldset className="flex gap-1.5">
+                          <legend className="sr-only">
+                            Últimos resultados de {competitor.name}
+                          </legend>
                           {competitor.recentResults.map((result) => (
                             <span
                               key={result.id}
@@ -148,7 +148,7 @@ export function CompetitionManagement({
                               {result.shot === "positive" ? "X" : "O"}
                             </span>
                           ))}
-                        </div>
+                        </fieldset>
                       </div>
                     ))}
                   </div>

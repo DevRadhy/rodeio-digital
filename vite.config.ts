@@ -8,8 +8,4 @@ export default defineConfig({
   resolve: {
     tsconfigPaths: true,
   },
-
-  ssr: {
-    noExternal: ["@clerk/react-router"],
-  },
 });

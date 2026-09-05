@@ -16,6 +16,7 @@ export function RegistrationConfirmation({
   onComplete(): void;
 }) {
   const heading = useRef<HTMLHeadingElement>(null);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: refocus each new confirmation
   useEffect(() => {
     heading.current?.focus();
   }, [registration.id]);
@@ -38,10 +39,7 @@ export function RegistrationConfirmation({
           <p className="text-sm font-medium text-primary">
             Número da inscrição
           </p>
-          <p
-            aria-label={`Número da inscrição: ${registration.number}`}
-            className="mt-2 break-all font-mono text-6xl font-bold tabular-nums text-primary sm:text-7xl"
-          >
+          <p className="mt-2 break-all font-mono text-6xl font-bold tabular-nums text-primary sm:text-7xl">
             {registration.number}
           </p>
           <p className="mt-3 font-medium">{categoryName}</p>
@@ -54,10 +52,7 @@ export function RegistrationConfirmation({
           className="space-y-2"
         >
           {registration.competitors.map((competitor, index) => (
-            <li
-              key={`${competitor.id}-${index}`}
-              className="flex items-start gap-3"
-            >
+            <li key={competitor.id} className="flex items-start gap-3">
               <span className="font-mono text-sm text-muted-foreground">
                 {index + 1}.
               </span>
