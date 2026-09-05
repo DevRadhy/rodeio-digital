@@ -1,8 +1,4 @@
-import { isAxiosError } from "axios";
-import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { registerShot } from "@/features/competition/api/registerShot";
 import { CompetitionCompetitor } from "@/features/competition/components/competition-competitor";
 import type {
   Group,
@@ -24,6 +20,13 @@ interface RegistrationCardProps {
   results?: Result[];
   isJudging?: boolean;
   allowCorrection?: boolean;
+  currentCompetitorId?: string;
+  saving: boolean;
+  onRegisterShot(
+    registrationId: string,
+    competitorId: string,
+    shot: Shot,
+  ): void;
 }
 
 export function RegistrationCard({
@@ -32,47 +35,10 @@ export function RegistrationCard({
   results,
   isJudging = false,
   allowCorrection,
+  currentCompetitorId,
+  saving,
+  onRegisterShot,
 }: RegistrationCardProps) {
-  const queryClient = useQueryClient();
-
-  const setShot = useMutation({
-    mutationFn: registerShot,
-    onSuccess: async (_, variables) => {
-      await Promise.all(
-        [
-          "qualification-review",
-          "scoreboard",
-          "competition",
-          "groups",
-          "competition-group",
-          "competition-round",
-        ].map((key) =>
-          queryClient.invalidateQueries({
-            queryKey: [key, variables.competitionId],
-          }),
-        ),
-      );
-    },
-    onError: (error) =>
-      toast.error(
-        isAxiosError(error)
-          ? (error.response?.data?.message ??
-              "Não foi possível salvar o resultado.")
-          : "Não foi possível salvar o resultado.",
-      ),
-  });
-
-  const handleSetShot = (competitorId: string, shot: Shot) => {
-    setShot.mutate({
-      competitionId: group.competitionId,
-      groupId: group.id,
-      roundId: group.currentRound.id,
-      registrationId: registration.id,
-      competitorId,
-      shot,
-    });
-  };
-
   const registrationsName = registration.competitors
     .map((competitor) => competitor.name)
     .join(" / ");
@@ -119,12 +85,15 @@ export function RegistrationCard({
               key={competitor.id}
               group={group}
               allowCorrection={allowCorrection}
-              saving={setShot.isPending}
+              saving={saving}
+              isJudging={competitor.id === currentCompetitorId}
               competitor={competitor}
               result={results?.find(
                 (result) => result.competitorId === competitor.id,
               )}
-              handleRegisterShot={handleSetShot}
+              handleRegisterShot={(competitorId, shot) =>
+                onRegisterShot(registration.id, competitorId, shot)
+              }
             />
           ))}
         </ItemGroup>

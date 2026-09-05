@@ -19,6 +19,7 @@ interface CompetitionCompetitorProps {
   result?: Result;
   allowCorrection?: boolean;
   saving?: boolean;
+  isJudging?: boolean;
   handleRegisterShot(competitorId: string, shot: Shot): void;
 }
 
@@ -28,13 +29,23 @@ export function CompetitionCompetitor({
   result,
   allowCorrection,
   saving,
+  isJudging,
   handleRegisterShot,
 }: CompetitionCompetitorProps) {
   return (
-    <Item size={"xs"} className="flex-wrap gap-y-3">
+    <Item
+      size={"xs"}
+      className={`flex-wrap gap-y-3 ${isJudging ? "rounded-lg bg-success/10" : ""}`}
+      aria-current={isJudging ? "true" : undefined}
+    >
       <ItemContent className="min-w-0">
         <ItemTitle className="flex-wrap gap-x-3 text-base font-bold">
           <span className="wrap-break-word">{competitor.name}</span>
+          {isJudging && (
+            <span className="text-xs font-medium text-primary">
+              Julgando agora
+            </span>
+          )}
           <span className="text-sm font-medium font-mono tabular-nums text-muted-foreground">
             {competitor.positiveShots}/{competitor.totalShots}
           </span>

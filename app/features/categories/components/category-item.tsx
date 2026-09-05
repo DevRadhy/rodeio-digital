@@ -1,6 +1,6 @@
-import { CompetitionBadges } from "@/components/shared/competition-badges";
 import { Swords, Users } from "lucide-react";
 import { CategoryBadges } from "@/components/shared/categories/category-badges";
+import { CompetitionBadges } from "@/components/shared/competition-badges";
 import {
   Item,
   ItemActions,
@@ -14,7 +14,7 @@ import type { Category } from "@/features/categories/types/category";
 
 interface CategoryItemProps {
   category: Category;
-  onDelete: () => void;
+  onDelete?: () => void;
 }
 
 export function CategoryItem({ category, onDelete }: CategoryItemProps) {
@@ -33,12 +33,11 @@ export function CategoryItem({ category, onDelete }: CategoryItemProps) {
           />
         </ItemDescription>
       </ItemContent>
-      <ItemActions>
-        {/* <Button variant={"default"} onClick={onEdit}>
-          <Edit />
-        </Button> */}
-        <Alert onConfirm={onDelete} />
-      </ItemActions>
+      {onDelete && (
+        <ItemActions>
+          <Alert onConfirm={onDelete} />
+        </ItemActions>
+      )}
     </Item>
   );
 }

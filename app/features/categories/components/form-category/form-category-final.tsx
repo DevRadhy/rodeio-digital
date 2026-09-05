@@ -1,4 +1,3 @@
-import FormSwitch from "@/components/shared/form/form-switch";
 import { Plus, Trash2 } from "lucide-react";
 import {
   type FieldArrayWithId,
@@ -8,6 +7,7 @@ import {
   useWatch,
 } from "react-hook-form";
 import FormInput from "@/components/shared/form/form-input";
+import FormSwitch from "@/components/shared/form/form-switch";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { FieldGroup } from "@/components/ui/field";

@@ -1,4 +1,5 @@
 import type { CategoryType } from "@/features/categories/types/category";
+
 interface Qualification {
   rounds: number;
   pelotonSize: number;

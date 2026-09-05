@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/empty";
 
 interface EmptyProps {
-  onAction: () => void;
+  onAction?: () => void;
 }
 
 export function EmptyCategories({ onAction }: EmptyProps) {
@@ -25,9 +25,11 @@ export function EmptyCategories({ onAction }: EmptyProps) {
           Nenhuma modalidade foi encontrada até o momento.
         </EmptyDescription>
       </EmptyHeader>
-      <EmptyContent>
-        <Button onClick={onAction}>Adicionar Modalidade</Button>
-      </EmptyContent>
+      {onAction && (
+        <EmptyContent>
+          <Button onClick={onAction}>Adicionar Modalidade</Button>
+        </EmptyContent>
+      )}
     </Empty>
   );
 }

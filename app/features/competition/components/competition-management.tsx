@@ -1,26 +1,26 @@
-import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
+import { useState } from "react";
 import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
 } from "@/components/ui/dialog";
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogCancel,
-} from "@/components/ui/alert-dialog";
-import { api } from "@/providers/api";
 import type { Scoreboard } from "@/features/scoreboard/types";
+import { api } from "@/providers/api";
 import type { Competition } from "../types/competition";
 
 export function CompetitionManagement({
@@ -131,10 +131,10 @@ export function CompetitionManagement({
                           {competitor.name} · {competitor.positiveShots}/
                           {competitor.totalShots}
                         </span>
-                        <div
-                          className="flex gap-1.5"
-                          aria-label={`Últimos resultados de ${competitor.name}`}
-                        >
+                        <fieldset className="flex gap-1.5">
+                          <legend className="sr-only">
+                            Últimos resultados de {competitor.name}
+                          </legend>
                           {competitor.recentResults.map((result) => (
                             <span
                               key={result.id}
@@ -148,7 +148,7 @@ export function CompetitionManagement({
                               {result.shot === "positive" ? "X" : "O"}
                             </span>
                           ))}
-                        </div>
+                        </fieldset>
                       </div>
                     ))}
                   </div>
