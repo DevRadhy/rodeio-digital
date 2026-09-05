@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router";
 import { CompetitionBadges } from "@/components/shared/competition-badges";
 import { PageHeader } from "@/components/shared/page-header";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/features/auth/auth-context";
 import type { Competition } from "../types/competition";
 import { CompetitionManagement } from "./competition-management";
 
@@ -13,6 +14,7 @@ export function CompetitionSessionHeader({
   competition,
 }: CompetitionHeadeSessionrProps) {
   const navigation = useNavigate();
+  const auth = useAuth();
 
   return (
     <div className="px-4 sm:px-8">
@@ -40,7 +42,8 @@ export function CompetitionSessionHeader({
           Abrir placar
         </Button>
         {competition.phase === "qualification" &&
-          competition.status === "running" && (
+          competition.status === "running" &&
+          auth.event?.role !== "JUDGE" && (
             <Button
               variant="outline"
               onClick={() =>

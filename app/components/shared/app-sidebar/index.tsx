@@ -224,9 +224,7 @@ export function AppSidebar() {
       user?.globalRole === "PLATFORM_ADMIN" ||
       event?.role === "ORGANIZATION_ADMIN" ||
       (event?.role === "REGISTRATION_MANAGER" &&
-        item.href !== "/categories" &&
-        item.href !== "/displays" &&
-        item.href !== "/event-access") ||
+        item.href === "/registrations") ||
       (["JUDGE", "ANNOUNCER", "DISPLAY_GATE", "DISPLAY_SCOREBOARD"].includes(
         event?.role ?? "",
       ) &&
