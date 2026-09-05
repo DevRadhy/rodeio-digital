@@ -38,16 +38,12 @@ export function RegistrationFields({
           const competitor = competitors?.[index];
           const selected = Boolean(competitor?.id);
           return (
-            <div
+            <fieldset
               key={field.id}
-              role="group"
-              aria-label={`Competidor ${index + 1}`}
               className="grid grid-cols-[1.5rem_minmax(0,1fr)_2.5rem] items-start gap-x-3 gap-y-3 border-b py-5 last:border-b-0 sm:grid-cols-[1.5rem_minmax(0,1.4fr)_minmax(0,1fr)_2.5rem]"
             >
-              <span
-                aria-label={`Posição ${index + 1}`}
-                className="mt-8 flex size-6 items-center justify-center rounded-full bg-primary/10 font-mono text-xs font-semibold text-primary"
-              >
+              <legend className="sr-only">Competidor {index + 1}</legend>
+              <span className="mt-8 flex size-6 items-center justify-center rounded-full bg-primary/10 font-mono text-xs font-semibold text-primary">
                 {index + 1}
               </span>
               <ComboboxCompetitors
@@ -98,7 +94,7 @@ export function RegistrationFields({
               >
                 <Trash2 aria-hidden="true" />
               </Button>
-            </div>
+            </fieldset>
           );
         })}
       </section>
